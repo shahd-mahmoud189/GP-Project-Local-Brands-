@@ -3,7 +3,7 @@ import ProductCard from "@/app/_components/cards/ProductCard/ProductCard";
 export default function page() {
   return (
     <div className="container mx-auto px-12 py-10">
-      <div className="mb-20">
+      <div className="mb-20 px-10">
         <h2 className="text-[#864227] text-4xl ">Handmade</h2>
         <p className="text-[#796C63] mt-4 font-light">
           Dive into our exclusive range of high-quality essentials. Whether
@@ -12,7 +12,7 @@ export default function page() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-10">
 
         <div className="col-span-1 space-y-4 mb-8">
           <h4 className="text-xl mb-5">Price Range</h4>

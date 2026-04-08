@@ -127,14 +127,6 @@ export default function Nav() {
                 <span className="text-sm">Featured Products</span>
               </Link>
             </li>
-            <li className={`${pathName === "/orders" ? "text-[#864227]" : "text-slate-700"}`}>
-              <Link
-                href={"/orders"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <span className="text-sm">My Orders</span>
-              </Link>
-            </li>
           </ul>
         </div>
       </div>
@@ -142,8 +134,8 @@ export default function Nav() {
       <div className={`inset-0 bg-black/50 z-30 ${isOpen?'fixed':'hidden'} cursor-pointer`} onClick={()=>toggle()}></div>
       <div className={`bg-[#FCF9F4] z-40 top-0 left-0 bottom-0 p-4 w-70 ${isOpen?'fixed':'hidden'} animate-slide-in`}>
         <div className="flex items-center justify-between border-b border-gray-300/50 pb-4">
-          <Link href={"/"} className="font-bold text-2xl text-slate-700 block">
-            <span className="text-[#864227]">Local</span> Brands
+          <Link onClick={()=>toggle()} href={"/"} className="font-bold text-2xl text-[#864227] block">
+            Brandy
           </Link>
           <button
             onClick={()=>toggle()}
@@ -200,16 +192,6 @@ export default function Nav() {
                 >
                   <i className="fa-solid fa-boxes-stacked mr-2"></i>
                   <span className="text-sm">Featured Products</span>
-                </Link>
-              </li>
-              <li className={`${pathName === "/orders" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/orders"}
-                  className="hover:text-[#864227] transition-all duration-200 block"
-                >
-                  <i className="fa-solid fa-list mr-2"></i>
-                  <span className="text-sm">My Orders</span>
                 </Link>
               </li>
           </ul>
