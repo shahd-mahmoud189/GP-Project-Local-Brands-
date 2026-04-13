@@ -8,13 +8,13 @@ const values = [
     title: "Handpicked Quality",
     description: "Every piece is selected for its unique soul and craftsmanship.",
     icon: <Award size={28} strokeWidth={1.2} />,
-    position: "md:mt-20" // هنزله لتحت شوية عشان نكسر الخط المستقيم
+    position: "md:mt-20" 
   },
   {
     title: "Support Local",
     description: "Empowering Egyptian hands to reach your home.",
     icon: <Heart size={28} strokeWidth={1.2} />,
-    position: "md:-mt-10" // هنطلعه لفوق
+    position: "md:-mt-10" 
   },
   {
     title: "Fast Delivery",
