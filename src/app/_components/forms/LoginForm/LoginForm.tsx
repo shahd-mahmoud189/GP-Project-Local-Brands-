@@ -1,26 +1,21 @@
 "use client";
 import { signin } from "@/app/api/auth.api";
-import { AuthContext } from "@/app/context/AuthContext";
 import { loginForm, loginSchema } from "@/app/schema/login.schema";
-import { setRefreshTokenInCookies, setTokenInCookies } from "@/app/server/auth.actions";
+import { setEmail, setRefreshTokenInCookies, setTokenInCookies, setUserType } from "@/app/server/auth.actions";
 import { Button } from "@/components/ui/button";
 import {
   Field,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export default function LoginForm() {
-  const {setToken, setRefreshToken} = useContext(AuthContext)
   const router = useRouter();
 
   const { handleSubmit, register, formState } = useForm({
@@ -36,10 +31,10 @@ export default function LoginForm() {
   async function handleSignin(values: loginForm) {
     try {
       const data = await signin(values);
-      setToken(data.token);
-      setRefreshToken(data.refreshToken)
-      setTokenInCookies(data.token)
-      setRefreshTokenInCookies(data.refreshToken)
+       setTokenInCookies(data.token)
+       setRefreshTokenInCookies(data.refreshToken)
+       setEmail(data.email)
+       setUserType(data.userType)
       toast.success(data.isSuccess && "Logged in successfully");
       setTimeout(() => {
         router.push("/");

@@ -4,8 +4,8 @@ import { Exo } from "next/font/google";
 import { Bounce, ToastContainer } from "react-toastify";
 import './globals.css'
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import AuthContextProvider from "./context/AuthContext";
-import { cookies } from "next/headers";
+import Providers from "./providers/Providers";
+import { getAuthData } from "./server/auth.actions";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -13,21 +13,27 @@ const exo = Exo({
   variable: "--font-exo",
 });
 
-const cookie = await cookies()
-const token = cookie.get('token')?.value || null
-const refreshToken = cookie.get('refreshToken')?.value || null
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+const authData = await getAuthData();
+
+  const preloadedState = {
+    auth: authData ? authData : { isAuthinticated: false, userInfo: null }
+  };
+
   return (
     <html lang="en">
+      <Providers preloadedState={preloadedState}>
       <body
         className={`${exo.className} font-medium`}
       >
-        <AuthContextProvider initialToken={token} initialRefreshToken={refreshToken}>
+              
+
         <Nav/>
         {children}
         <ToastContainer
@@ -44,8 +50,8 @@ export default function RootLayout({
             transition={Bounce}
           />
         <Footer/>
-        </AuthContextProvider>
       </body>
+      </Providers>
     </html>
   );
 }

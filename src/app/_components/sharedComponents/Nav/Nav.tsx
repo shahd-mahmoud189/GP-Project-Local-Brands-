@@ -1,13 +1,17 @@
 "use client";
-import { AuthContext } from "@/app/context/AuthContext";
-import { removeToken } from "@/app/server/auth.actions";
+import { removeFromCookie } from "@/app/server/auth.actions";
+import { setAuthInfo } from "@/app/store/slices/auth.slice";
+import { AppState } from "@/app/store/store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function Nav() {
-  const { token, setToken, setRefreshToken } = useContext(AuthContext);
-
+  const { isAuthinticated } = useSelector(
+    (appState: AppState) => appState.auth,
+  );
   const pathName = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -15,11 +19,15 @@ export default function Nav() {
     setIsOpen(!isOpen);
   }
 
+  const dispatch = useDispatch();
+
   function logOut() {
-    setToken(null);
-    setRefreshToken(null);
-    removeToken('token');
-    removeToken('refreshToken');
+     removeFromCookie('token');
+     removeFromCookie('refreshToken');
+     removeFromCookie('email');
+     removeFromCookie('userType');
+     dispatch(setAuthInfo({isAuthinticated: false, userInfo: null}))
+     toast.success('Logged out successfully')
   }
 
   return (
@@ -41,7 +49,7 @@ export default function Nav() {
         </div>
         <ul className="hidden lg:flex items-center gap-6 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
           
-          {token && (
+          {isAuthinticated && (
             <li
               className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
             >
@@ -54,7 +62,7 @@ export default function Nav() {
               </Link>
             </li>
           )}
-          {!token && (
+          {!isAuthinticated && (
             <>
               {" "}
               <li
@@ -81,7 +89,7 @@ export default function Nav() {
               </li>
             </>
           )}
-          {token && (
+          {isAuthinticated && (
             <li
               className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}
             >
@@ -241,7 +249,7 @@ export default function Nav() {
         <div className="pt-4">
           <h3 className="font-bold text-xl text-slate-700 mb-5">Account</h3>
           <ul className="text-slate-600 space-y-5 font-light">
-            {token && (
+            {isAuthinticated && (
               <li
                 className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
               >
@@ -255,7 +263,7 @@ export default function Nav() {
                 </Link>
               </li>
             )}
-            {!token && (
+            {!isAuthinticated && (
               <>
                 {" "}
                 <li
@@ -284,7 +292,7 @@ export default function Nav() {
                 </li>
               </>
             )}
-            {token && (
+            {isAuthinticated && (
               <>
                 <li
                   className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}
