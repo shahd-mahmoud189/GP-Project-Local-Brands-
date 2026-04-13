@@ -1,21 +1,31 @@
 "use client";
+import { AuthContext } from "@/app/context/AuthContext";
+import { removeToken } from "@/app/server/auth.actions";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 export default function Nav() {
+  const { token, setToken, setRefreshToken } = useContext(AuthContext);
+
   const pathName = usePathname();
-  console.log(pathName);
-  
+
   const [isOpen, setIsOpen] = useState(false);
   function toggle() {
     setIsOpen(!isOpen);
   }
 
+  function logOut() {
+    setToken(null);
+    setRefreshToken(null);
+    removeToken('token');
+    removeToken('refreshToken');
+  }
+
   return (
     <nav className="">
       {/* top navbar */}
-      <div className="container mx-auto px-12 py-4 flex justify-between items-center bg-[#FCF9F4]">
+      <div className="container mx-auto px-12 py-4 flex justify-between items-center">
         <div>
           <Link href={"/"} className="font-bold text-3xl text-[#864227]">
             Brandy
@@ -30,51 +40,61 @@ export default function Nav() {
           <i className="fa-brands fa-sistrix absolute right-2 top-3"></i>
         </div>
         <ul className="hidden lg:flex items-center gap-6 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
-          <li className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}>
-            <Link
-              href={"/cart"}
-              className="flex flex-col items-center justify-center gap-2"
+          
+          {token && (
+            <li
+              className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
             >
-              <i className="fa-solid fa-cart-shopping text-xl"></i>
-              <span className="text-sm">Cart</span>
-            </Link>
-          </li>
-          <li className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}>
-            <Link
-              href={"/account"}
-              className="flex flex-col items-center justify-center gap-2"
+              <Link
+                href={"/account"}
+                className="flex flex-col items-center justify-center gap-2"
+              >
+                <i className="fa-regular fa-circle-user text-xl"></i>
+                <span className="text-sm">Account</span>
+              </Link>
+            </li>
+          )}
+          {!token && (
+            <>
+              {" "}
+              <li
+                className={`${pathName === "/register" ? "text-[#864227]" : "text-slate-700"}`}
+              >
+                <Link
+                  href={"/register"}
+                  className="flex flex-col items-center justify-center gap-2"
+                >
+                  <i className="fa-solid fa-user-plus text-xl"></i>
+                  <span className="text-sm">SignUp</span>
+                </Link>
+              </li>
+              <li
+                className={`${pathName === "/login" ? "text-[#864227]" : "text-slate-700"}`}
+              >
+                <Link
+                  href={"/login"}
+                  className="flex flex-col items-center justify-center gap-2"
+                >
+                  <i className="fa-regular fa-address-card text-xl"></i>
+                  <span className="text-sm">Login</span>
+                </Link>
+              </li>
+            </>
+          )}
+          {token && (
+            <li
+              className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}
             >
-              <i className="fa-regular fa-circle-user text-xl"></i>
-              <span className="text-sm">Account</span>
-            </Link>
-          </li>
-          <li className={`${pathName === "/register" ? "text-[#864227]" : "text-slate-700"}`}>
-            <Link
-              href={"/register"}
-              className="flex flex-col items-center justify-center gap-2"
-            >
-              <i className="fa-solid fa-user-plus text-xl"></i>
-              <span className="text-sm">SignUp</span>
-            </Link>
-          </li>
-          <li className={`${pathName === "/login" ? "text-[#864227]" : "text-slate-700"}`}>
-            <Link
-              href={"/login"}
-              className="flex flex-col items-center justify-center gap-2"
-            >
-              <i className="fa-regular fa-address-card text-xl"></i>
-              <span className="text-sm">Login</span>
-            </Link>
-          </li>
-          <li className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}>
-            <Link
-              href={""}
-              className="flex flex-col items-center justify-center gap-2"
-            >
-              <i className="fa-solid fa-arrow-right-from-bracket text-xl"></i>
-              <span className="text-sm">LogOut</span>
-            </Link>
-          </li>
+              <Link
+                onClick={() => logOut()}
+                href={"/login"}
+                className="flex flex-col items-center justify-center gap-2"
+              >
+                <i className="fa-solid fa-arrow-right-from-bracket text-xl"></i>
+                <span className="text-sm">LogOut</span>
+              </Link>
+            </li>
+          )}
         </ul>
         <button
           className="lg:hidden bg-[#864227] px-1.5 py-1 rounded text-white"
@@ -91,7 +111,9 @@ export default function Nav() {
       <div className="hidden lg:block bg-[#F7F2EA]">
         <div className="container py-3 px-12 mx-auto">
           <ul className="flex items-center gap-5 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
-            <li className={`${pathName === "/" ? "text-[#864227]" : "text-slate-700"}`}>
+            <li
+              className={`${pathName === "/" ? "text-[#864227]" : "text-slate-700"}`}
+            >
               <Link
                 href={"/"}
                 className="flex flex-col items-center justify-center gap-2"
@@ -99,7 +121,9 @@ export default function Nav() {
                 <span className="text-sm">Home</span>
               </Link>
             </li>
-            <li className={`${pathName === "/brands" ? "text-[#864227]" : "text-slate-700"}`}>
+            <li
+              className={`${pathName === "/brands" ? "text-[#864227]" : "text-slate-700"}`}
+            >
               <Link
                 href={"/brands"}
                 className="flex flex-col items-center justify-center gap-2"
@@ -131,15 +155,25 @@ export default function Nav() {
         </div>
       </div>
       {/* offcanvas */}
-      <div className={`inset-0 bg-black/50 z-30 ${isOpen?'fixed':'hidden'} cursor-pointer`} onClick={()=>toggle()}></div>
-      <div className={`bg-[#FCF9F4] z-40 top-0 left-0 bottom-0 p-4 w-70 ${isOpen?'fixed':'hidden'} animate-slide-in`}>
+      <div
+        className={`inset-0 bg-black/50 z-30 ${isOpen ? "fixed" : "hidden"} cursor-pointer`}
+        onClick={() => toggle()}
+      ></div>
+      <div
+        className={`bg-[#FCF9F4] z-40 top-0 left-0 bottom-0 p-4 w-70 ${isOpen ? "fixed" : "hidden"} animate-slide-in`}
+      >
         <div className="flex items-center justify-between border-b border-gray-300/50 pb-4">
-          <Link onClick={()=>toggle()} href={"/"} className="font-bold text-2xl text-[#864227] block">
+          <Link
+            onClick={() => toggle()}
+            href={"/"}
+            className="font-bold text-2xl text-[#864227] block"
+          >
             Brandy
           </Link>
           <button
-            onClick={()=>toggle()}
-            className="p-2 rounded-full size-8 flex items-center justify-center bg-[#EFE7E2]">
+            onClick={() => toggle()}
+            className="p-2 rounded-full size-8 flex items-center justify-center bg-[#EFE7E2]"
+          >
             <i className="fa-solid fa-xmark text-sm text-[#864227]"></i>
           </button>
         </div>
@@ -154,54 +188,65 @@ export default function Nav() {
         <div className="border-b border-gray-300/50 pb-4">
           <h3 className="font-bold text-xl text-slate-700 mb-5">Main Menu</h3>
           <ul className="text-slate-600 space-y-5 font-light">
-              <li className={`${pathName === "/" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/"}
-                  className="hover:text-[#864227] transition-all duration-200 block "
-                >
-                  <i className="fa-solid fa-home mr-2"></i>
-                  <span className="text-sm">Home</span>
-                </Link>
-              </li>
-              <li className={`${pathName === "/brands" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/brands"}
-                  className="hover:text-[#864227] transition-all duration-200 block"
-                >
-                  <i className="fa-solid fa-table-cells-large mr-2"></i>
-                  <span className="text-sm">Brands</span>
-                </Link>
-              </li>
-              <li className={`${pathName === "/categories" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/categories"}
-                  className="hover:text-[#864227] transition-all duration-200 block"
-                >
-                  <i className="fa-solid fa-layer-group mr-2"></i>
-                  <span className="text-sm">All Categories</span>
-                </Link>
-              </li>
-              <li className={`${pathName === "/products" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/products"}
-                  className="hover:text-[#864227] transition-all duration-200 block"
-                >
-                  <i className="fa-solid fa-boxes-stacked mr-2"></i>
-                  <span className="text-sm">Featured Products</span>
-                </Link>
-              </li>
+            <li
+              className={`${pathName === "/" ? "text-[#864227]" : "text-slate-700"}`}
+            >
+              <Link
+                onClick={() => toggle()}
+                href={"/"}
+                className="hover:text-[#864227] transition-all duration-200 block "
+              >
+                <i className="fa-solid fa-home mr-2"></i>
+                <span className="text-sm">Home</span>
+              </Link>
+            </li>
+            <li
+              className={`${pathName === "/brands" ? "text-[#864227]" : "text-slate-700"}`}
+            >
+              <Link
+                onClick={() => toggle()}
+                href={"/brands"}
+                className="hover:text-[#864227] transition-all duration-200 block"
+              >
+                <i className="fa-solid fa-table-cells-large mr-2"></i>
+                <span className="text-sm">Brands</span>
+              </Link>
+            </li>
+            <li
+              className={`${pathName === "/categories" ? "text-[#864227]" : "text-slate-700"}`}
+            >
+              <Link
+                onClick={() => toggle()}
+                href={"/categories"}
+                className="hover:text-[#864227] transition-all duration-200 block"
+              >
+                <i className="fa-solid fa-layer-group mr-2"></i>
+                <span className="text-sm">All Categories</span>
+              </Link>
+            </li>
+            <li
+              className={`${pathName === "/products" ? "text-[#864227]" : "text-slate-700"}`}
+            >
+              <Link
+                onClick={() => toggle()}
+                href={"/products"}
+                className="hover:text-[#864227] transition-all duration-200 block"
+              >
+                <i className="fa-solid fa-boxes-stacked mr-2"></i>
+                <span className="text-sm">Featured Products</span>
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="pt-4">
           <h3 className="font-bold text-xl text-slate-700 mb-5">Account</h3>
           <ul className="text-slate-600 space-y-5 font-light">
-              <li className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}>
+            {token && (
+              <li
+                className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
+              >
                 <Link
-                  onClick={()=>toggle()}
+                  onClick={() => toggle()}
                   href={"/account"}
                   className="hover:text-[#864227] transition-all duration-200 block "
                 >
@@ -209,36 +254,55 @@ export default function Nav() {
                   <span className="text-sm">My Account</span>
                 </Link>
               </li>
-              <li className={`${pathName === "/register" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/register"}
-                  className="hover:text-[#864227] transition-all duration-200 block"
+            )}
+            {!token && (
+              <>
+                {" "}
+                <li
+                  className={`${pathName === "/register" ? "text-[#864227]" : "text-slate-700"}`}
                 >
-                  <i className="fa-solid fa-user-plus mr-2"></i>
-                  <span className="text-sm">SignUp</span>
-                </Link>
-              </li>
-              <li className={`${pathName === "/login" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={"/login"}
-                  className="hover:text-[#864227] transition-all duration-200 block"
+                  <Link
+                    onClick={() => toggle()}
+                    href={"/register"}
+                    className="hover:text-[#864227] transition-all duration-200 block"
+                  >
+                    <i className="fa-solid fa-user-plus mr-2"></i>
+                    <span className="text-sm">SignUp</span>
+                  </Link>
+                </li>
+                <li
+                  className={`${pathName === "/login" ? "text-[#864227]" : "text-slate-700"}`}
                 >
-                  <i className="fa-regular fa-address-card mr-2"></i>
-                  <span className="text-sm">Login</span>
-                </Link>
-              </li>
-              <li className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}>
-                <Link
-                  onClick={()=>toggle()}
-                  href={""}
-                  className="hover:text-[#864227] transition-all duration-200 block"
+                  <Link
+                    onClick={() => toggle()}
+                    href={"/login"}
+                    className="hover:text-[#864227] transition-all duration-200 block"
+                  >
+                    <i className="fa-regular fa-address-card mr-2"></i>
+                    <span className="text-sm">Login</span>
+                  </Link>
+                </li>
+              </>
+            )}
+            {token && (
+              <>
+                <li
+                  className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}
                 >
-                  <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>
-                  <span className="text-sm">LogOut</span>
-                </Link>
-              </li>
+                  <Link
+                    onClick={() => {
+                      toggle();
+                      logOut();
+                    }}
+                    href={"/login"}
+                    className="hover:text-[#864227] transition-all duration-200 block"
+                  >
+                    <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>
+                    <span className="text-sm">LogOut</span>
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

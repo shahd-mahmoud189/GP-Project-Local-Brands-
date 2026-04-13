@@ -4,7 +4,7 @@ export default function PaymentMethod() {
   return (
     <div className="space-y-4">
       <label
-        className={`block border rounded-3xl p-8 cursor-pointer hover:bg-[#F0EDE8] transition bg-[#F6F3EE]`}
+        className={`block border rounded-3xl p-8 cursor-pointer hover:bg-[#F0EDE8] transition-all duration-200 bg-[#F6F3EE]`}
       >
         <div className="flex items-start gap-4">
           <input

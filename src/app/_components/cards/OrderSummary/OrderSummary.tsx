@@ -30,7 +30,7 @@ export default function OrderSummary() {
         <span className="text-xl font-semibold text-[#864227]">100 EGP</span>
       </div>
       <div className="flex flex-col gap-3 my-5">
-        <Button className="w-full py-6 px-4 rounded-3xl bg-[#864227] hover:bg-[#9F5538] transition-all duration-200 text-white font-semibold shadow-md hover:shadow-lg   flex items-center justify-center gap-2">
+        <Button className="w-full py-6 px-4 rounded-3xl bg-[#864227] hover:bg-[#9F5538] transition-all duration-200 text-white font-semibold shadow-md hover:shadow-lg flex items-center justify-center gap-2">
           <i className="fa-solid fa-credit-card text-sm"></i>
           Proceed to payment
         </Button>

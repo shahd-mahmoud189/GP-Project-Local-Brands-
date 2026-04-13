@@ -3,8 +3,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <>
-      <footer className="bg-[#F7F2EA]">
+    <footer className="bg-[#F7F2EA]">
+      <div className="">
         <div className="container  px-12 py-8 lg:flex lg:items-start lg:justify-between lg:gap-16 space-y-5">
           <div className="lg:w-1/3">
             <h1 className="font-bold text-3xl text-[#864227] mb-3">
@@ -76,10 +76,10 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-      </footer>
+      </div>
       <div className="p-4 text-center font-light text-sm border-y border-gray-300/50">
         <p>© 2026 Brandy Marketplace. All rights reserved.</p>
       </div>
-    </>
+    </footer>
   );
 }
