@@ -28,7 +28,7 @@ export default function WishlistCard() {
         <p className="text-[17px] font-bold text-[#864227] mb-4">
           0 EGP
         </p>
-        <button className="w-full bg-[#864227] hover:bg-[#6e3420] active:scale-95 text-white rounded-full py-2.5 text-[9px] font-bold tracking-[0.15em] uppercase transition-all duration-200">
+        <button className="w-full bg-[#864227] hover:bg-[#6e3420] active:scale-95 text-[14px]  text-white rounded-full py-4 text-[9px] font-bold  transition-all duration-200">
           Move to Bag
         </button>
       </div>
