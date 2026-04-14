@@ -58,10 +58,10 @@ export default function Nav() {
             </Link>
           </li>
           <li
-            className={`${pathName === "/whishlist" ? "text-[#864227]" : "text-slate-700"}`}
+            className={`${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-700"}`}
           >
             <Link
-              href={"/whishlist"}
+              href={"/wishlist"}
               className="flex flex-col items-center justify-center gap-2"
             >
               <i className="fa-regular fa-heart text-xl"></i>
@@ -324,11 +324,11 @@ export default function Nav() {
               </Link>
             </li>
             <li
-              className={`${pathName === "/whishlist" ? "text-[#864227]" : "text-slate-700"}`}
+              className={`${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-700"}`}
             >
               <Link
                 onClick={() => toggle()}
-                href={"/whishlist"}
+                href={"/wishlist"}
                 className="hover:text-[#864227] transition-all duration-200 block"
               >
                 <i className="fa-regular fa-heart mr-2"></i>
