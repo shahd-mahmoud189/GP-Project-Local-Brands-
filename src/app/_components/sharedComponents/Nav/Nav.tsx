@@ -1,5 +1,5 @@
 "use client";
-import { removeFromCookie } from "@/app/server/auth.actions";
+import { removeTokens, removeUserInfo } from "@/app/server/auth.actions";
 import { setAuthInfo } from "@/app/store/slices/auth.slice";
 import { AppState } from "@/app/store/store";
 import Link from "next/link";
@@ -22,12 +22,10 @@ export default function Nav() {
   const dispatch = useDispatch();
 
   function logOut() {
-     removeFromCookie('token');
-     removeFromCookie('refreshToken');
-     removeFromCookie('email');
-     removeFromCookie('userType');
-     dispatch(setAuthInfo({isAuthinticated: false, userInfo: null}))
-     toast.success('Logged out successfully')
+    removeTokens();
+    removeUserInfo();
+    dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
+    toast.success("Logged out successfully");
   }
 
   return (
@@ -48,7 +46,28 @@ export default function Nav() {
           <i className="fa-brands fa-sistrix absolute right-2 top-3"></i>
         </div>
         <ul className="hidden lg:flex items-center gap-6 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
-          
+          <li
+            className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
+          >
+            <Link
+              href={"/cart"}
+              className="flex flex-col items-center justify-center gap-2"
+            >
+              <i className="fa-solid fa-cart-shopping text-xl"></i>
+              <span className="text-sm">Cart</span>
+            </Link>
+          </li>
+          <li
+            className={`${pathName === "/whishlist" ? "text-[#864227]" : "text-slate-700"}`}
+          >
+            <Link
+              href={"/whishlist"}
+              className="flex flex-col items-center justify-center gap-2"
+            >
+              <i className="fa-regular fa-heart text-xl"></i>
+              <span className="text-sm">Whishlist</span>
+            </Link>
+          </li>
           {isAuthinticated && (
             <li
               className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
@@ -292,6 +311,30 @@ export default function Nav() {
                 </li>
               </>
             )}
+            <li
+              className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
+            >
+              <Link
+                onClick={() => toggle()}
+                href={"/cart"}
+                className="hover:text-[#864227] transition-all duration-200 block"
+              >
+                <i className="fa-solid fa-cart-shopping mr-2"></i>
+                <span className="text-sm">Cart</span>
+              </Link>
+            </li>
+            <li
+              className={`${pathName === "/whishlist" ? "text-[#864227]" : "text-slate-700"}`}
+            >
+              <Link
+                onClick={() => toggle()}
+                href={"/whishlist"}
+                className="hover:text-[#864227] transition-all duration-200 block"
+              >
+                <i className="fa-regular fa-heart mr-2"></i>
+                <span className="text-sm">Whishlist</span>
+              </Link>
+            </li>
             {isAuthinticated && (
               <>
                 <li
