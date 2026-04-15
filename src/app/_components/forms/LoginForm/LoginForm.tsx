@@ -1,7 +1,7 @@
 "use client";
 import { signin } from "@/app/api/auth.api";
 import { loginForm, loginSchema } from "@/app/schema/login.schema";
-import { setEmail, setRefreshTokenInCookies, setTokenInCookies, setUserType } from "@/app/server/auth.actions";
+import { setTokens, setUserInfo } from "@/app/server/auth.actions";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -31,10 +31,8 @@ export default function LoginForm() {
   async function handleSignin(values: loginForm) {
     try {
       const data = await signin(values);
-       setTokenInCookies(data.token)
-       setRefreshTokenInCookies(data.refreshToken)
-       setEmail(data.email)
-       setUserType(data.userType)
+      setTokens(data.token,data.refreshToken)
+      setUserInfo(data.email,data.userType)
       toast.success(data.isSuccess && "Logged in successfully");
       setTimeout(() => {
         router.push("/");
