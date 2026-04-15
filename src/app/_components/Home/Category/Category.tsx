@@ -18,7 +18,7 @@ export default function ExploreCategories() {
             <h2 className="text-4xl  text-[#2D3A30]">
               Explore Our <span className=" text-[#864227]">Categories</span>
             </h2>
-            <div className="h-0.5 w-16 bg-[#BC5439]" />
+            <div className="h-0.5 w-16 bg-[#864227]" />
           </div>
 
           <button className="text-sm font-bold tracking-widest uppercase text-[#864227] hover:opacity-70 transition-opacity">
