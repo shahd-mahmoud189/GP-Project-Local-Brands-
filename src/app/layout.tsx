@@ -14,11 +14,7 @@ const exo = Exo({
 });
 
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
 
 const authData = await getAuthData();
 

@@ -9,9 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function Nav() {
-  const { isAuthinticated } = useSelector(
+  const { isAuthinticated, userInfo } = useSelector(
     (appState: AppState) => appState.auth,
   );
+
+  const getAccountLink = (role: string) => {
+    if (role === "admin") return "/adminAccount";
+    if (role === "owner") return "/ownerAccount";
+    return "/customerAccount";
+  };
+  
   const pathName = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -73,7 +80,7 @@ export default function Nav() {
               className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
             >
               <Link
-                href={"/account"}
+                href={userInfo ? getAccountLink(userInfo.userType) : "/login"}
                 className="flex flex-col items-center justify-center gap-2"
               >
                 <i className="fa-regular fa-circle-user text-xl"></i>
@@ -274,7 +281,7 @@ export default function Nav() {
               >
                 <Link
                   onClick={() => toggle()}
-                  href={"/account"}
+                  href={userInfo ? getAccountLink(userInfo.userType) : "/login"}
                   className="hover:text-[#864227] transition-all duration-200 block "
                 >
                   <i className="fa-regular fa-circle-user mr-2"></i>
