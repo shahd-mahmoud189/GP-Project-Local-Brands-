@@ -2,16 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function ProductCard() {
+export default function ProductCard({saved, showWishlist}:{saved:boolean, showWishlist:boolean}) {
   return (
     <div className="relative overflow-hidden group transition-all duration-800">
       <div className="absolute top-3 z-50 left-3 right-3">
         <div className="flex justify-between">
-          <div className=" w-9 h-9 rounded-full bg-white/60 flex items-center justify-center text-[#864227] border border-[#864227]/30 hover:bg-white transition-colors">
+          {showWishlist&&<><div className=" w-9 h-9 rounded-full bg-white/60 flex items-center justify-center text-[#864227] border border-[#864227]/30 hover:bg-white transition-colors">
             <i className="fa-regular fa-heart"></i>
-          </div>
+          </div></>}
           <div className=" w-9 h-9 rounded-full bg-white/60 flex items-center justify-center text-[#864227] border border-[#864227]/30 hover:bg-white transition-colors">
-            <i className="fa-solid fa-arrow-right-arrow-left"></i>{" "}
+            <i className={`fa-solid ${saved?'fa-bookmark':'fa-arrow-right-arrow-left'}`}></i>{" "}
           </div>
         </div>
       </div>

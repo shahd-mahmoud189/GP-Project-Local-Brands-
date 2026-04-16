@@ -46,10 +46,10 @@ export default function page() {
         </div>
 
         <div className="md:col-span-2 lg:col-span-3 grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
+            <ProductCard saved={false} showWishlist={true}/>
+            <ProductCard saved={false} showWishlist={true}/>
+            <ProductCard saved={false} showWishlist={true}/>
+            <ProductCard saved={false} showWishlist={true}/>
         </div>
 
       </div>
