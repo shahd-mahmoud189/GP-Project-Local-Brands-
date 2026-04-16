@@ -2,10 +2,10 @@
 
 import { LayoutDashboard, Package, PlusSquare, ShoppingBag, LogOut, Store } from "lucide-react"
 
-export type Tab = "overview" | "inventory" | "add-product" | "orders"
+export type Tab = "dashboard" | "inventory" | "add-product" | "orders"
 
 const NAV_ITEMS: { id: Tab; label: string; icon: React.ElementType }[] = [
-  { id: "overview", label: "Dashboard", icon: LayoutDashboard },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "inventory", label: "My Products", icon: Package },
   { id: "add-product", label: "Add Product", icon: PlusSquare },
   { id: "orders", label: "Orders", icon: ShoppingBag },

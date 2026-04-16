@@ -4,7 +4,7 @@ import { Bell, ChevronDown, Search } from "lucide-react"
 import { Tab } from "./sidebar"
 
 const TAB_TITLES: Record<Tab, string> = {
-  overview: "Dashboard Overview",
+  dashboard: "Dashboard ",
   inventory: "My Products",
   "add-product": "Add New Product",
   orders: "Orders Management",
