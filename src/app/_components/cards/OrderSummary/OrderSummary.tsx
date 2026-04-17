@@ -4,38 +4,58 @@ import OrderItem from "../OrderItem/OrderItem";
 
 export default function OrderSummary() {
   return (
-    <div>
-      <h3 className="text-2xl font-semibold pb-3 border-b border-b-slate-200 mb-5">
+    <div className="sticky top-10">
+      <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center justify-between">
         Order Summary
+        <span className="text-xs font-normal bg-[#864227]/10 text-[#864227] px-2 py-1 rounded-full">
+          3 Items
+        </span>
       </h3>
 
-      <div className="mb-10">
-        <OrderItem/>
-        <OrderItem/>
-        <OrderItem/>
+     
+      <div className="space-y-4 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
       </div>
 
-      <div className="border-b pb-3 border-b-slate-200 mb-5">
-        <div className="flex justify-between items-center">
-          <p className="text-[#54433D]">Subtotal :</p>
-          <span className="text-lg font-semibold">100 EGP</span>
+      <div className="space-y-3 border-t border-dashed border-slate-300 pt-6 mb-6">
+        <div className="flex justify-between items-center text-sm">
+          <p className="text-[#54433D] font-medium">Subtotal</p>
+          <span className="font-bold text-slate-800">100.00 EGP</span>
         </div>
-        <div className="flex justify-between items-center">
-          <p className="text-[#54433D]">Shipping :</p>
-          <span className="text-lg font-semibold">Free</span>
+        <div className="flex justify-between items-center text-sm">
+          <p className="text-[#54433D] font-medium">Shipping cost</p>
+          <span className="font-bold text-green-600">Free</span>
         </div>
       </div>
-      <div className="flex justify-between items-center">
-        <p className="text-lg">Total Price :</p>
-        <span className="text-xl font-semibold text-[#864227]">100 EGP</span>
+
+      <div className="bg-white/50 p-4 rounded-2xl border border-[#864227]/10 mb-8">
+        <div className="flex justify-between items-center">
+          <p className="text-sm font-bold text-slate-700">Total Amount</p>
+          <div className="text-right">
+            <span className="block text-2xl font-black text-[#864227]">100.00 EGP</span>
+            <span className="text-[10px] text-gray-400 font-light italic">VAT included</span>
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col gap-3 my-5">
-        <Button className="w-full py-6 px-4 rounded-3xl bg-[#864227] hover:bg-[#9F5538] transition-all duration-200 text-white font-semibold shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-          <i className="fa-solid fa-credit-card text-sm"></i>
-          Proceed to payment
+
+      <div className="space-y-4">
+        <Button className="w-full py-7 rounded-2xl bg-[#864227] hover:bg-[#6d351f] text-white text-md font-bold shadow-lg shadow-[#864227]/20 transition-all active:scale-[0.98]">
+          Complete Purchase
         </Button>
+        
+        <div className="flex items-center justify-center gap-2 text-[#54433D99] text-[10px] uppercase tracking-widest font-semibold">
+           <i className="fa-solid fa-lock text-[8px]"></i>
+           Secure SSL Checkout
+        </div>
       </div>
-      <p className="text-[#54433D99] text-xs leading-relaxed mt-6 px-4 text-center">By completing your purchase, you agree to our Terms of Service and Privacy Policy regarding artisanal small-batch commerce.</p>
+
+      <p className="text-[#54433D77] text-[11px] leading-relaxed mt-8 text-center px-2">
+        By completing your purchase, you agree to our 
+        <a href="#" className="underline ml-1">Terms</a> and 
+        <a href="#" className="underline ml-1">Privacy Policy</a>.
+      </p>
     </div>
   );
 }

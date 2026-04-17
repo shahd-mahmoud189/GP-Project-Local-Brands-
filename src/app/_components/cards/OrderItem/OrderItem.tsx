@@ -13,7 +13,7 @@ export default function OrderItem() {
       />
       <div>
         <h3 className="font-bold">Artisan Fired Vase</h3>
-        <p className="text-[#54433D] text-sm font-light">Ochre Glaze / Large</p>
+        <p className="text-[#54433D] text-sm font-light">brand name</p>
         <p className="text-[#864227] font-light text-lg mt-2">100 EGP</p>
       </div>
     </div>
