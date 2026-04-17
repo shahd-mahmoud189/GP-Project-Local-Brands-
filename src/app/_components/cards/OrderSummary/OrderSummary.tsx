@@ -7,16 +7,14 @@ export default function OrderSummary() {
     <div className="sticky top-10">
       <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center justify-between">
         Order Summary
-        <span className="text-xs font-normal bg-[#864227]/10 text-[#864227] px-2 py-1 rounded-full">
-          3 Items
-        </span>
+        
       </h3>
 
      
       <div className="space-y-4 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-        <OrderItem />
-        <OrderItem />
-        <OrderItem />
+        <OrderItem status={false } />
+        <OrderItem status={false} />
+        <OrderItem status={false} />
       </div>
 
       <div className="space-y-3 border-t border-dashed border-slate-300 pt-6 mb-6">
