@@ -78,17 +78,17 @@ export default function page() {
         </div>
       </div>
 
-        <div className="flex justify-between mb-10 px-10">
+        <div className="flex justify-between items-center mb-10 px-10">
           <h4 className="text-3xl italic">You Might Also Like</h4>
           <Link href={"/products"} className="tracking-widest text-xs">
             Explore All <i className="fa-solid fa-arrow-right"></i>
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          <ProductCard saved={false} showWishlist={true}/>
+                      <ProductCard saved={false} showWishlist={true}/>
+                      <ProductCard saved={false} showWishlist={true}/>
+                      <ProductCard saved={false} showWishlist={true}/>
         </div>
     </div>
   );
