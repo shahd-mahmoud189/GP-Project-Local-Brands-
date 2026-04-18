@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function page() {
+export default async function page({params}:any) {
+  const {id} = await params;
   return (
     <div className="container mx-auto px-12 py-10">
       <div className="lg:flex lg:justify-center lg:gap-10 space-y-4 mb-12">
@@ -78,18 +79,18 @@ export default function page() {
         </div>
       </div>
 
-        <div className="flex justify-between items-center mb-10 px-10">
-          <h4 className="text-3xl italic">You Might Also Like</h4>
-          <Link href={"/products"} className="tracking-widest text-xs">
-            Explore All <i className="fa-solid fa-arrow-right"></i>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10">
-          <ProductCard saved={false} showWishlist={true}/>
-                      <ProductCard saved={false} showWishlist={true}/>
-                      <ProductCard saved={false} showWishlist={true}/>
-                      <ProductCard saved={false} showWishlist={true}/>
-        </div>
+      <div className="flex justify-between items-center mb-10 px-10">
+        <h4 className="text-3xl italic">You Might Also Like</h4>
+        <Link href={"/products"} className="tracking-widest text-xs">
+          Explore All <i className="fa-solid fa-arrow-right"></i>
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10">
+        <ProductCard saved={false} showWishlist={true} />
+        <ProductCard saved={false} showWishlist={true} />
+        <ProductCard saved={false} showWishlist={true} />
+        <ProductCard saved={false} showWishlist={true} />
+      </div>
     </div>
   );
 }

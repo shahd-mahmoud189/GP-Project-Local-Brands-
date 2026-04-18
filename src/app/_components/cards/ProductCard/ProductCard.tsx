@@ -16,7 +16,7 @@ export default function ProductCard({saved, showWishlist}:{saved:boolean, showWi
         </div>
       </div>
 
-      <Link href={`/productDetails`}>
+      <Link href={`/productDetails/:id`}>
         <div className="overflow-hidden rounded-2xl relative">
           <Image
             src="/unnamed (1).png"
@@ -30,13 +30,13 @@ export default function ProductCard({saved, showWishlist}:{saved:boolean, showWi
 
       <div className="py-5">
         <Link
-          href={"/brandDetails"}
+          href={"/brandDetails/:id"}
           className="text-sm font-semibold text-[#864227] block mb-2"
         >
           Terra & Co
         </Link>
 
-        <Link href={`/productDetails`}>
+        <Link href={`/productDetails/:id`}>
           <h3 className="text-xl text-slate-700 line-clamp-2 mb-2">
             Oatmeal Ribbed Ceramic Vase
           </h3>

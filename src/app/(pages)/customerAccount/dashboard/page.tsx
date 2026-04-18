@@ -39,9 +39,9 @@ export default function page() {
             <br />
             Cairo, Egypt 11728
           </h5>
-          <h5 className="text-[#BC5439] text-xs uppercase font-bold mt-2 tracking-widest">
+          <Link href={'/customerAccount/shippingAddress'} className="text-[#BC5439] text-xs uppercase font-bold mt-2 tracking-widest">
             View All
-          </h5>
+          </Link>
         </div>
       </div>
       <div>
