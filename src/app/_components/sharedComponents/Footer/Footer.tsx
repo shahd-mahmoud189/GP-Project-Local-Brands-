@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#F7F2EA]">
       <div className="">
-        <div className="container  px-12 py-8 lg:flex lg:items-start lg:justify-between lg:gap-16 space-y-5">
+        <div className="container  px-12 pt-8  lg:flex lg:items-start lg:justify-between lg:gap-16 space-y-5">
           <div className="lg:w-1/3">
             <h1 className="font-bold text-3xl text-[#864227] mb-3">
               Brandy
