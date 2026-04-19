@@ -1,53 +1,66 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-export default function ProductCard({saved, showWishlist}:{saved:boolean, showWishlist:boolean}) {
+
+export default function ProductCard({ saved, showWishlist }: { saved: boolean, showWishlist: boolean }) {
   return (
-    <div className="relative overflow-hidden group transition-all duration-800">
-      <div className="absolute top-3 z-50 left-3 right-3">
-        <div className="flex justify-between">
-          {showWishlist&&<><div className=" w-9 h-9 rounded-full bg-white/60 flex items-center justify-center text-[#864227] border border-[#864227]/30 hover:bg-white transition-colors">
-            <i className="fa-regular fa-heart"></i>
-          </div></>}
-          <div className=" w-9 h-9 rounded-full bg-white/60 flex items-center justify-center text-[#864227] border border-[#864227]/30 hover:bg-white transition-colors">
-            <i className={`fa-solid ${saved?'fa-bookmark':'fa-arrow-right-arrow-left'}`}></i>{" "}
-          </div>
+    <div className="group relative bg-white rounded-3xl p-3 border-2 border-gray-200 transition-all duration-500 hover:shadow-md hover:-translate-y-1">
+      
+  
+      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#F9F8F7]">
+     
+        <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+          {showWishlist && (
+            <button className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#864227] hover:bg-[#864227] hover:text-white transition-all">
+       
+              <i className={`${saved ? 'fa-solid' : 'fa-regular'} fa-heart text-sm`}></i>
+            </button>
+          )}
+          
+        
+          <button className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#864227] hover:bg-[#864227] hover:text-white transition-all">
+            <i className="fa-solid fa-arrow-right-arrow-left text-sm"></i>
+          </button>
         </div>
-      </div>
 
-      <Link href={`/productDetails/:id`}>
-        <div className="overflow-hidden rounded-2xl relative">
+        <Link href="/productDetails/:id" className="block w-full h-full">
           <Image
             src="/unnamed (1).png"
-            alt=""
-            width={5000}
-            height={5000}
-            className="w-full h-full object-cover rounded-2xl group-hover:scale-110 transition-all duration-800"
+            alt="Product Image"
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
-        </div>
-      </Link>
+        </Link>
+      </div>
 
-      <div className="py-5">
+     
+      <div className="pt-4 pb-1 px-1 flex flex-col">
         <Link
-          href={"/brandDetails/:id"}
+          href={"/brandDetails"}
           className="text-sm font-semibold text-[#864227] block mb-2"
         >
-          Terra & Co
+          Brand Name
         </Link>
 
-        <Link href={`/productDetails/:id`}>
+        <Link href={`/productDetails`}>
           <h3 className="text-xl text-slate-700 line-clamp-2 mb-2">
             Oatmeal Ribbed Ceramic Vase
           </h3>
         </Link>
 
-        <span className="text-xl font-light text-[#54433D] mb-5 block">100 EGP</span>
-
-        <button className="w-full bg-[#864227] hover:bg-[#9F5538] text-white py-2.5 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2">
-          <i className="fa-solid fa-shopping-bag text-sm"></i>
-          Add to cart
-        </button>
+        <div className="flex items-end justify-between mt-3">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-400 uppercase font-medium">Price</span>
+            <span className="text-xl font-bold text-slate-900 leading-none">
+              100 <small className="text-[10px] font-normal">EGP</small>
+            </span>
+          </div>
+          
+          <button className="h-10 w-10 rounded-full bg-[#864227] text-white flex items-center justify-center hover:bg-[#6d351f] transition-all shadow-lg active:scale-90">
+            <i className="fa-solid fa-plus"></i>
+          </button>
+        </div>
       </div>
     </div>
   );

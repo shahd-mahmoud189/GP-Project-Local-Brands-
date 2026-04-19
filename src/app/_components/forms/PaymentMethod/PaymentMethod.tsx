@@ -1,88 +1,65 @@
-import React from "react";
+'use client';
+import React, { useState } from "react";
 
 export default function PaymentMethod() {
+  const [selected, setSelected] = useState("online");
+
   return (
     <div className="space-y-4">
+      {/* Online Payment Option */}
       <label
-        className={`block border rounded-3xl p-8 cursor-pointer hover:bg-[#F0EDE8] transition-all duration-200 bg-[#F6F3EE]`}
+        onClick={() => setSelected("online")}
+        className={`block border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 ${
+          selected === "online" ? "border-[#864227] bg-white shadow-md" : "border-transparent bg-[#F6F3EE]"
+        }`}
       >
         <div className="flex items-start gap-4">
-          <input
-            type="radio"
-            name="payment"
-            className="mt-1 size-5 accent-[#864227]"
-          />
+          <div className={`size-5 mt-1 rounded-full border-2 flex items-center justify-center ${selected === "online" ? "border-[#864227]" : "border-gray-400"}`}>
+             {selected === "online" && <div className="size-2.5 rounded-full bg-[#864227]" />}
+          </div>
 
           <div className="flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div>
-                  <div className=" font-semibold text-slate-900">
-                    Online Payment
-                  </div>
-                  <div className="text-xs text-[#54433D]">
-                    Credit Card, Apple Pay, or PayPal. Securely processed.
-                  </div>
-                </div>
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <p className="font-bold text-slate-900">Online Payment</p>
+                <p className="text-xs text-gray-500">Credit Card, Apple Pay, or PayPal</p>
               </div>
-
-              <i className="fa-solid fa-credit-card text-lg text-[#B6ADA7]"></i>
+              <i className="fa-solid fa-credit-card text-xl text-[#864227]"></i>
             </div>
 
-            <div className="w-1/2">
-              <div className="mt-8 mb-4">
-                <input
-                  type="text"
-                  placeholder="Card Number"
-                  className="w-full rounded-4xl bg-white border py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#A86A52]"
-                />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    className="w-full rounded-4xl bg-white border py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#A86A52]"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="CVC"
-                    className="w-full rounded-4xl bg-white border py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#A86A52]"
-                  />
-                </div>
+            {/* Credit Card Details - Only show or highlight when active */}
+            <div className={`space-y-3 transition-opacity ${selected === "online" ? "opacity-100" : "opacity-50"}`}>
+              <input
+                type="text"
+                placeholder="Card Number"
+                className="w-full rounded-xl bg-white border border-gray-200 p-3 focus:ring-2 focus:ring-[#864227] outline-none"
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input type="text" placeholder="MM/YY" className="rounded-xl border border-gray-200 p-3 outline-none" />
+                <input type="text" placeholder="CVC" className="rounded-xl border border-gray-200 p-3 outline-none" />
               </div>
             </div>
           </div>
         </div>
       </label>
 
+      {/* Cash on Delivery Option */}
       <label
-        className={`block border rounded-3xl p-8 cursor-pointer hover:bg-[#F0EDE8] transition bg-[#F6F3EE]`}
+        onClick={() => setSelected("cash")}
+        className={`block border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 ${
+          selected === "cash" ? "border-[#864227] bg-white shadow-md" : "border-transparent bg-[#F6F3EE]"
+        }`}
       >
         <div className="flex items-start gap-4">
-          <input
-            type="radio"
-            name="payment"
-            className="mt-1 size-5 accent-[#864227]"
-          />
-
-          <div className="flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div>
-                  <div className="font-semibold text-slate-900">
-                    Cash on Delivery
-                  </div>
-                  <div className="text-xs text-[#54433D]">
-                    Pay our courier when your artisanal goods arrive.
-                  </div>
-                </div>
-              </div>
-
-              <i className="fa-solid fa-money-bill text-lg text-[#B6ADA7]"></i>
+           <div className={`size-5 mt-1 rounded-full border-2 flex items-center justify-center ${selected === "cash" ? "border-[#864227]" : "border-gray-400"}`}>
+             {selected === "cash" && <div className="size-2.5 rounded-full bg-[#864227]" />}
+          </div>
+          <div className="flex-1 flex justify-between items-center">
+            <div>
+              <p className="font-bold text-slate-900">Cash on Delivery</p>
+              <p className="text-xs text-gray-500">Pay when your goods arrive.</p>
             </div>
+            <i className="fa-solid fa-money-bill text-xl text-[#864227]"></i>
           </div>
         </div>
       </label>
