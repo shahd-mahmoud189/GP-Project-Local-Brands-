@@ -67,12 +67,12 @@ export default async function BrandsDetails({ params }: { params: { brandsid: st
 
                 {/* Products Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    <ProductCard saved={false} showWishlist={true} />
-                    <ProductCard saved={true} showWishlist={true} />
-                    <ProductCard saved={false} showWishlist={true} />
-                    <ProductCard saved={false} showWishlist={true} />
-                    <ProductCard saved={false} showWishlist={true} />
-                    <ProductCard saved={false} showWishlist={true} />
+                    <ProductCard saved={false} />
+                    <ProductCard saved={true} />
+                    <ProductCard saved={false} />
+                    <ProductCard saved={false} />
+                    <ProductCard saved={false} />
+                    <ProductCard saved={false} />
                 </div>
             </div>
         </div>

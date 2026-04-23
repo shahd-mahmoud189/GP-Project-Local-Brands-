@@ -29,8 +29,8 @@ export default function page() {
 
         </div>
 
-        <div className="lg:col-span-2 p-10 rounded-3xl shadow-sm bg-[#ffffff]">
-          <OrderSummary/>
+        <div className="lg:col-span-2">
+          <OrderSummary showItems={true}/>
         </div>
 
       </div>

@@ -86,10 +86,10 @@ export default async function page({params}:any) {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10">
-        <ProductCard saved={false} showWishlist={true} />
-        <ProductCard saved={false} showWishlist={true} />
-        <ProductCard saved={false} showWishlist={true} />
-        <ProductCard saved={false} showWishlist={true} />
+        <ProductCard saved={false} />
+        <ProductCard saved={false} />
+        <ProductCard saved={false} />
+        <ProductCard saved={false} />
       </div>
     </div>
   );

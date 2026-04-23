@@ -1,21 +1,21 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import OrderItem from "../OrderItem/OrderItem";
+import Link from "next/link";
 
-export default function OrderSummary() {
+export default function OrderSummary({ showItems }: { showItems?: boolean }) {
   return (
-    <div className="sticky top-10">
+    <div className="p-10 rounded-3xl shadow-sm">
       <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center justify-between">
         Order Summary
-        
       </h3>
 
      
-      <div className="space-y-4 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-        <OrderItem status={false } />
+      {showItems&&<><div className="space-y-4 mb-8 max-h-100 overflow-y-auto pr-2 custom-scrollbar">
         <OrderItem status={false} />
         <OrderItem status={false} />
-      </div>
+        <OrderItem status={false} />
+      </div></>}
 
       <div className="space-y-3 border-t border-dashed border-slate-300 pt-6 mb-6">
         <div className="flex justify-between items-center text-sm">
@@ -30,18 +30,21 @@ export default function OrderSummary() {
 
       <div className="bg-white/50 p-4 rounded-2xl border border-[#864227]/10 mb-8">
         <div className="flex justify-between items-center">
-          <p className="text-sm font-bold text-slate-700">Total Amount</p>
+          <p className="text-lg font-bold">Total</p>
           <div className="text-right">
             <span className="block text-2xl font-black text-[#864227]">100.00 EGP</span>
-            <span className="text-[10px] text-gray-400 font-light italic">VAT included</span>
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        <Button className="w-full py-7 rounded-2xl bg-[#864227] hover:bg-[#6d351f] text-white text-md font-bold shadow-lg shadow-[#864227]/20 transition-all active:scale-[0.98]">
+        <Link href={'/checkout'} className="w-full bg-[#864227] hover:bg-[#6d351f] text-white rounded-2xl border-2 border-[#864227] font-semibold py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-center">
           Complete Purchase
-        </Button>
+        </Link>
+
+        <Link href={'/products'} className="w-full bg-white hover:bg-[#FAF8F5] rounded-2xl text-[#864227] border-2 border-[#864227] font-semibold py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-center">
+          Continue Shopping
+        </Link> 
         
         <div className="flex items-center justify-center gap-2 text-[#54433D99] text-[10px] uppercase tracking-widest font-semibold">
            <i className="fa-solid fa-lock text-[8px]"></i>
