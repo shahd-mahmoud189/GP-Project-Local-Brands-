@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default async function page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function page({ params }: { params: Promise<{ productsid: string }> }) {
+  const { productsid } = await params;
 
   // Mock data fetching for now
   const product = {
-    id: id,
+    id: productsid,
     name: "Oatmeal Ribbed Ceramic Vase",
     brand: "Terra & Co",
     brandId: "terra-and-co",

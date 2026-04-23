@@ -30,7 +30,7 @@ export default function ProductCard({ id, name, price, imageUrl, saved, showWish
           </button>
         </div>
 
-        <Link href={`/productDetails/${id || ""}`} className="block w-full h-full">
+        <Link href={`/products/${id || ""}`} className="block w-full h-full">
           <Image
             src={imageUrl || "/unnamed (1).png"}
             alt={name || "Product Image"}
@@ -50,7 +50,7 @@ export default function ProductCard({ id, name, price, imageUrl, saved, showWish
           Brand Name
         </Link>
 
-        <Link href={`/productDetails/${id || ""}`}>
+        <Link href={`/products/${id || ""}`}>
 
           <h3 className="text-lg text-slate-800 font-medium line-clamp-1 group-hover:text-[#864227] transition-colors leading-tight">
             {name || "Oatmeal Ribbed Ceramic Vase"}
