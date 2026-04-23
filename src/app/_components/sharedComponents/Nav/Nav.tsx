@@ -15,7 +15,7 @@ export default function Nav() {
 
   const getAccountLink = (role: string) => {
     if (role === "admin") return "/adminAccount";
-    if (role === "owner") return "/OwnerDashboard";
+    if (role === "owner") return "/ownerAccount";
     return "/customerAccount";
   };
   
