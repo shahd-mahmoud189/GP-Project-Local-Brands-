@@ -13,14 +13,14 @@ export default function page() {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10 space-y-4">
-        <ProductCard id="1" saved={false} showWishlist={true} />
-        <ProductCard id="2" saved={false} showWishlist={true} />
-        <ProductCard id="3" saved={false} showWishlist={true} />
-        <ProductCard id="4" saved={false} showWishlist={true} />
-        <ProductCard id="5" saved={false} showWishlist={true} />
-        <ProductCard id="6" saved={false} showWishlist={true} />
-        <ProductCard id="7" saved={false} showWishlist={true} />
-        <ProductCard id="8" saved={false} showWishlist={true} />
+        <ProductCard id="1" saved={false} />
+        <ProductCard id="2" saved={false} />
+        <ProductCard id="3" saved={false} />
+        <ProductCard id="4" saved={false} />
+        <ProductCard id="5" saved={false} />
+        <ProductCard id="6" saved={false} />
+        <ProductCard id="7" saved={false} />
+        <ProductCard id="8" saved={false} />
       </div>
     </div>
   );
