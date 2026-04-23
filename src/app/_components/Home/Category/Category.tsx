@@ -3,9 +3,9 @@ export default function ExploreCategories() {
  
   const categories = [
     { title: "Handmade", count: "120", image: "/unnamed.png" },
-    { title: "Fashion", count: "85", image: "/fashion-img.png" },
-    { title: "Accessories", count: "210", image: "/acc-img.png" },
-    { title: "Home Decor", count: "45", image: "/home-img.png" },
+    { title: "Fashion", count: "85", image: "/unnamed.png" },
+    { title: "Accessories", count: "210", image: "/unnamed.png" },
+    { title: "Home Decor", count: "45", image: "/unnamed.png" },
   ];
 
   return (

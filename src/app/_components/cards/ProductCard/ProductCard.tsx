@@ -2,13 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 
-export default function ProductCard({ id, name, price, imageUrl, saved, showWishlist }: {
+export default function ProductCard({ id, name, price, imageUrl, saved }: {
   id?: string,
   name?: string,
   price?: number,
   imageUrl?: string,
   saved: boolean,
-  showWishlist: boolean
 }) {
   return (
     <div className="group relative bg-white rounded-3xl p-3 border-2 border-gray-200 transition-all duration-500 hover:shadow-md hover:-translate-y-1">

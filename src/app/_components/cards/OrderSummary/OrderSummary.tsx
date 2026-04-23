@@ -39,7 +39,7 @@ export default function OrderSummary({ showItems }: { showItems?: boolean }) {
 
       <div className="space-y-4">
         <Link href={'/checkout'} className="w-full bg-[#864227] hover:bg-[#6d351f] text-white rounded-2xl border-2 border-[#864227] font-semibold py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-center">
-          Complete Purchase
+          {showItems?'Complete Purchase':'Proceed to Checkout'}
         </Link>
 
         <Link href={'/products'} className="w-full bg-white hover:bg-[#FAF8F5] rounded-2xl text-[#864227] border-2 border-[#864227] font-semibold py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 text-center">
