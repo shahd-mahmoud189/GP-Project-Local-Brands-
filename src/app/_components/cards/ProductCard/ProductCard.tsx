@@ -30,7 +30,7 @@ export default function ProductCard({ id, name, price, imageUrl, saved, showWish
           </button>
         </div>
 
-        <Link href={`/products/${id || ""}`} className="block w-full h-full">
+        <Link href={`/productDetails/${id || ""}`} className="block w-full h-full">
           <Image
             src={imageUrl || "/unnamed (1).png"}
             alt={name || "Product Image"}
@@ -44,13 +44,13 @@ export default function ProductCard({ id, name, price, imageUrl, saved, showWish
 
       <div className="pt-4 pb-1 px-1 flex flex-col">
         <Link
-          href="/brandDetails"
-          className="text-[10px] uppercase tracking-[2px] font-bold text-[#864227]/50 hover:text-[#864227] transition-colors mb-1"
+          href={"/brandDetails"}
+          className="text-sm font-semibold text-[#864227] block mb-2"
         >
           Brand Name
         </Link>
 
-        <Link href={`/products/${id || ""}`}>
+        <Link href={`/productDetails/${id || ""}`}>
 
           <h3 className="text-lg text-slate-800 font-medium line-clamp-1 group-hover:text-[#864227] transition-colors leading-tight">
             {name || "Oatmeal Ribbed Ceramic Vase"}

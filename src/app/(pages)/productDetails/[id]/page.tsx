@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default async function page({ params }: { params: Promise<{ productsid: string }> }) {
-  const { productsid } = await params;
+export default async function page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
   // Mock data fetching for now
   const product = {
-    id: productsid,
+    id: id,
     name: "Oatmeal Ribbed Ceramic Vase",
     brand: "Terra & Co",
     brandId: "terra-and-co",
@@ -19,7 +19,6 @@ export default async function page({ params }: { params: Promise<{ productsid: s
     stock: 3,
     imageUrl: "/unnamed (1).png"
   };
-
   return (
     <div className="container mx-auto px-12 py-10">
       <div className="lg:flex lg:justify-center lg:gap-10 space-y-4 mb-12">
