@@ -1,6 +1,6 @@
 "use client";
-
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const heroSlides = [
@@ -8,24 +8,42 @@ const heroSlides = [
     badge: "Local Brands",
     headline: "Discover Egyptian\nLocal Brands",
     subheading: "Shop unique, authentic products made by talented Egyptian artisans — delivered straight to your door.",
-    primaryCta: "Shop Now",
-    secondaryCta: "Start Your Brand",
+     primaryCta: {
+      label: "Shop Now",
+      href: "/products",
+    },
+      secondaryCta: {
+      label: "Start Your Brand",
+      href: "/request-brand",
+    },
     accent: "#864227",
   },
   {
     badge: "For Sellers",
     headline: "Start Your Own\nBrand in Minutes",
     subheading: "Join hundreds of Egyptian makers already selling on Brandy. Set up your storefront today — no experience needed.",
-    primaryCta: "Start Selling",
-    secondaryCta: "Learn More",
+        primaryCta: {
+      label: "start selling",
+      href: "/request-brand",
+    },
+    secondaryCta: {
+      label: "Learn More",
+      href: "/learn-more",
+    },
     accent: "#4A7C59",
   },
   {
     badge: "Explore",
     headline: "Handcrafted, Beauty,\nHome & More",
     subheading: "Explore thousands of unique products across every category — from fashion and skincare to home decor and accessories.",
-    primaryCta: "Browse Products",
-    secondaryCta: "View Categories",
+    primaryCta: {
+      label: "Browse Products",
+      href: "/products",
+    },
+    secondaryCta: {
+      label: "View Categories",
+      href: "/categories",
+    },
     accent: "#864227",
   },
 ];
@@ -136,12 +154,17 @@ export default function Hero() {
               {slide.subheading}
             </p>
             <div key={`ctas-${currentSlide}`} className="mt-10 flex flex-wrap gap-4 animate-slide-up-delay2">
-              <button className="px-8 py-4 rounded-full font-bold text-base md:text-lg text-white shadow-lg transition-all duration-200 hover:scale-105 active:scale-95" style={{ backgroundColor: slide.accent }}>
-                {slide.primaryCta}
-              </button>
-              <button className="px-8 py-4 rounded-full font-bold text-base md:text-lg text-white bg-white/15 backdrop-blur-sm border border-white/30 hover:bg-white/25 transition-all duration-200 hover:scale-105 active:scale-95">
-                {slide.secondaryCta}
-              </button>
+        <Link href={slide.primaryCta.href}>
+  <button className="px-8 py-4 rounded-full font-bold text-base md:text-lg text-white shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+    style={{ backgroundColor: slide.accent }}>
+    {slide.primaryCta.label}
+  </button>
+</Link>
+              <Link href={slide.secondaryCta.href}>
+                <button className="px-8 py-4 rounded-full font-bold text-base md:text-lg text-white bg-white/15 backdrop-blur-sm border border-white/30 hover:bg-white/25 transition-all duration-200 hover:scale-105 active:scale-95">
+                  {slide.secondaryCta.label}
+                </button>
+              </Link>
             </div>
           </div>
         </div>
