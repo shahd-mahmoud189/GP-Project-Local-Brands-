@@ -14,9 +14,9 @@ const exo = Exo({
 });
 
 
-export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
+export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
 
-const authData = await getAuthData();
+  const authData = await getAuthData();
 
   const preloadedState = {
     auth: authData ? authData : { isAuthinticated: false, userInfo: null }
@@ -25,14 +25,14 @@ const authData = await getAuthData();
   return (
     <html lang="en">
       <Providers preloadedState={preloadedState}>
-      <body
-        className={`${exo.className} font-medium`}
-      >
-              
+        <body
+          className={`${exo.className} font-medium`}
+        >
 
-        <Nav/>
-        {children}
-        <ToastContainer
+
+          <Nav />
+          {children}
+          <ToastContainer
             position="top-right"
             autoClose={5000}
             hideProgressBar={false}
@@ -45,8 +45,8 @@ const authData = await getAuthData();
             theme="light"
             transition={Bounce}
           />
-        <Footer/>
-      </body>
+          <Footer />
+        </body>
       </Providers>
     </html>
   );

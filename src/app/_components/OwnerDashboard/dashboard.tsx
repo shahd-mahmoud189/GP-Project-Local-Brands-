@@ -70,7 +70,7 @@ function MetricCard({
 
 export function Dashboard() {
   return (
-    <div className="space-y-6">
+    <div className=" container mx-auto px-12 sm:px-12 py-10 space-y-6 ">
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard

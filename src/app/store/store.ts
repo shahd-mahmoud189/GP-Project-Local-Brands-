@@ -6,12 +6,14 @@ import { AuthState } from "./slices/auth.slice";
 
 export type PreloadedState = {
   auth: AuthState;
+ 
 };
 
 export function createStore(preloadedState: PreloadedState) {
   const store = configureStore({
     reducer: {
-      auth: authReducer
+      auth: authReducer,
+    
     },
     preloadedState,
   });
