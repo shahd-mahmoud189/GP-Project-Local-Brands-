@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 
-export default function CustomerAside() {
+export default function AdminAside() {
   const pathName = usePathname();
 
-  const { isAuthinticated, userInfo } = useSelector(
+    const { isAuthinticated, userInfo } = useSelector(
     (appState: AppState) => appState.auth,
   );
 
@@ -16,38 +16,38 @@ export default function CustomerAside() {
     <nav className="bg-[#FAF9F6] py-4 md:w-70 shrink-0">
       <div className="px-8 py-6 text-center md:text-start">
         <p className="text-[#A4593C] uppercase leading-loose font-semibold text-lg pb-0 ">
-          Brandy Member
+          Brandy Admin
         </p>
         <p className="text-sm font-light text-[#6B5B54]">{userInfo?.email}</p>
       </div>
       <ul className="py-8 *:cursor-pointer *:transition-all *:uppercase *:text-sm *:tracking-wider *:py-6 *:px-8 *:font-semibold">
         <Link
           href={"dashboard"}
-          className={`w-full ${pathName === "/customerAccount/dashboard" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+          className={`w-full ${pathName === "/adminAccount/dashboard" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >
           <i className="fa-solid fa-chart-line mr-3"></i>
           <span>Dashboard</span>
         </Link>
         <Link
-          href={"orders"}
-          className={`w-full ${pathName === "/customerAccount/orders" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+          href={"registerationRequest"}
+          className={`w-full ${pathName === "/adminAccount/registerationRequest" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >
-          <i className="fa-solid fa-bag-shopping mr-3"></i>
-          <span>My Orders</span>
+          <i className="fa-solid fa-user-check mr-3"></i>
+          <span>Registeration Request</span>
         </Link>
         <Link
-          href={"whishlist"}
-          className={`w-full ${pathName === "/customerAccount/whishlist" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+          href={"productReview"}
+          className={`w-full ${pathName === "/adminAccount/productReview" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >
-          <i className="fa-regular fa-heart mr-3"></i>
-          <span>Whishlist</span>
+          <i className="fa-solid fa-cubes mr-3"></i>
+          <span>Product Review</span>
         </Link>
         <Link
-          href={"shippingAddress"}
-          className={`w-full ${pathName === "/customerAccount/shippingAddress" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+          href={"reviewManagement"}
+          className={`w-full ${pathName === "/adminAccount/reviewManagement" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >
-          <i className="fa-solid fa-location-dot mr-3"></i>
-          <span>Shipping Addresses</span>
+          <i className="fa-solid fa-comments mr-3"></i>
+          <span>Review Management</span>
         </Link>
         <Link
           href={""}

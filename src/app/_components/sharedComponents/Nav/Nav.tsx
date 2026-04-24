@@ -14,11 +14,11 @@ export default function Nav() {
   );
 
   const getAccountLink = (role: string) => {
-    if (role === "admin") return "/adminAccount";
+    if (role === "Admin") return "/adminAccount";
     if (role === "BrandOwner") return "/ownerAccount";
     return "/customerAccount";
   };
-  
+
   const pathName = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -53,28 +53,32 @@ export default function Nav() {
           <i className="fa-brands fa-sistrix absolute right-2 top-3"></i>
         </div>
         <ul className="hidden lg:flex items-center gap-6 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
-          <li
-            className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
-          >
-            <Link
-              href={"/cart"}
-              className="flex flex-col items-center justify-center gap-2"
-            >
-              <i className="fa-solid fa-cart-shopping text-xl"></i>
-              <span className="text-sm">Cart</span>
-            </Link>
-          </li>
-          <li
-            className={`${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-700"}`}
-          >
-            <Link
-              href={"/wishlist"}
-              className="flex flex-col items-center justify-center gap-2"
-            >
-              <i className="fa-regular fa-heart text-xl"></i>
-              <span className="text-sm">Whishlist</span>
-            </Link>
-          </li>
+          {userInfo?.userType === "Customer" && (
+            <>
+              <li
+                className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
+              >
+                <Link
+                  href={"/cart"}
+                  className="flex flex-col items-center justify-center gap-2"
+                >
+                  <i className="fa-solid fa-cart-shopping text-xl"></i>
+                  <span className="text-sm">Cart</span>
+                </Link>
+              </li>
+              <li
+                className={`${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-700"}`}
+              >
+                <Link
+                  href={"/wishlist"}
+                  className="flex flex-col items-center justify-center gap-2"
+                >
+                  <i className="fa-regular fa-heart text-xl"></i>
+                  <span className="text-sm">Whishlist</span>
+                </Link>
+              </li>
+            </>
+          )}
           {isAuthinticated && (
             <li
               className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}

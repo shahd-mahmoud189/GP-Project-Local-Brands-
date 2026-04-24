@@ -28,8 +28,8 @@ export default function BrandsPage() {
     return (
         <main className="relative  min-h-screen bg-white overflow-hidden">
           
-            <div className="absolute -top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-blue-50/50 blur-3xl opacity-60" />
-            <div className="absolute top-[20%] -left-[10%] h-[400px] w-[400px] rounded-full bg-purple-50/50 blur-3xl opacity-60" />
+            <div className="absolute -top-[10%] -right-[10%] h-125 w-125 rounded-full bg-blue-50/50 blur-3xl opacity-60" />
+            <div className="absolute top-[20%] -left-[10%] h-100 w-100 rounded-full bg-purple-50/50 blur-3xl opacity-60" />
 
             <div className="relative container mx-auto px-6 py-10">
                 

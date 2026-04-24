@@ -154,7 +154,7 @@ export function Dashboard() {
         <div className="lg:col-span-2 flex flex-col gap-4">
           <div className="bg-white rounded-xl border border-[#E8E4E0] p-5 flex gap-4 items-center">
             <div className="w-16 h-16 rounded-lg bg-[#E8E4E0] flex items-center justify-center shrink-0 overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-[#BC5439]/20 to-[#2D2D2D]/10 flex items-center justify-center">
+              <div className="w-full h-full bg-linear-to-br from-[#BC5439]/20 to-[#2D2D2D]/10 flex items-center justify-center">
                 <Package className="w-7 h-7 text-[#BC5439] opacity-70" />
               </div>
             </div>

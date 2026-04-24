@@ -13,7 +13,7 @@ export default function ProductCard({ id, name, price, imageUrl, saved }: {
     <div className="group relative bg-white rounded-3xl p-3 border-2 border-gray-200 transition-all duration-500 hover:shadow-md hover:-translate-y-1">
 
 
-      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#F9F8F7]">
+      <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-[#F9F8F7]">
 
         <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
          

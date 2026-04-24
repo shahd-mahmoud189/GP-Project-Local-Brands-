@@ -23,7 +23,7 @@ export default async function BrandsDetails({ params }: { params: { brandsid: st
                 <div className="relative mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-gray-200 pb-12">
                     <div className="max-w-2xl">
                         <div className="flex items-center gap-3 mb-4">
-                            <span className="h-[2px] w-12 bg-[#864227]"></span>
+                            <span className="h-0.5 w-12 bg-[#864227]"></span>
                             <span className="text-sm font-bold tracking-[3px] text-[#864227] uppercase">Official Brand</span>
                         </div>
                         
@@ -57,7 +57,7 @@ export default async function BrandsDetails({ params }: { params: { brandsid: st
 
                 {/* Section Title */}
                 <div className="flex items-center justify-between mb-10">
-                    <h2 className="text-2xl font-medium text-slate-800 underline underline-offset-[12px] decoration-[#864227]/20">
+                    <h2 className="text-2xl font-medium text-slate-800 underline underline-offset-12 decoration-[#864227]/20">
                         Collection
                     </h2>
                     <span className="text-sm text-gray-400 font-light">
