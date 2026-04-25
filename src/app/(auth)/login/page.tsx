@@ -1,7 +1,4 @@
-import CustomerSignupForm from "@/app/_components/forms/CustomerSignupForm/CustomerSignupForm";
 import LoginForm from "@/app/_components/forms/LoginForm/LoginForm";
-import OwnerSignupForm from "@/app/_components/forms/OwnerSignupForm/OwnerSignupForm";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 
 export default function page() {

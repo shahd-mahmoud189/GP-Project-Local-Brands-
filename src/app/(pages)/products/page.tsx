@@ -1,7 +1,10 @@
 import ProductCard from "@/app/_components/cards/ProductCard/ProductCard";
+import { getAllProducts } from "@/app/api/product.api";
+import { Product } from "@/app/types/product.type";
 import React from "react";
 
-export default function page() {
+export default async function page() {
+  const response = await getAllProducts();
   return (
     <div className="container mx-auto px-12 py-10">
       <div className="mb-6 px-10">
@@ -13,14 +16,9 @@ export default function page() {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10 space-y-4">
-        <ProductCard id="1" saved={false} />
-        <ProductCard id="2" saved={false} />
-        <ProductCard id="3" saved={false} />
-        <ProductCard id="4" saved={false} />
-        <ProductCard id="5" saved={false} />
-        <ProductCard id="6" saved={false} />
-        <ProductCard id="7" saved={false} />
-        <ProductCard id="8" saved={false} />
+        {response.map((product :Product)=>(
+          <ProductCard key={product.productId} product={product} saved={false}/>
+        ))}
       </div>
     </div>
   );

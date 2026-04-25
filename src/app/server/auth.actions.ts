@@ -4,11 +4,11 @@ import { cookies } from "next/headers";
 export async function setTokens(token: string, refreshToken: string): Promise<void> {
   const cookie = await cookies();
   cookie.set("token", token, {
-    httpOnly: true,
+    httpOnly: false,
     maxAge: 1 * 24 * 60 * 60,
   });
   cookie.set("refreshToken", refreshToken, {
-    httpOnly: true,
+    httpOnly: false,
     maxAge: 7 * 24 * 60 * 60,
   });
 }
