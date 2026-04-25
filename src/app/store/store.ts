@@ -8,6 +8,7 @@ import { brandRequestReducer, brandRequestState } from './slices/brandRequest.sl
 export type PreloadedState = {
   auth: AuthState;
   // brandRequest: brandRequestState;
+ 
 };
 
 export function createStore(preloadedState: PreloadedState) {
@@ -15,6 +16,7 @@ export function createStore(preloadedState: PreloadedState) {
     reducer: {
       auth: authReducer,
       brandRequest: brandRequestReducer,
+    
     },
     preloadedState,
   });

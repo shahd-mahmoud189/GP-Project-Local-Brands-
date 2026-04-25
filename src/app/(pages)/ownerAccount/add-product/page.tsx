@@ -1,4 +1,4 @@
-import { AddProductTab } from "../../../_components/OwnerDashboard/add-product-tab"
+import { AddProductTab } from "../../../_components/OwnerDashboard/AddProduct"
 
 export default function AddProductPage() {
   return <AddProductTab />

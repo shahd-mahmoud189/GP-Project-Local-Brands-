@@ -29,7 +29,7 @@ export function Header({ activeTab }: HeaderProps) {
           </svg>
         </div> */}
         <div>
-          
+
           <h2 className=" font-bold text-[#2D2D2D] text-base leading-tight">Aurelius Studio</h2>
         </div>
       </div>
@@ -45,7 +45,7 @@ export function Header({ activeTab }: HeaderProps) {
           aria-label="Search"
           className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-[#E8E4E0] hover:text-[#2D2D2D] transition-colors"
         >
-          
+
         </button>
         <button
           aria-label="Notifications"
