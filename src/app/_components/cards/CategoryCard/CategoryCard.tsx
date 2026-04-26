@@ -8,7 +8,7 @@ interface CategoryCardProps {
 
 export default function CategoryCard({ category }: CategoryCardProps) {
   return (
-    <Link href={"/categoryDetails/:id"} className="group">
+    <Link href={`/categoryDetails/${category.categoryId}`} className="group">
       <div className="bg-white rounded-lg overflow-hidden border border-stone-200 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
         <div
           className={`bg-linear-to-br from-amber-700 to-amber-800 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between min-h-40 sm:min-h-48`}

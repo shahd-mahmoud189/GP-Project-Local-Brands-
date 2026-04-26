@@ -4,11 +4,9 @@ import { authReducer } from "./slices/auth.slice";
 import { AuthState } from "./slices/auth.slice";
 import { brandRequestReducer, brandRequestState } from './slices/brandRequest.slice';
 
-
 export type PreloadedState = {
   auth: AuthState;
-  // brandRequest: brandRequestState;
- 
+  brandRequest: brandRequestState;
 };
 
 export function createStore(preloadedState: PreloadedState) {
@@ -16,7 +14,6 @@ export function createStore(preloadedState: PreloadedState) {
     reducer: {
       auth: authReducer,
       brandRequest: brandRequestReducer,
-    
     },
     preloadedState,
   });

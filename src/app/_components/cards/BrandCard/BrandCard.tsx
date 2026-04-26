@@ -11,10 +11,10 @@ interface BrandCardProps {
 const BrandCard = ({ brand }: BrandCardProps) => {
   return (
     <div className="group  relative flex flex-col h-full items-center justify-between text-center overflow-hidden rounded-[2.5rem] bg-white p-8 shadow-sm border border-gray-100 transition-all duration-500 hover:shadow-md  hover:-translate-y-2">
-      <div className="flex flex-col items-center gap-4 w-full flex-grow">
+      <div className="flex flex-col items-center gap-4 w-full grow">
         <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition-transform duration-500 ">
           <Image
-            src={''}
+            src={'/Logo.png'}
             alt={`${brand.brandName} logo`}
             fill
             className="object-cover"
@@ -26,7 +26,7 @@ const BrandCard = ({ brand }: BrandCardProps) => {
             {brand.brandName}
           </h3>
 
-          <span className="inline-block text-[9px] font-black tracking-[0.2em] text-[#864227]/100 bg-[#864227]/15 px-3 py-1 rounded-full uppercase">
+          <span className="inline-block text-[9px] font-black tracking-[0.2em] text-[#864227] bg-[#864227]/15 px-3 py-1 rounded-full uppercase">
             {brand.ownerName}
           </span>
         </div>

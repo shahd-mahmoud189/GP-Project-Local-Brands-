@@ -19,6 +19,12 @@ export async function setUserInfo(email: string, userType: string): Promise<void
   cookie.set("userType", userType);
 }
 
+export async function setBrandRequest(requestStatusText: string, requestDate: string): Promise<void> {
+  const cookie = await cookies();
+  cookie.set("requestStatusText", requestStatusText);
+  cookie.set("requestDate", requestDate);
+}
+
 export async function getTokens(): Promise<object | null> {
   const cookie = await cookies();
   return {
@@ -53,3 +59,19 @@ export async function getAuthData() {
   }
   return null;
 }
+
+export async function getBrandRequest() {
+  const cookie = await cookies();
+  const token = cookie.get("token")?.value;
+  const requestStatusText = cookie.get("requestStatusText")?.value;
+  const requestDate = cookie.get("requestDate")?.value;
+
+  if (token) {
+    return {
+      requestStatusText: requestStatusText,
+      requestDate: requestDate
+    };
+  }
+  return null;
+}
+

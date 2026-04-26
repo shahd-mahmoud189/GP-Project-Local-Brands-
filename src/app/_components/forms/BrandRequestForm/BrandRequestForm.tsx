@@ -1,17 +1,10 @@
 "use client";
 import { requestBrand } from "@/app/api/brand-request.api";
-import {
-  brandRequestForm,
-  brandRequestSchema,
-} from "@/app/schema/brand-request.schema";
+import {brandRequestForm,brandRequestSchema,} from "@/app/schema/brand-request.schema";
+import { setBrandRequest } from "@/app/server/auth.actions";
 import { setBrandRequestInfo } from "@/app/store/slices/brandRequest.slice";
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import {Field,FieldDescription, FieldGroup,FieldLabel,} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,70 +30,76 @@ export default function BrandRequestForm() {
     reValidateMode: "onChange",
   });
 
-  async function handleBrandRequest(values: brandRequestForm) {
-    const formData = new FormData();
-      formData.append("BrandDescription", values.BrandDescription);
-      formData.append("BrandLogo", values.BrandLogo);
-      formData.append("BrandName", values.BrandName );
-      formData.append("BusinessName", values.BusinessName );
-      formData.append("BusinessLicense", values.BusinessLicense);
-    try {
-      const data = await requestBrand(formData);
-      setTimeout(() => {
-        router.push("/customerAccount/brandRequest");
-      }, 2000);
-      dispatch(
-        setBrandRequestInfo({
-          requestDate: data.requestDate,
-          requestStatusText: data.requestStatusText,
-        }),
-      );
-      console.log(Object.fromEntries(formData.entries()));
-      console.log(data);
-    } catch (error: any) {
-      console.log("Validation Errors:", error.response?.data?.errors);
-      const errorMessage = error.response?.data?.message || "Verify your data fields";
-      toast.error(errorMessage);
-    }
-
-    console.log(Object.fromEntries(formData.entries()));
-  }
   // async function handleBrandRequest(values: brandRequestForm) {
+  //   const formData = new FormData();
+  //     formData.append("BrandDescription", values.BrandDescription);
+  //     formData.append("BrandLogo", values.BrandLogo);
+  //     formData.append("BrandName", values.BrandName );
+  //     formData.append("BusinessName", values.BusinessName );
+  //     formData.append("BusinessLicense", values.BusinessLicense);
   //   try {
-  //     // تحويل الملف لنص Base64
-  //     let base64File = "";
-  //     if (values.businessLicense) {
-  //       base64File = await fileToBase64(values.businessLicense);
-  //     }
-
-  //     // بناء الـ Object اللي هيتبعت JSON
-  //     const finalPayload = {
-  //       businessName: values.businessName,
-  //       brandName: values.brandName,
-  //       brandDescription: values.brandDescription,
-  //       brandLogoUrl: values.brandLogoUrl,
-  //       businessLicense: base64File, // هنا بقى String خلاص
-  //     };
-
-  //     const data = await requestBrand(finalPayload);
+  //     const data = await requestBrand(formData);
+  //     setTimeout(() => {
+  //       router.push("/customerAccount/brandRequest");
+  //     }, 2000);
   //     dispatch(
   //       setBrandRequestInfo({
   //         requestDate: data.requestDate,
   //         requestStatusText: data.requestStatusText,
   //       }),
   //     );
-  //     setTimeout(() => {
-  //       router.push("/customerAccount/brandRequest");
-  //     }, 2000);
-  //     console.log("Success:", data);
-  //     toast.success("Request sent successfully!");
+  //     console.log(Object.fromEntries(formData.entries()));
+  //     console.log(data);
   //   } catch (error: any) {
-  //     const errorMsg = error.response?.data?.message || "Error sending request";
-  //     console.log(error.response?.data);
-
-  //     toast.error(errorMsg);
+  //     console.log("Validation Errors:", error.response?.data?.errors);
+  //     const errorMessage = error.response?.data?.message || "Verify your data fields";
+  //     toast.error(errorMessage);
   //   }
+
+  //   console.log(Object.fromEntries(formData.entries()));
   // }
+  async function handleBrandRequest(values: brandRequestForm) {
+  const formData = new FormData();
+
+  formData.append("BrandDescription", values.BrandDescription);
+  formData.append("BrandName", values.BrandName.trim());
+  formData.append("BusinessName", values.BusinessName.trim());
+
+  if (values.BrandLogo) {
+    formData.append("BrandLogo", values.BrandLogo);
+  }
+
+  if (values.BusinessLicense) {
+    formData.append("BusinessLicense", values.BusinessLicense);
+  }
+
+  try {
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ', pair[1]);
+    }
+
+    const data = await requestBrand(formData);
+    
+    toast.success("Request sent successfully!");
+    
+    setTimeout(() => {
+      router.push("/customerAccount/brandRequest");
+    }, 2000);
+
+    setBrandRequest(data.requestStatusText,data.requestDate);
+
+    dispatch(
+      setBrandRequestInfo({
+        requestDate: data.requestDate,
+        requestStatusText: data.requestStatusText,
+      }),
+    );
+  } catch (error: any) {
+    console.error("Server Error Details:", error.response?.data);
+    const errorMessage = error.response?.data?.message || "Verify your data fields or file sizes";
+    toast.error(errorMessage);
+  }
+}
   return (
     <form
       className="w-full bg-[#FAF8F5] p-8 rounded-2xl shadow"
