@@ -7,7 +7,6 @@ import React from "react";
 export default async function page({ params }: { params: Promise<{ productsid: string }> }) {
   const { productsid } = await params;
 
-  // Mock data fetching for now
   const product = {
     id: productsid,
     name: "Oatmeal Ribbed Ceramic Vase",
@@ -97,10 +96,7 @@ export default async function page({ params }: { params: Promise<{ productsid: s
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-10">
-        <ProductCard id="1" name="Artisan Fired Vase" price={120} imageUrl="/unnamed (1).png" saved={false} />
-        <ProductCard id="2" name="Ceramic Bowl" price={85} imageUrl="/unnamed (1).png" saved={false} />
-        <ProductCard id="3" name="Glass Carafe" price={150} imageUrl="/unnamed (1).png" saved={false} />
-        <ProductCard id="4" name="Stone Coasters" price={40} imageUrl="/unnamed (1).png" saved={false} />
+        
       </div>
     </div>
   );
