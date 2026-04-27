@@ -33,7 +33,7 @@ export default function AdminAside() {
           className={`w-full ${pathName === "/adminAccount/registerationRequest" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >
           <i className="fa-solid fa-user-check mr-3"></i>
-          <span>Registeration Request</span>
+          <span>Brand Request</span>
         </Link>
         <Link
           href={"productReview"}

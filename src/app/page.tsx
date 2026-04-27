@@ -1,7 +1,3 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import BrandSlider from "./_components/Home/BrandSlider/BrandSlider";
 import Features from "./_components/Home/Features/Features";
 import Hero from "./_components/Home/Hero/Hero";

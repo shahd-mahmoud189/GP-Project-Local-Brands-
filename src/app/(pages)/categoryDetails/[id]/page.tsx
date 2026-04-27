@@ -12,7 +12,7 @@ export default async function page({ params }: any) {
   return (
     <div className="container mx-auto px-12 py-10">
       <div className="mb-20 px-10">
-        <h2 className="text-[#864227] text-4xl ">Handmade</h2>
+        <h2 className="text-[#864227] text-4xl ">{response.categoryName}</h2>
         <p className="text-[#796C63] mt-4 font-light">
           Dive into our exclusive range of high-quality essentials. Whether
           you're looking <br /> for inspiration or a specific must-have, our

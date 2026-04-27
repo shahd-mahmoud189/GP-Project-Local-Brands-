@@ -60,18 +60,54 @@ export async function getAuthData() {
   return null;
 }
 
-export async function getBrandRequest() {
-  const cookie = await cookies();
-  const token = cookie.get("token")?.value;
-  const requestStatusText = cookie.get("requestStatusText")?.value;
-  const requestDate = cookie.get("requestDate")?.value;
+// export async function getBrandRequest() {
+//   const cookie = await cookies();
+//   const token = cookie.get("token")?.value;
+//   const requestStatusText = cookie.get("requestStatusText")?.value;
+//   const requestDate = cookie.get("requestDate")?.value;
 
-  if (token) {
-    return {
-      requestStatusText: requestStatusText,
-      requestDate: requestDate
-    };
+//   if (token) {
+//     return {
+//       requestStatusText: requestStatusText || "",
+//       requestDate: requestDate || ""
+//     };
+//   }
+//   return null;
+// }
+
+
+export async function getMyRequestData() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  // لو مفيش توكن، نرجع قيم فاضية فوراً وممنوع نبعت طلب للسيرفر
+  if (!token) {
+    return { requestStatusText: "", requestDate: "" };
   }
-  return null;
+
+  try {
+    // بنستخدم fetch العادي هنا عشان نهرب من مشاكل Axios في السيرفر
+    const response = await fetch('https://brands-system-production-c110.up.railway.app/api/BrandOwnerRequest/my-requests', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      cache: 'no-store' // مهم جداً عشان الداتا متتحفظش قديمة
+    });
+
+    if (!response.ok) return { requestStatusText: "", requestDate: "" };
+
+    const data = await response.json();
+    
+    if (Array.isArray(data) && data.length > 0) {
+      return {
+        requestStatusText: data[0].requestStatusText || "",
+        requestDate: data[0].requestDate || "",
+      };
+    }
+    
+    return { requestStatusText: "", requestDate: "" };
+  } catch (error) {
+    return { requestStatusText: "", requestDate: "" };
+  }
 }
 

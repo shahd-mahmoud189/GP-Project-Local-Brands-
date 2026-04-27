@@ -2,8 +2,7 @@ import Link from "next/link";
 import CategoryCard from "../../cards/CategoryCard/CategoryCard";
 import { getAllCategory } from "@/app/api/category.api";
 import { categoryType } from "@/app/types/category.type";
-import React from "react";
-export default async function ExploreCategories() {
+export default async function Category() {
   const categories = await getAllCategory(); 
   return (
     <section className="py-20 bg-white">

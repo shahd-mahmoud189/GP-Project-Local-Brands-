@@ -5,7 +5,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import './globals.css'
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Providers from "./providers/Providers";
-import { getAuthData, getBrandRequest } from "./server/auth.actions";
+import { getAuthData, getMyRequestData } from "./server/auth.actions";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -17,8 +17,7 @@ const exo = Exo({
 export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
 
   const authData = await getAuthData();
-  const brandRequestData = await getBrandRequest();
-
+  const brandRequestData = await getMyRequestData();
 
   const preloadedState = {
     auth: authData ? authData : { isAuthinticated: false, userInfo: null },
@@ -32,8 +31,6 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
         <body
           className={`${exo.className} font-medium`}
         >
-
-
           <Nav />
           {children}
           <ToastContainer

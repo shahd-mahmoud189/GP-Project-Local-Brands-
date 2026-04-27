@@ -2,6 +2,7 @@
 import { signin } from "@/app/api/auth.api";
 import { loginForm, loginSchema } from "@/app/schema/login.schema";
 import { setTokens, setUserInfo } from "@/app/server/auth.actions";
+import { setAuthInfo } from "@/app/store/slices/auth.slice";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -13,10 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function LoginForm() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { handleSubmit, register, formState } = useForm({
     defaultValues: {
@@ -33,6 +36,7 @@ export default function LoginForm() {
       const data = await signin(values);
       setTokens(data.token,data.refreshToken)
       setUserInfo(data.email,data.userType)
+      dispatch(setAuthInfo({isAuthinticated:true,userInfo:{email:data.email,userType:data.userType}}))
       toast.success(data.isSuccess && "Logged in successfully");
       setTimeout(() => {
         router.push("/");

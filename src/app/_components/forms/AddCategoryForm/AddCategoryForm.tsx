@@ -1,27 +1,45 @@
 "use client";
-import { addCategory } from "@/app/api/category.api";
-import {addCategoryForm,addCategorySchema} from "@/app/schema/addCategory.schema";
+import { addCategory, editCategory } from "@/app/api/category.api";
+import { addCategoryForm, addCategorySchema } from "@/app/schema/addCategory.schema";
+import { categoryType } from "@/app/types/category.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export default function AddCategoryForm({showForm,setShowForm,}: {showForm: boolean;setShowForm: React.Dispatch<React.SetStateAction<boolean>>;}) {
+export default function AddCategoryForm({
+  showForm,
+  setShowForm,
+  editCategoryData,
+}: {
+  showForm: boolean;
+  setShowForm: (val: boolean) => void;
+  editCategoryData?: categoryType | null;
+}) {
   const queryClient = useQueryClient();
+  const isEditing = !!editCategoryData;
 
   const { register, formState, handleSubmit, reset } = useForm({
-    defaultValues: {
-      description: "",
-      categoryName: "",
-    },
+    defaultValues: { categoryName: "", description: "" },
     resolver: zodResolver(addCategorySchema),
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
 
-  const mutation = useMutation({
+  useEffect(() => {
+    if (editCategoryData) {
+      reset({
+        categoryName: editCategoryData.categoryName,
+        description: editCategoryData.description,
+      });
+    } else {
+      reset({ categoryName: "", description: "" });
+    }
+  }, [editCategoryData, reset]);
+
+  const addMutation = useMutation({
     mutationFn: addCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allCategories"] });
@@ -30,15 +48,33 @@ export default function AddCategoryForm({showForm,setShowForm,}: {showForm: bool
       setShowForm(false);
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Something went wrong";
-      console.log(msg);
-      toast.error(msg);
+      toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
 
-  async function handleAddCategory(values: addCategoryForm) {
-    mutation.mutate(values);
+  const editMutation = useMutation({
+    mutationFn: (values: addCategoryForm) =>
+      editCategory(editCategoryData!.categoryId, values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["allCategories"] });
+      toast.success("Category updated successfully!");
+      reset();
+      setShowForm(false);
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    },
+  });
+
+  function handleSubmitForm(values: addCategoryForm) {
+    if (isEditing) {
+      editMutation.mutate(values);
+    } else {
+      addMutation.mutate(values);
+    }
   }
+
+  const isPending = addMutation.isPending || editMutation.isPending;
 
   return (
     <div>
@@ -56,27 +92,19 @@ export default function AddCategoryForm({showForm,setShowForm,}: {showForm: bool
             <div className="bg-white rounded-lg border border-stone-200 p-5 sm:p-6 lg:p-8">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg sm:text-xl font-bold text-stone-900">
-                  Add New Category
+                  {isEditing ? "Edit Category" : "Add New Category"}
                 </h3>
                 <button
-                  onClick={() => {
-                    setShowForm(false);
-                  }}
+                  onClick={() => setShowForm(false)}
                   className="text-stone-600 hover:text-stone-900 transition text-xl"
                 >
                   ×
                 </button>
               </div>
 
-              <form
-                className="space-y-4 sm:space-y-6"
-                onSubmit={handleSubmit(handleAddCategory)}
-              >
+              <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit(handleSubmitForm)}>
                 <div>
-                  <label
-                    htmlFor="categoryName"
-                    className="block text-sm sm:text-base font-semibold text-stone-900 mb-2"
-                  >
+                  <label htmlFor="categoryName" className="block text-sm sm:text-base font-semibold text-stone-900 mb-2">
                     Category Name
                   </label>
                   <input
@@ -87,17 +115,12 @@ export default function AddCategoryForm({showForm,setShowForm,}: {showForm: bool
                     {...register("categoryName")}
                   />
                   {formState.errors.categoryName && (
-                    <p className="text-red-500 text-sm font-medium">
-                      {formState.errors.categoryName.message}
-                    </p>
+                    <p className="text-red-500 text-sm font-medium">{formState.errors.categoryName.message}</p>
                   )}
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="categoryDescription"
-                    className="block text-sm sm:text-base font-semibold text-stone-900 mb-2"
-                  >
+                  <label htmlFor="categoryDescription" className="block text-sm sm:text-base font-semibold text-stone-900 mb-2">
                     Description
                   </label>
                   <textarea
@@ -108,25 +131,21 @@ export default function AddCategoryForm({showForm,setShowForm,}: {showForm: bool
                     {...register("description")}
                   />
                   {formState.errors.description && (
-                    <p className="text-red-500 text-sm font-medium">
-                      {formState.errors.description.message}
-                    </p>
+                    <p className="text-red-500 text-sm font-medium">{formState.errors.description.message}</p>
                   )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
-                    disabled={mutation.isPending}
+                    disabled={isPending}
                     className="flex-1 bg-amber-800 hover:bg-amber-900 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition text-sm sm:text-base"
                   >
-                    {mutation.isPending ? "Adding..." : "Add Category"}
+                    {isPending ? "Saving..." : isEditing ? "Save Changes" : "Add Category"}
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      setShowForm(false);
-                    }}
+                    onClick={() => setShowForm(false)}
                     className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-900 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition text-sm sm:text-base"
                   >
                     Cancel

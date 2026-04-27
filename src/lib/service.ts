@@ -5,41 +5,78 @@ const api = axios.create({
   baseURL: "https://brands-system-production-c110.up.railway.app",
 });
 
-// 1. طلبات الـ Request: إضافة التوكن للهيدر تلقائياً
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (value: any) => void;
+  reject: (reason?: any) => void;
+}> = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 api.interceptors.request.use((config) => {
   const token = getCookie("token");
-
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// 2. استجابة الـ Response: التعامل مع انتهاء التوكن (401)
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // التحقق من حالة 401 (غير مصرح) ومنع التكرار اللانهائي
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // لو في refresh جاري، حط الريكويست في الـ queue
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
+
+      const refreshToken = getCookie("refreshToken");
+      const token = getCookie("token");
+
+      // التحقق إن التوكنات موجودة فعلاً قبل ما تبعت الريكويست
+      if (!refreshToken || !token) {
+        isRefreshing = false;
+        deleteCookie("token");
+        deleteCookie("refreshToken");
+        deleteCookie("email");
+        deleteCookie("userType");
+        if (typeof window !== "undefined") {
+          window.location.href = "/auth/login";
+        }
+        return Promise.reject(error);
+      }
 
       try {
-        const refreshToken = getCookie("refreshToken");
-        const token = getCookie("token");
-
-        // تعديل الـ Body ليطابق ما يطلبه السيرفر (PascalCase)
         const { data } = await axios.post(
           "https://brands-system-production-c110.up.railway.app/api/Auth/refresh",
           {
-            Token: token,             // الحرف الأول كابيتال
-            RefreshToken: refreshToken,   // الحرف الأول كابيتال
+            Token: token,
+            RefreshToken: refreshToken,
           }
         );
 
         if (data.isSuccess) {
-          // تحديث الكوكيز بالتوكنات الجديدة
           setCookie("token", data.token, { maxAge: 1 * 24 * 60 * 60 });
           setCookie("refreshToken", data.refreshToken, {
             maxAge: 7 * 24 * 60 * 60,
@@ -47,25 +84,27 @@ api.interceptors.response.use(
           setCookie("email", data.email);
           setCookie("userType", data.userType);
 
-          // إعادة إرسال الريكويست الأصلي بالتوكن الجديد
           originalRequest.headers.Authorization = `Bearer ${data.token}`;
+          processQueue(null, data.token);
           return api(originalRequest);
+        } else {
+          throw new Error("Refresh failed: isSuccess is false");
         }
       } catch (refreshError: any) {
-        console.log("Refresh Failed Details:", refreshError.response?.data);
-        
-        // في حالة فشل الريفريش (التوكن انتهى تماماً)، مسح البيانات والتحويل للوجن
+        processQueue(refreshError, null);
         deleteCookie("token");
         deleteCookie("refreshToken");
         deleteCookie("email");
         deleteCookie("userType");
-
         if (typeof window !== "undefined") {
-          //  window.location.href = '/auth/login'; // فكي الكومنت هنا لما تحبي يفعل الـ redirect
+          window.location.href = "/login";
         }
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
   }
 );
