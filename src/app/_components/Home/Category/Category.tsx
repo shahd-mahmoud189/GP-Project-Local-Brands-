@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CategoryCard from "../../cards/CategoryCard/CategoryCard";
-import { getAllCategory } from "@/app/api/category.api";
 import { categoryType } from "@/app/types/category.type";
+import { getAllCategory } from "@/app/api/serverFunction/serverFunctions.api";
 export default async function Category() {
   const categories = await getAllCategory(); 
   return (

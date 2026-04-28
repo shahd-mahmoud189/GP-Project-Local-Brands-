@@ -1,7 +1,10 @@
+import { getPendingProduct } from "@/app/api/serverFunction/serverFunctions.api";
+import { Product } from "@/app/types/product.type";
 import Image from "next/image";
 import React from "react";
 
-export default function page() {
+export default async function page() {
+  const response = await getPendingProduct()
   return (
     <div className="p-4 md:p-8">
       <div className="mb-6 md:mb-10">
@@ -31,27 +34,27 @@ export default function page() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-200">
-              <tr className="hover:bg-stone-50 transition group">
+              {response.map((product:Product)=>(<tr key={product.productId} className="hover:bg-stone-50 transition group">
                 <td className="px-4 md:px-6 py-4">
                   <div className="flex items-center gap-3 md:gap-4">
                     <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-stone-100">
                       <Image
-                        alt="Product Image"
-                        src="/unnamed.png"
+                        alt={product.productName}
+                        src={''}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     </div>
                     <p className="text-stone-900 font-semibold text-sm md:text-base">
-                      Premium Handmade Soap
+                      {product.productName}
                     </p>
                   </div>
                 </td>
                 <td className="px-4 md:px-6 py-4 text-stone-700 text-sm md:text-base whitespace-nowrap">
-                  Artisan Collection
+                  {product.brandName}
                 </td>
                 <td className="px-4 md:px-6 py-4 text-amber-800 font-bold text-sm md:text-base whitespace-nowrap">
-                  24.99 EGP
+                  {product.basePrice} EGP
                 </td>
                 <td className="px-4 md:px-6 py-4">
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -63,41 +66,8 @@ export default function page() {
                     </button>
                   </div>
                 </td>
-              </tr>
+              </tr>))}
               
-              <tr className="hover:bg-stone-50 transition group">
-                <td className="px-4 md:px-6 py-4">
-                  <div className="flex items-center gap-3 md:gap-4">
-                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-stone-100">
-                      <Image
-                        alt="Product Image"
-                        src="/unnamed.png"
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                    <p className="text-stone-900 font-semibold text-sm md:text-base">
-                      Premium Handmade Soap
-                    </p>
-                  </div>
-                </td>
-                <td className="px-4 md:px-6 py-4 text-stone-700 text-sm md:text-base whitespace-nowrap">
-                  Artisan Collection
-                </td>
-                <td className="px-4 md:px-6 py-4 text-amber-800 font-bold text-sm md:text-base whitespace-nowrap">
-                  24.99 EGP
-                </td>
-                <td className="px-4 md:px-6 py-4">
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <button className="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold transition">
-                      Approve
-                    </button>
-                    <button className="bg-red-600 hover:bg-red-700 text-white px-3 md:px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold transition">
-                      Reject
-                    </button>
-                  </div>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>

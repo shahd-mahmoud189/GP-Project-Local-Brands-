@@ -1,5 +1,5 @@
 import CategoryListClient from '@/app/_components/CategoryListClient/CategoryListClient';
-import { getAllCategory } from '@/app/api/category.api';
+import { getAllCategory } from '@/app/api/serverFunction/serverFunctions.api';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 export default async function Page() {

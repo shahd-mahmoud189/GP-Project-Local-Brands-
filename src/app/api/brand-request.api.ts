@@ -16,6 +16,6 @@ export async function acceptBrand(requestId:number) {
 }
 
 export async function getPendingRequest() {
-  const { data } = await api.get("/api/BrandOwnerRequest/pending");
+  const { data } = await api.get("https://brands-system-production-c110.up.railway.app/api/BrandOwnerRequest/pending");
   return data;
 }

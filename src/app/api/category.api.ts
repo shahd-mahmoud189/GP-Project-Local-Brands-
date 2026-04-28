@@ -2,8 +2,8 @@ import api from "@/lib/service";
 import { addCategoryForm } from "../schema/addCategory.schema";
 import { SingleCategoryResponse } from "../types/category.type";
 
-export async function getAllCategory() {
-  const {data} = await api.get('https://brands-system-production-c110.up.railway.app/api/Categories'); 
+export async function getAllCategory(){
+  const {data} = await api.get(`https://brands-system-production-c110.up.railway.app/api/Categories`); 
   return data;
 }
 

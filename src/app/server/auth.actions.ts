@@ -15,8 +15,8 @@ export async function setTokens(token: string, refreshToken: string): Promise<vo
 
 export async function setUserInfo(email: string, userType: string): Promise<void> {
   const cookie = await cookies();
-  cookie.set("email", email);
-  cookie.set("userType", userType);
+  cookie.set("email", email, { maxAge: 1 * 24 * 60 * 60 });
+  cookie.set("userType", userType, { maxAge: 1 * 24 * 60 * 60 });
 }
 
 export async function setBrandRequest(requestStatusText: string, requestDate: string): Promise<void> {

@@ -1,5 +1,4 @@
 "use client"
-
 import { LayoutDashboard, Package, PlusSquare, ShoppingBag, LogOut, Store } from "lucide-react"
 
 export type Tab = "dashboard" | "inventory" | "add-product" | "orders"
@@ -18,7 +17,7 @@ interface SidebarProps {
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 w-[72px] flex flex-col items-center py-6 gap-2 bg-[#F7F2EA] border-r border-[#864227]">
+    <aside className="fixed inset-y-0 left-0 z-40 w-18 flex flex-col items-center py-6 gap-2 bg-[#F7F2EA] border-r border-[#864227]">
       {/* Brand mark */}
       <div className="mb-6 flex flex-col items-center gap-1">
         <div className="w-10 h-10 rounded-xl bg-[#864227] flex items-center justify-center">

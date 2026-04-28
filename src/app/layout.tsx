@@ -21,7 +21,12 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
 
   const preloadedState = {
     auth: authData ? authData : { isAuthinticated: false, userInfo: null },
-    brandRequest: brandRequestData ? brandRequestData : { requestStatusText: '', requestDate: '' },
+    brandRequest: brandRequestData 
+  ? { 
+      requestStatusText: brandRequestData.requestStatusText ?? '', 
+      requestDate: brandRequestData.requestDate ?? '' 
+    } 
+  : { requestStatusText: '', requestDate: '' },
   };
 
 

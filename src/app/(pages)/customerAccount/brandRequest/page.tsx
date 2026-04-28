@@ -1,6 +1,5 @@
 'use client'
 import BrandRequestPending from '@/app/_components/customerAccount/brandRequest/BrandRequestPending/BrandRequestPending'
-import BrandRequestApproved from '@/app/_components/customerAccount/brandRequest/BrandRequestApproved/BrandRequestApproved'
 import BrandRequestRejected from '@/app/_components/customerAccount/brandRequest/BrandRequestRejected/BrandRequestRejected'
 import JoinBrandyCard from '@/app/_components/customerAccount/brandRequest/JoinBrandyCard/JoinBrandyCard'
 import { useSelector } from 'react-redux'
@@ -13,7 +12,6 @@ export default function Page() {
 
   const statusComponents: Record<string, React.ReactNode> = {
     Pending: <BrandRequestPending date={requestDate} />,
-    Approved: <BrandRequestApproved />,
     Rejected: <BrandRequestRejected />,
   };
 
