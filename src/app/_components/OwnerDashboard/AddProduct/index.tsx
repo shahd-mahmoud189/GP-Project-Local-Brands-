@@ -132,7 +132,6 @@ export function AddProductTab({ initialData, onSuccess }: AddProductTabProps) {
                 control={control}
                 customEnabled={customEnabled}
                 toggleCustomization={toggleCustomization}
-                watch={watch}
             />
 
             {/* Final Action */}
