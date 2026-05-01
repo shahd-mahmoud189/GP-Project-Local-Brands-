@@ -5,6 +5,7 @@ import { Tab } from "./sidebar"
 
 const TAB_TITLES: Record<Tab, string> = {
   dashboard: "Dashboard ",
+  profile: "Profile ",
   inventory: "My Products",
   "add-product": "Add New Product",
   orders: "Orders Management",

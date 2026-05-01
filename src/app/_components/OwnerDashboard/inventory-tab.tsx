@@ -11,7 +11,7 @@ import {
 import { Product, MOCK_PRODUCTS, STATUS_FILTER_TABS, ProductStatus } from "./Inventory/inventory.types";
 import { InventoryGrid } from "./Inventory/InventoryGrid";
 import { InventoryTable } from "./Inventory/InventoryTable";
-import { EditProductModal } from "./Inventory/EditProductModal";
+// import { EditProductModal } from "./Inventory/EditProductModal";
 
 export function InventoryTab() {
   const [filter, setFilter] = useState<"All" | ProductStatus>("All");
@@ -150,14 +150,14 @@ export function InventoryTab() {
       </div>
 
       {/* Edit Modal */}
-      <EditProductModal
+      {/* <EditProductModal
         product={selectedProduct}
         isOpen={isEditModalOpen}
         onClose={() => {
           setIsEditModalOpen(false);
           setSelectedProduct(null);
         }}
-      />
+      /> */}
     </div>
   );
 }
