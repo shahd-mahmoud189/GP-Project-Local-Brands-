@@ -30,34 +30,7 @@ export default function BrandRequestForm() {
     reValidateMode: "onChange",
   });
 
-  // async function handleBrandRequest(values: brandRequestForm) {
-  //   const formData = new FormData();
-  //     formData.append("BrandDescription", values.BrandDescription);
-  //     formData.append("BrandLogo", values.BrandLogo);
-  //     formData.append("BrandName", values.BrandName );
-  //     formData.append("BusinessName", values.BusinessName );
-  //     formData.append("BusinessLicense", values.BusinessLicense);
-  //   try {
-  //     const data = await requestBrand(formData);
-  //     setTimeout(() => {
-  //       router.push("/customerAccount/brandRequest");
-  //     }, 2000);
-  //     dispatch(
-  //       setBrandRequestInfo({
-  //         requestDate: data.requestDate,
-  //         requestStatusText: data.requestStatusText,
-  //       }),
-  //     );
-  //     console.log(Object.fromEntries(formData.entries()));
-  //     console.log(data);
-  //   } catch (error: any) {
-  //     console.log("Validation Errors:", error.response?.data?.errors);
-  //     const errorMessage = error.response?.data?.message || "Verify your data fields";
-  //     toast.error(errorMessage);
-  //   }
 
-  //   console.log(Object.fromEntries(formData.entries()));
-  // }
   async function handleBrandRequest(values: brandRequestForm) {
   const formData = new FormData();
 

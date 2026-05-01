@@ -22,6 +22,13 @@ export default function CustomerAside() {
       </div>
       <ul className="py-8 *:cursor-pointer *:transition-all *:uppercase *:text-sm *:tracking-wider *:py-6 *:px-8 *:font-semibold">
         <Link
+          href={"profile"}
+          className={`w-full ${pathName === "/customerAccount/profile" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+        >
+          <i className="fa-solid fa-person mr-3"></i>
+          <span>Profile</span>
+        </Link>
+        <Link
           href={"dashboard"}
           className={`w-full ${pathName === "/customerAccount/dashboard" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >
@@ -56,13 +63,6 @@ export default function CustomerAside() {
           <i className="fa-regular fa-paper-plane mr-3"></i>{" "}
           <span>Brand Request</span>
         </Link>
-        {/* <Link
-          href={""}
-          className={`w-full ${pathName === "" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
-        >
-          <i className="fa-solid fa-arrow-right-from-bracket mr-3"></i>
-          <span>Logout</span>
-        </Link> */}
       </ul>
     </nav>
   );

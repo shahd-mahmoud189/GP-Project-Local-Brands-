@@ -1,5 +1,5 @@
 "use client";
-import { removeTokens, removeUserInfo } from "@/app/server/auth.actions";
+import { removeBrandRequest, removeTokens, removeUserInfo } from "@/app/server/auth.actions";
 import { setAuthInfo } from "@/app/store/slices/auth.slice";
 import { AppState } from "@/app/store/store";
 import Link from "next/link";
@@ -11,6 +11,10 @@ import { toast } from "react-toastify";
 export default function Nav() {
   const { isAuthinticated, userInfo } = useSelector(
     (appState: AppState) => appState.auth,
+  );
+
+  const {  } = useSelector(
+    (appState: AppState) => appState.brandRequest,
   );
 
   const getAccountLink = (role: string) => {
@@ -31,6 +35,7 @@ export default function Nav() {
   function logOut() {
     removeTokens();
     removeUserInfo();
+    removeBrandRequest();
     dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
     toast.success("Logged out successfully");
   }

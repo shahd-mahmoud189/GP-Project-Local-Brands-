@@ -69,7 +69,7 @@ api.interceptors.response.use(
 
       try {
         const { data } = await axios.post(
-          "https://brands-system-production-c110.up.railway.app/api/Auth/refresh",
+          "https://brands-system-production-c110.up.railway.app/api/RefreshToken",
           {
             Token: token,
             RefreshToken: refreshToken,

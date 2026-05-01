@@ -1,5 +1,6 @@
 import api from "@/lib/service";
 import { Product } from "../types/product.type";
+import { BrandList } from "../types/brand.type";
 
 export async function getAllProducts() {
   const {data} = await api.get('https://brands-system-production-c110.up.railway.app/api/Products'); 
@@ -18,5 +19,21 @@ export async function rejectProduct(requestId:number) {
 
 export async function acceptProduct(requestId:number) {
   const {data} = await api.put(`https://brands-system-production-c110.up.railway.app/api/Products/${requestId}/approve`); 
+  return data;
+}
+
+export async function getMyBrands(): Promise<BrandList> {
+  const { data } = await api.get(
+    `https://brands-system-production-c110.up.railway.app/api/Brands/my-brands`
+  );
+  return data;
+}
+
+export async function addProduct(brandId: number, formData: FormData) {
+  const { data } = await api.post(
+    `https://brands-system-production-c110.up.railway.app/api/Products/brand/${brandId}`,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
   return data;
 }

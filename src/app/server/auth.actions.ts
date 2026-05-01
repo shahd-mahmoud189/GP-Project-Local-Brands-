@@ -25,6 +25,12 @@ export async function setBrandRequest(requestStatusText: string, requestDate: st
   cookie.set("requestDate", requestDate);
 }
 
+export async function removeBrandRequest(): Promise<void> {
+  const cookie = await cookies();
+  cookie.delete("requestStatusText");
+  cookie.delete("requestDate");
+}
+
 export async function getTokens(): Promise<object | null> {
   const cookie = await cookies();
   return {

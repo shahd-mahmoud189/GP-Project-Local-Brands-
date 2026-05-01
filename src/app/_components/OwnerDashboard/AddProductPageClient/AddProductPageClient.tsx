@@ -17,7 +17,7 @@ export default function AddProductPageClient({
       {!accepted && (
         <BrandRequestApproved
           contractText={contractText}
-          onAccepted={() => setAccepted(true)} // ← بيخفي الكارد فوراً
+          onAccepted={() => setAccepted(true)}
         />
       )}
       <AddProductTab />

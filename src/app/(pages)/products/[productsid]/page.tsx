@@ -14,20 +14,19 @@ export default async function page({ params }: { params: Promise<{ productsid: s
     <div className="container mx-auto px-12 py-10">
       <div className="lg:flex lg:justify-center lg:gap-10 space-y-4 mb-12">
 
-        {/* صورة المنتج */}
         <div className="lg:w-2/6">
           <div className="relative aspect-4/5 rounded-4xl overflow-hidden bg-stone-100">
             <Image
-              src={product.imageUrls}
+              src={''}
               alt={product.productName}
+              width={5000}
+              height={5000}
               fill
               className="object-cover"
-              priority
             />
           </div>
         </div>
 
-        {/* التفاصيل */}
         <div className="lg:w-1/3 p-4 space-y-5">
           <div>
             <Link

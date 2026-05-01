@@ -11,7 +11,7 @@ export async function POST() {
   }
 
   const res = await fetch(
-    "https://brands-system-production-c110.up.railway.app/api/Auth/refresh",
+    "https://brands-system-production-c110.up.railway.app/api/api/RefreshToken",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },

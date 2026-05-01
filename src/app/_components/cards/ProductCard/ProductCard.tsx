@@ -39,7 +39,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
 
         <Link href={`/products/${product.productId}`} className="block w-full h-full">
           <Image
-            src={product.imageUrls}
+            src={'https://picjumbo.com/'}
             alt={product.productName}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"

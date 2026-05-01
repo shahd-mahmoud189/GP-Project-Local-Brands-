@@ -22,6 +22,13 @@ export default function AdminAside() {
       </div>
       <ul className="py-8 *:cursor-pointer *:transition-all *:uppercase *:text-sm *:tracking-wider *:py-6 *:px-8 *:font-semibold">
         <Link
+          href={"profile"}
+          className={`w-full ${pathName === "/adminAccount/profile" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+        >
+          <i className="fa-solid fa-chart-line mr-3"></i>
+          <span>Profile</span>
+        </Link>
+        <Link
           href={"dashboard"}
           className={`w-full ${pathName === "/adminAccount/dashboard" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >

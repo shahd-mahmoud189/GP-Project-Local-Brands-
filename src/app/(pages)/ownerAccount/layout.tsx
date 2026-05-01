@@ -18,6 +18,7 @@ const getActiveTab = (): Tab => {
 
   const handleTabChange = (tab: Tab) => {
     const routes: Record<Tab, string> = {
+      profile: "/ownerAccount/profile",
       dashboard: "/ownerAccount/dashboard",
       inventory: "/ownerAccount/inventory",
       "add-product": "/ownerAccount/add-product",

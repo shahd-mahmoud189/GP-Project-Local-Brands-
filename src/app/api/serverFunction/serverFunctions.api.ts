@@ -1,61 +1,26 @@
 import { cookies } from "next/headers";
 
 async function refreshTokens(): Promise<string | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-  const refreshToken = cookieStore.get("refreshToken")?.value;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  if (!token || !refreshToken) return null;
-
-  const res = await fetch(
-    "https://brands-system-production-c110.up.railway.app/api/Auth/refresh",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ Token: token, RefreshToken: refreshToken }),
-      cache: "no-store",
-    }
-  );
+  const res = await fetch(`${baseUrl}/api/RefreshToken`, {
+    method: "POST",
+    cache: "no-store",
+  });
 
   if (!res.ok) return null;
-
   const data = await res.json();
-
-  if (data.isSuccess) {
-    cookieStore.set("token", data.token, { maxAge: 1 * 24 * 60 * 60, httpOnly: false });
-    cookieStore.set("refreshToken", data.refreshToken, { maxAge: 7 * 24 * 60 * 60, httpOnly: false });
-    return data.token;
-  }
-
-  return null;
+  return data.success ? data.token : null;
 }
 
 export async function getAllCategory() {
-  const cookieStore = await cookies();
-  let token = cookieStore.get("token")?.value;
+  const res = await fetch(
+    "https://brands-system-production-c110.up.railway.app/api/Categories",
+    { cache: "no-store" }
+  );
 
-  if (!token) return [];
-
-  const fetchWithToken = async (t: string) =>
-    fetch(
-      "https://brands-system-production-c110.up.railway.app/api/Categories",
-      {
-        headers: { Authorization: `Bearer ${t}` },
-        cache: "no-store",
-      }
-    );
-
-  let response = await fetchWithToken(token);
-
-  if (response.status === 401) {
-    const newToken = await refreshTokens();
-    if (!newToken) return [];
-    response = await fetchWithToken(newToken);
-  }
-
-  if (!response.ok) return [];
-
-  return response.json();
+  if (!res.ok) return [];
+  return res.json();
 }
 
 export async function getContract() {
@@ -163,3 +128,53 @@ export async function getPendingProduct() {
 
   return response.json();
 }
+
+export async function getProfile() {
+  const cookieStore = await cookies();
+  let token = cookieStore.get("token")?.value;
+  if (!token) return null;
+
+  const fetchWithToken = (t: string) =>
+    fetch("https://brands-system-production-c110.up.railway.app/api/Profile", {
+      headers: { Authorization: `Bearer ${t}` },
+      cache: "no-store",
+    });
+
+  let response = await fetchWithToken(token);
+
+  if (response.status === 401) {
+    const newToken = await refreshTokens();
+    if (!newToken) return null;
+    response = await fetchWithToken(newToken);
+  }
+
+  if (!response.ok) return null;  
+  return response.json();
+}
+
+// export async function updateProfile(values:UpdateProfileForm) {
+//   const cookieStore = await cookies();
+//   let token = cookieStore.get("token")?.value;
+//   if (!token) return null;
+
+//   const fetchWithToken = (t: string) =>
+//     fetch("https://brands-system-production-c110.up.railway.app/api/Profile", {
+//       headers: { Authorization: `Bearer ${t}` },
+//       cache: "no-store",
+//       method:'PUT',
+//       body:JSON.stringify(values),
+//     });
+
+//   let response = await fetchWithToken(token);
+
+//   if (response.status === 401) {
+//     const newToken = await refreshTokens();
+//     if (!newToken) return null;
+//     response = await fetchWithToken(newToken);
+//   }
+
+//   if (!response.ok) return null;  
+//   return response.json();
+// }
+
+
