@@ -1,36 +1,48 @@
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
-export async function POST() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-  const refreshToken = cookieStore.get("refreshToken")?.value;
+export async function POST(request: NextRequest) {
+  let refreshToken: string | undefined;
 
-  if (!token || !refreshToken) {
-    return NextResponse.json({ success: false }, { status: 401 });
+  try {
+    const body = await request.json();
+    console.log("Body received:", body);
+    refreshToken = body.refreshToken;
+  } catch (e) {
+    console.log("Body parse error:", e);
+    return NextResponse.json({ success: false, message: "Invalid body" }, { status: 400 });
+  }
+
+  if (!refreshToken) {
+    return NextResponse.json({ success: false, message: "Missing tokens" }, { status: 401 });
   }
 
   const res = await fetch(
-    "https://brands-system-production-c110.up.railway.app/api/api/RefreshToken",
+    "https://brands-system-production-c110.up.railway.app/api/Auth/refresh-token",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ Token: token, RefreshToken: refreshToken }),
+      body: JSON.stringify({ refreshToken: refreshToken }),
     }
   );
 
-  if (!res.ok) return NextResponse.json({ success: false }, { status: 401 });
-
+  console.log("Railway response status:", res.status);
   const data = await res.json();
+  console.log("Railway response data:", data);
 
-  if (!data.isSuccess) {
-    return NextResponse.json({ success: false }, { status: 401 });
-  }
-
-  // هنا بنعمل set صح لأنه Route Handler
-  const response = NextResponse.json({ success: true, token: data.token });
-  response.cookies.set("token", data.token, { maxAge: 1 * 24 * 60 * 60 , httpOnly: false});
-  response.cookies.set("refreshToken", data.refreshToken, { maxAge: 7 * 24 * 60 * 60 , httpOnly: false});
-
+  if (!res.ok || !data.isSuccess) {
+  const response = NextResponse.json({ success: false }, { status: 401 });
+  // امسح الكوكيز القديمة
+  response.cookies.delete("token");
+  response.cookies.delete("refreshToken");
+  response.cookies.delete("email");
+  response.cookies.delete("userType");
   return response;
+}
+
+  const cookieStore = await cookies();
+  cookieStore.set("token", data.token, { maxAge: 1 * 24 * 60 * 60, httpOnly: false });
+  cookieStore.set("refreshToken", data.refreshToken, { maxAge: 7 * 24 * 60 * 60, httpOnly: false });
+
+  return NextResponse.json({ success: true, token: data.token });
 }

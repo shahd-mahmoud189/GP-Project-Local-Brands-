@@ -13,11 +13,8 @@ let failedQueue: Array<{
 
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
+    if (error) prom.reject(error);
+    else prom.resolve(token);
   });
   failedQueue = [];
 };
@@ -36,7 +33,6 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // لو في refresh جاري، حط الريكويست في الـ queue
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -54,7 +50,6 @@ api.interceptors.response.use(
       const refreshToken = getCookie("refreshToken");
       const token = getCookie("token");
 
-      // التحقق إن التوكنات موجودة فعلاً قبل ما تبعت الريكويست
       if (!refreshToken || !token) {
         isRefreshing = false;
         deleteCookie("token");
@@ -68,19 +63,16 @@ api.interceptors.response.use(
       }
 
       try {
+        // بيكلم السيرفر الخارجي مباشرة
         const { data } = await axios.post(
-          "https://brands-system-production-c110.up.railway.app/api/RefreshToken",
-          {
-            Token: token,
-            RefreshToken: refreshToken,
-          }
+          "https://brands-system-production-c110.up.railway.app/api/Auth/refresh-token",
+          { refreshToken: refreshToken }
         );
 
         if (data.isSuccess) {
+          // بيحدث الكوكيز في المتصفح مباشرة
           setCookie("token", data.token, { maxAge: 1 * 24 * 60 * 60 });
-          setCookie("refreshToken", data.refreshToken, {
-            maxAge: 7 * 24 * 60 * 60,
-          });
+          setCookie("refreshToken", data.refreshToken, { maxAge: 7 * 24 * 60 * 60 });
           setCookie("email", data.email);
           setCookie("userType", data.userType);
 
@@ -88,7 +80,7 @@ api.interceptors.response.use(
           processQueue(null, data.token);
           return api(originalRequest);
         } else {
-          throw new Error("Refresh failed: isSuccess is false");
+          throw new Error("Refresh failed");
         }
       } catch (refreshError: any) {
         processQueue(refreshError, null);

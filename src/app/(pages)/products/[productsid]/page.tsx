@@ -1,6 +1,7 @@
 import ReviewCard from "@/app/_components/cards/ReviewCard/ReviewCard";
 import ProductInteractive from "@/app/_components/ProductInteractive/ProductInteractive";
 import { getProductById } from "@/app/api/serverFunction/serverFunctions.api";
+import { getImageUrl } from "@/app/utils/imageUrl";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,10 +18,8 @@ export default async function page({ params }: { params: Promise<{ productsid: s
         <div className="lg:w-2/6">
           <div className="relative aspect-4/5 rounded-4xl overflow-hidden bg-stone-100">
             <Image
-              src={''}
+              src={getImageUrl(product.imageUrls)}
               alt={product.productName}
-              width={5000}
-              height={5000}
               fill
               className="object-cover"
             />

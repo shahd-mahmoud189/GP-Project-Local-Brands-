@@ -6,6 +6,7 @@ import './globals.css'
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Providers from "./providers/Providers";
 import { getAuthData, getMyRequestData } from "./server/auth.actions";
+import { getMyBrands } from "./api/serverFunction/serverFunctions.api";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -18,6 +19,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
 
   const authData = await getAuthData();
   const brandRequestData = await getMyRequestData();
+  const myBrand = await getMyBrands();
 
   const preloadedState = {
     auth: authData ? authData : { isAuthinticated: false, userInfo: null },
@@ -27,6 +29,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
       requestDate: brandRequestData.requestDate ?? '' 
     } 
   : { requestStatusText: '', requestDate: '' },
+    brand: myBrand? myBrand[0]: {brandId:null}
   };
 
 

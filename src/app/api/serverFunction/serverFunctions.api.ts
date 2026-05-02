@@ -1,10 +1,18 @@
+import { ProductList } from "@/app/types/product.type";
 import { cookies } from "next/headers";
 
 async function refreshTokens(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const refreshToken = cookieStore.get("refreshToken")?.value;
+
+  if (!refreshToken) return null;
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  const res = await fetch(`${baseUrl}/api/RefreshToken`, {
+  const res = await fetch(`${baseUrl}/api/auth/refresh`, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refreshToken }), 
     cache: "no-store",
   });
 
@@ -177,4 +185,48 @@ export async function getProfile() {
 //   return response.json();
 // }
 
+export async function getMyBrands() {
+  const cookieStore = await cookies();
+  let token = cookieStore.get("token")?.value;
+  if (!token) return null;
 
+  const fetchWithToken = (t: string) =>
+    fetch("https://brands-system-production-c110.up.railway.app/api/Brands/my-brands", {
+      headers: { Authorization: `Bearer ${t}` },
+      cache: "no-store",
+    });
+
+  let response = await fetchWithToken(token);
+
+  if (response.status === 401) {
+    const newToken = await refreshTokens();
+    if (!newToken) return null;
+    response = await fetchWithToken(newToken);
+  }
+
+  if (!response.ok) return null;  
+  return response.json();
+}
+
+export async function getMyProducts(brandId:number):Promise<ProductList> {
+  const cookieStore = await cookies();
+  let token = cookieStore.get("token")?.value;
+  if (!token) return [];
+
+  const fetchWithToken = (t: string) =>
+    fetch(`https://brands-system-production-c110.up.railway.app/api/Products/brand/${brandId}`, {
+      headers: { Authorization: `Bearer ${t}` },
+      cache: "no-store",
+    });
+
+  let response = await fetchWithToken(token);
+
+  if (response.status === 401) {
+    const newToken = await refreshTokens();
+    if (!newToken) return [];
+    response = await fetchWithToken(newToken);
+  }
+
+  if (!response.ok) return [];  
+  return response.json();
+}

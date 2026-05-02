@@ -1,5 +1,4 @@
-import { InventoryTab } from "../../../_components/OwnerDashboard/inventory-tab"
-
+import InventoryTap from "../../../_components/OwnerDashboard/inventory-tab"
 export default function InventoryPage() {
-    return <InventoryTab />
+    return <InventoryTap />
 }

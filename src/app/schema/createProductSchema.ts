@@ -68,14 +68,13 @@ export const productVariantSchema = z.object({
 export const createProductSchema = z.object({
   ProductName: z.string().min(1, "Product name is required"),
   Description: z.string().optional(),
-  Images: z
-    .array(z.instanceof(File))
-    .min(1, "At least one image is required"),
+  Images: z.array(z.instanceof(File)).min(1, "At least one image is required"),
   CategoryId: z.coerce.number().int().positive("Category is required"),
   Variants: z.array(productVariantSchema).optional(),
   BasePrice: z.coerce.number().min(0),
   StockQuantity: z.coerce.number().int().min(0),
   UseAiSuggestion: z.boolean().default(false),
+  AiSuggestedPrice: z.number().optional(),
   Customization: z
     .object({
       Zones: z.array(z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])),
@@ -94,21 +93,20 @@ export function toFormData(brandId: number, data: ProductFormValues): FormData {
 
   fd.append("ProductName", data.ProductName);
   if (data.Description) fd.append("Description", data.Description);
-  
   data.Images.forEach((file) => fd.append("Images", file));
   fd.append("CategoryId", String(data.CategoryId));
   fd.append("BasePrice", String(data.BasePrice));
   fd.append("UseAiSuggestion", String(data.UseAiSuggestion));
 
-  // التعديل هنا 👇
+  if (data.UseAiSuggestion && data.AiSuggestedPrice) {
+    fd.append("AiSuggestedPrice", String(data.AiSuggestedPrice));
+  }
+
   if (data.Variants && data.Variants.length > 0) {
-    // لو فيه Variants، ابعتهم وما تبعتش StockQuantity
+    // لو في variants → ابعت الـ variants بس ومتبعتش StockQuantity خالص
     fd.append("VariantsJson", JSON.stringify(data.Variants));
-    // ملحوظة: الـ Backend غالباً هيتجاهل الـ StockQuantity لو مبعوت صفر، 
-    // بس الأضمن ما تبعتوش خالص أو تبعته 0
-    fd.append("StockQuantity", "0"); 
   } else {
-    // لو مفيش Variants، ابعت الـ StockQuantity العادي
+    // لو مفيش variants → ابعت StockQuantity بس
     fd.append("StockQuantity", String(data.StockQuantity));
   }
 

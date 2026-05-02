@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Brand } from "@/app/types/brand.type";
+import { getImageUrl } from "@/app/utils/imageUrl";
 
 interface BrandCardProps {
   brand: Brand;
@@ -14,7 +15,7 @@ const BrandCard = ({ brand }: BrandCardProps) => {
       <div className="flex flex-col items-center gap-4 w-full grow">
         <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition-transform duration-500 ">
           <Image
-            src={'/Logo.png'}
+            src={getImageUrl(brand.logoUrl)}
             alt={`${brand.brandName} logo`}
             fill
             className="object-cover"
