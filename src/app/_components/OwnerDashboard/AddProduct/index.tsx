@@ -189,7 +189,7 @@ import { VariantsSection } from "./VariantsSection";
 import { CustomizationSection } from "./CustomizationSection";
 import { getMyBrands } from "@/app/api/brand.api";
 import { Brand } from "@/app/types/brand.type";
-import { addProduct } from "@/app/api/product.api";
+import { addProduct, updateProduct } from "@/app/api/product.api";
 import { predictPrice } from "@/app/api/ai.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Resolver, useFieldArray, useForm } from "react-hook-form";
@@ -198,10 +198,11 @@ import { Loader2 } from "lucide-react";
 
 export interface AddProductTabProps {
   initialData?: Partial<ProductFormValues>;
+  productId?: number; // ← جديد
   onSuccess?: () => void;
 }
 
-export function AddProductTab({ initialData, onSuccess }: AddProductTabProps) {
+export function AddProductTab({ initialData, productId, onSuccess }: AddProductTabProps) {
   const isEditMode = !!initialData;
   const [brand, setBrand] = useState<Brand | null>(null);
   const [brandLoading, setBrandLoading] = useState(true);
@@ -255,7 +256,6 @@ export function AddProductTab({ initialData, onSuccess }: AddProductTabProps) {
 
   const { fields, append, remove } = useFieldArray({ control, name: "Variants" });
 
-  // Predict Price — debounce 800ms لما يكتب اسم + وصف + صورة موجودة
   useEffect(() => {
     if (!productName || !images?.length) return;
     if (priceTimer.current) clearTimeout(priceTimer.current);
@@ -308,8 +308,16 @@ export function AddProductTab({ initialData, onSuccess }: AddProductTabProps) {
     }
     try {
       const fd = toFormData(brand.brandId, data);
-      await addProduct(brand.brandId, fd);
-      toast.success(isEditMode ? "Product updated successfully!" : "Product added successfully!");
+      
+      if (productId) {
+        // Update mode
+        await updateProduct(productId, fd);
+      } else {
+        // Add mode
+        await addProduct(brand.brandId, fd);
+      }
+      
+      toast.success(productId ? "Product updated successfully!" : "Product added successfully!");
       onSuccess?.();
     } catch {
       toast.error("Something went wrong. Please try again.");

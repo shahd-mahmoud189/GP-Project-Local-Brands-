@@ -88,35 +88,46 @@ export const createProductSchema = z.object({
 export type ProductFormValues = z.infer<typeof createProductSchema>;
 export type ProductVariant = z.infer<typeof productVariantSchema>;
 
-export function toFormData(brandId: number, data: ProductFormValues): FormData {
+export function toFormData(
+  brandId: number,
+  data: ProductFormValues,
+  productId?: number
+): FormData {
   const fd = new FormData();
 
   fd.append("ProductName", data.ProductName);
   if (data.Description) fd.append("Description", data.Description);
-  data.Images.forEach((file) => fd.append("Images", file));
+  
+  if (data.Images && data.Images.length > 0) {
+    data.Images.forEach((file) => fd.append("Images", file));
+  }
+  
   fd.append("CategoryId", String(data.CategoryId));
   fd.append("BasePrice", String(data.BasePrice));
-  fd.append("UseAiSuggestion", String(data.UseAiSuggestion));
+  fd.append("UseAiSuggestion", String(data.UseAiSuggestion ?? false));
 
   if (data.UseAiSuggestion && data.AiSuggestedPrice) {
     fd.append("AiSuggestedPrice", String(data.AiSuggestedPrice));
   }
 
   if (data.Variants && data.Variants.length > 0) {
-    // لو في variants → ابعت الـ variants بس ومتبعتش StockQuantity خالص
     fd.append("VariantsJson", JSON.stringify(data.Variants));
   } else {
-    // لو مفيش variants → ابعت StockQuantity بس
     fd.append("StockQuantity", String(data.StockQuantity));
   }
 
   if (data.Customization) {
+    fd.append("AllowsCustomization", "true");
     data.Customization.Zones.forEach((zone) =>
       fd.append("Customization.Zones", String(zone))
     );
     fd.append("Customization.AllowsPrinting", String(data.Customization.AllowsPrinting));
     fd.append("Customization.AllowsText", String(data.Customization.AllowsText));
+  } else {
+    fd.append("AllowsCustomization", "false");
   }
+
+  fd.append("IsActive", "true");
 
   return fd;
 }

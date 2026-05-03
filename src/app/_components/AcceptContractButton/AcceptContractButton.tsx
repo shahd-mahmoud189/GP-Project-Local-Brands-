@@ -8,7 +8,7 @@ export default function AcceptContractButton({ onAccepted }: { onAccepted: () =>
     mutationFn: acceptContract,
     onSuccess: (data) => {
       toast.success(data.message);
-      onAccepted(); // ← بتعلم الـ parent إن الـ accept اتعمل
+      onAccepted();
     },
     onError: () => {
       toast.error("Something went wrong");
