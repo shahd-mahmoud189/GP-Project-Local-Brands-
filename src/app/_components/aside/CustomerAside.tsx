@@ -50,13 +50,6 @@ export default function CustomerAside() {
           <span>Whishlist</span>
         </Link>
         <Link
-          href={"shippingAddress"}
-          className={`w-full ${pathName === "/customerAccount/shippingAddress" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
-        >
-          <i className="fa-solid fa-location-dot mr-3"></i>
-          <span>Shipping Addresses</span>
-        </Link>
-        <Link
           href={"brandRequest"}
           className={`w-full ${pathName === "/customerAccount/brandRequest" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >

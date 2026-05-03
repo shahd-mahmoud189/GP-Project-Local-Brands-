@@ -1,4 +1,5 @@
 import { Product } from "@/app/types/product.type";
+import { getImageUrl } from "@/app/utils/imageUrl";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -39,7 +40,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
 
         <Link href={`/products/${product.productId}`} className="block w-full h-full">
           <Image
-            src={'https://picjumbo.com/'}
+            src={getImageUrl(product.imageUrls)}
             alt={product.productName}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
