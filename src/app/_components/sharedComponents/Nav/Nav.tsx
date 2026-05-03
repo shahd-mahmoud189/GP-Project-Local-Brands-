@@ -13,8 +13,8 @@ export default function Nav() {
     (appState: AppState) => appState.auth,
   );
 
-  const {  } = useSelector(
-    (appState: AppState) => appState.brandRequest,
+  const { totalItems } = useSelector(
+    (appState: AppState) => appState.cart,
   );
 
   const getAccountLink = (role: string) => {
@@ -65,9 +65,14 @@ export default function Nav() {
               >
                 <Link
                   href={"/cart"}
-                  className="flex flex-col items-center justify-center gap-2"
+                  className="flex flex-col items-center justify-center gap-2 relative"
                 >
                   <i className="fa-solid fa-cart-shopping text-xl"></i>
+                  {totalItems > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
+                      {totalItems}
+                    </span>
+                  )}
                   <span className="text-sm">Cart</span>
                 </Link>
               </li>
@@ -333,10 +338,15 @@ export default function Nav() {
               <Link
                 onClick={() => toggle()}
                 href={"/cart"}
-                className="hover:text-[#864227] transition-all duration-200 block"
+                className="hover:text-[#864227] transition-all duration-200 block relative"
               >
                 <i className="fa-solid fa-cart-shopping mr-2"></i>
                 <span className="text-sm">Cart</span>
+                {totalItems > 0 && (
+                  <span className="absolute left-3 -top-2 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-[#FCF9F4]">
+                    {totalItems}
+                  </span>
+                )}
               </Link>
             </li>
             <li
