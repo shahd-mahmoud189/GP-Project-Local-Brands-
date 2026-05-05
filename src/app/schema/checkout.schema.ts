@@ -1,14 +1,13 @@
 import { z } from "zod";
 
+export type CheckoutForm = z.infer<typeof checkoutSchema>;
+
 export const checkoutSchema = z
   .object({
     firstName: z.string().min(2, "First name is required"),
     lastName: z.string().min(2, "Last name is required"),
     shippingAddress: z.string().min(5, "Address is required"),
-
-    // z.coerce.number() handles both number and string "1"/"2" safely
     paymentMethod: z.number().min(1).max(2),
-
     creditCard: z
       .object({
         cardNumber: z.string().min(1),
@@ -71,5 +70,3 @@ export const checkoutSchema = z
       }
     }
   });
-
-export type CheckoutForm = z.infer<typeof checkoutSchema>;

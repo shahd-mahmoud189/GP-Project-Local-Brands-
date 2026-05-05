@@ -11,7 +11,7 @@ import { CheckoutForm } from "@/app/schema/checkout.schema";
 type Props = {
   register: UseFormRegister<CheckoutForm>;
   errors: FieldErrors<CheckoutForm>;
-  paymentMethod: number;           // ← القيمة جاية من الـ parent مباشرة
+  paymentMethod: number;         
   setValue: UseFormSetValue<CheckoutForm>;
 };
 
