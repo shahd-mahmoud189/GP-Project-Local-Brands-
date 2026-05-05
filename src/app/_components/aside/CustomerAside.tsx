@@ -49,7 +49,6 @@ export default function CustomerAside() {
           <i className="fa-regular fa-heart mr-3"></i>
           <span>Whishlist</span>
         </Link>
-       
         <Link
           href={"brandRequest"}
           className={`w-full ${pathName === "/customerAccount/brandRequest" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}

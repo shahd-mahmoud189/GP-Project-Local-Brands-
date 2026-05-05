@@ -174,6 +174,7 @@ import { InventoryTable } from "./Inventory/InventoryTable";
 import { Product, STATUS_FILTER_TABS } from "./Inventory/inventory.types";
 import { toast } from "react-toastify";
 import { deleteProductClient } from "@/app/api/product.api";
+import { EditProductModal } from "./Inventory/EditProductModal";
 
 async function getMyProductsClient(brandId: number) {
   const { data } = await api.get(`/api/Products/brand/${brandId}`);
@@ -183,6 +184,7 @@ async function getMyProductsClient(brandId: number) {
 export default function InventoryTap() {
   const queryClient = useQueryClient();
   const { brandId } = useSelector((appState: AppState) => appState.brand);
+  
   const [view, setView] = useState<"grid" | "table">("grid");
   const [statusFilter, setStatusFilter] = useState<"All" | "Approved" | "Pending" | "Rejected">("All");
 
@@ -191,6 +193,8 @@ export default function InventoryTap() {
     queryFn: () => getMyProductsClient(brandId!),
     enabled: !!brandId,
   });
+
+  
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteProductClient(id),
@@ -209,9 +213,13 @@ export default function InventoryTap() {
     ? products
     : products.filter((p: Product) => p.approvalStatusText === statusFilter);
 
-  function handleEdit(product: Product) {
-    console.log("Edit:", product);
-  }
+  const [editProduct, setEditProduct] = useState<Product | null>(null);
+const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+function handleEdit(product: Product) {
+  setEditProduct(product);
+  setIsEditModalOpen(true);
+}
 
   function handleDelete(id: number) {
     deleteMutation.mutate(id);
@@ -259,6 +267,15 @@ export default function InventoryTap() {
       ) : (
         <InventoryTable products={filtered} onEdit={handleEdit} onDelete={handleDelete} />
       )}
+      <EditProductModal
+      product={editProduct}
+      isOpen={isEditModalOpen}
+      onClose={() => {
+        setIsEditModalOpen(false);
+        setEditProduct(null);
+        queryClient.invalidateQueries({ queryKey: ["myProducts", brandId] });
+      }}
+    />
     </div>
   );
 }

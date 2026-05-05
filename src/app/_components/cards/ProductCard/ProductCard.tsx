@@ -1,6 +1,7 @@
 "use client";
 
 import { Product } from "@/app/types/product.type";
+import { getImageUrl } from "@/app/utils/imageUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppDispatch } from "@/app/store/store";

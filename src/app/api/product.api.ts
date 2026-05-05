@@ -39,6 +39,15 @@ export async function addProduct(brandId: number, formData: FormData) {
 }
 
 export async function deleteProductClient(id: number) {
-  const { data } = await api.delete(`/api/Products/${id}`); // ← شيلي الـ base URL
+  const { data } = await api.delete(`/api/Products/${id}`);
+  return data;
+}
+
+export async function updateProduct(productId: number, formData: FormData) {
+  const { data } = await api.put(
+    `/api/Products/${productId}`,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
   return data;
 }

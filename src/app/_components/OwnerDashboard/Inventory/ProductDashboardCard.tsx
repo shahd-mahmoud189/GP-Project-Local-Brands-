@@ -102,6 +102,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { Product, ProductStatus } from "./inventory.types";
 import { StatusBadge } from "./StatusBadge";
 import { getImageUrl } from "@/app/utils/imageUrl";
+import Link from "next/link";
 
 interface ProductDashboardCardProps {
     product: Product;
@@ -145,12 +146,12 @@ export function ProductDashboardCard({ product, onEdit, onDelete }: ProductDashb
 
             <div className="p-4 space-y-3">
                 <div>
-                    <div className="flex items-start justify-between gap-2">
+                    <Link href={`/products/${product.productId}`} className="flex items-start justify-between gap-2">
                         <h4 className="text-sm font-bold text-[#2D2D2D] line-clamp-1">{product.productName}</h4>
                         <span className="text-xs font-semibold text-[#BC5439] shrink-0">
                             EGP {product.basePrice.toLocaleString()}
                         </span>
-                    </div>
+                    </Link>
                     <p className="text-[11px] text-gray-500 mt-0.5">{product.categoryName}</p>
                 </div>
 

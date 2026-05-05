@@ -27,17 +27,9 @@ export default async function RootLayout({
 
   let cartData = null;
   let myBrand = null;
-
-  // 🔥 fetch only if authenticated
-  if (authData?.isAuthinticated) {
-    try {
-      cartData = await getLoggedUserCart();
-      myBrand = await getMyBrands();
-    } catch (error) {
-      console.error("Server prefetch error:", error);
-    }
-  }
-
+  myBrand = await getMyBrands();
+if(authData?.userInfo.userType === 'Customer'){cartData = await getLoggedUserCart();}
+  
   const preloadedState = {
     auth: authData
       ? authData
@@ -50,17 +42,13 @@ export default async function RootLayout({
         }
       : { requestStatusText: "", requestDate: "" },
 
-    // 🟢 CART SAFE MERGE
     cart: {
       ...(cartData || cartInitialState),
       isLoading: false,
       error: null,
     },
 
-    // 🟢 BRAND SAFE MERGE
-    brand: myBrand?.[0] || {
-      brandId: null,
-    },
+    brand: myBrand? myBrand[0]: {brandId:null}
   };
 
   return (
