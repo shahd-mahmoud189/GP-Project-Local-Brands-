@@ -43,16 +43,16 @@ export default function Profile({ profile }: { profile: UserProfile }) {
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-2">
+              <h2 className="  text-2xl font-bold">
                 My Account
-              </h1>
+              </h2>
               <p className="text-stone-600 text-sm sm:text-base">
                 Manage your profile information and account settings
               </p>
             </div>
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className="bg-amber-800 hover:bg-amber-900 text-white px-6 py-2 rounded-full font-semibold transition text-sm sm:text-base"
+              className="bg-amber-800 hover:bg-amber-900 text-white px-6 py-2 rounded-md  transition text-sm sm:text-base"
             >
               {isEditing ? "Cancel" : "Edit Profile"}
             </button>
@@ -65,7 +65,7 @@ export default function Profile({ profile }: { profile: UserProfile }) {
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                 {/* Profile Image */}
                 <div className="relative">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 bg-stone-200 rounded-full overflow-hidden border-4 border-white flex items-center justify-center">
+                  <div className="w-20 h-20 sm:w-32 sm:h-32 bg-stone-200 rounded-full overflow-hidden border-4 border-white flex items-center justify-center">
                     {profile.profileImage ? (
                       <img
                         src={profile.profileImage}
@@ -86,19 +86,19 @@ export default function Profile({ profile }: { profile: UserProfile }) {
 
                 {/* Profile Info */}
                 <div className="text-white flex-1">
-                  <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                  <h2 className="  text-xl font-bold mb-2">
                     {profile.fullName}
                   </h2>
                   <div className="space-y-2 text-amber-100">
                     <div className="flex items-center gap-2">
                       <Mail size={16} />
-                      <span className="text-sm sm:text-base">
+                      <span className="text-sm ">
                         {profile.email}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <User size={16} />
-                      <span className="text-sm sm:text-base">
+                      <span className="text-sm ">
                         {profile.userType}
                       </span>
                     </div>
@@ -117,7 +117,7 @@ export default function Profile({ profile }: { profile: UserProfile }) {
                     <label className="text-xs font-semibold text-amber-700 uppercase tracking-wide block mb-2">
                       Full Name
                     </label>
-                    <p className="text-lg font-semibold text-stone-900">
+                    <p className="text-md font-semibold text-stone-900">
                       {profile.fullName || "—"}
                     </p>
                   </div>
@@ -127,7 +127,7 @@ export default function Profile({ profile }: { profile: UserProfile }) {
                     <label className="text-xs font-semibold text-amber-700 uppercase tracking-wide block mb-2">
                       Email Address
                     </label>
-                    <p className="text-lg font-semibold text-stone-900">
+                    <p className="text-md font-semibold text-stone-900">
                       {profile.email}
                     </p>
                   </div>
@@ -137,7 +137,7 @@ export default function Profile({ profile }: { profile: UserProfile }) {
                     <label className="text-xs font-semibold text-amber-700 uppercase tracking-wide block mb-2">
                       Address
                     </label>
-                    <p className="text-lg font-semibold text-stone-900 flex items-center gap-2">
+                    <p className="text-md font-semibold text-stone-900 flex items-center gap-2">
                       <MapPin size={20} className="text-amber-800" />
                       {profile.address || "—"}
                     </p>

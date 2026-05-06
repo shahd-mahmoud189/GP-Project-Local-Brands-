@@ -2,8 +2,14 @@
 "use client";
 import { CustomizationOptions, ProductVariant } from "@/app/types/product.type";
 import { useState } from "react";
+import { useAppDispatch } from "@/app/store/store";
+import { addProductToCart, getLoggedUserCart } from "@/app/api/cart.api";
+import { setCart } from "@/app/store/slices/cart.slice";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface Props {
+  productId: number;
   basePrice: number;
   variants: ProductVariant[];
   allowsCustomization: boolean;
@@ -11,11 +17,15 @@ interface Props {
 }
 
 export default function ProductInteractive({
+  productId,
   basePrice,
   variants,
   allowsCustomization,
   customizationOptions,
 }: Props) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [isAdding, setIsAdding] = useState(false);
   const sizes = [...new Set(variants.map((v) => v.size))];
   const colors = [...new Set(variants.map((v) => v.color))];
 
@@ -56,6 +66,29 @@ export default function ProductInteractive({
     Beige: "#D4B896",
   };
 
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    try {
+      await addProductToCart({
+        productId,
+        variantId: selectedVariant ? selectedVariant.variantId : undefined,
+        quantity: 1,
+      });
+      const updatedCart = await getLoggedUserCart();
+      dispatch(setCart(updatedCart));
+      toast.success("Added to cart");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to add to cart");
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const handleBuyNow = async () => {
+    await handleAddToCart();
+    router.push("/checkout");
+  };
+
   return (
     <div className="space-y-5">
       {/* السعر */}
@@ -63,7 +96,7 @@ export default function ProductInteractive({
         <span className="text-[10px] text-[#796C63] uppercase tracking-widest">
           Price
         </span>
-        <div className="text-4xl font-light text-[#54433D] mt-1">
+        <div className="text-xl font-light text-[#54433D] mt-1">
           {currentPrice} <small className="text-sm font-normal">EGP</small>
         </div>
       </div>
@@ -95,11 +128,10 @@ export default function ProductInteractive({
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${
-                  selectedSize === size
+                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${selectedSize === size
                     ? "border-[#864227] bg-[#864227] text-white"
                     : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
-                }`}
+                  }`}
               >
                 {size}
               </button>
@@ -123,11 +155,10 @@ export default function ProductInteractive({
                 key={color}
                 onClick={() => setSelectedColor(color)}
                 title={color}
-                className={`flex items-center gap-2 px-3 py-2 rounded-full border-2 transition-all ${
-                  selectedColor === color
+                className={`flex items-center gap-2 px-3 py-2 rounded-full border-2 transition-all ${selectedColor === color
                     ? "border-[#864227]"
                     : "border-stone-300 hover:border-[#864227]"
-                }`}
+                  }`}
               >
                 <span
                   className="w-5 h-5 rounded-full border border-stone-200"
@@ -222,11 +253,10 @@ export default function ProductInteractive({
                   <button
                     key={zone}
                     onClick={() => toggleZone(zone)}
-                    className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${
-                      selectedZones.includes(zone)
+                    className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${selectedZones.includes(zone)
                         ? "border-[#864227] bg-[#864227] text-white"
                         : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
-                    }`}
+                      }`}
                   >
                     {zone}
                   </button>
@@ -243,12 +273,24 @@ export default function ProductInteractive({
       )}
 
       {/* Buttons */}
-      <button className="w-full font-bold bg-[#864227] hover:bg-[#9F5538] text-white py-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2">
-        Buy Now
+      <button
+        onClick={handleBuyNow}
+        disabled={isAdding}
+        className="w-full font-bold bg-[#864227] hover:bg-[#9F5538] text-white py-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-stone-400"
+      >
+        {isAdding ? "Processing..." : "Buy Now"}
       </button>
       <div className="flex gap-4">
-        <button className="flex-1 bg-[#864227] hover:bg-[#9F5538] text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm">
-          <i className="fa-solid fa-shopping-bag text-sm" />
+        <button
+          onClick={handleAddToCart}
+          disabled={isAdding}
+          className="flex-1 bg-[#864227] hover:bg-[#9F5538] text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm disabled:bg-stone-400"
+        >
+          {isAdding ? (
+            <i className="fa-solid fa-spinner fa-spin" />
+          ) : (
+            <i className="fa-solid fa-shopping-bag text-sm" />
+          )}
           Add to cart
         </button>
         <button className="flex-1 bg-[#864227] hover:bg-[#9F5538] text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm">

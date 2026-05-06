@@ -34,12 +34,13 @@ export default async function page({ params }: { params: Promise<{ productsid: s
             >
               {product.brandName}
             </Link>
-            <h1 className="text-5xl">{product.productName}</h1>
-            <p className="text-lg font-light text-[#54433D] mt-4">{product.description}</p>
+            <h1 className="text-xl">{product.productName}</h1>
+            <p className="text-md font-light text-[#54433D] mt-4">{product.description}</p>
           </div>
 
           {/* الجزء التفاعلي */}
           <ProductInteractive
+            productId={Number(productsid)}
             basePrice={product.basePrice}
             variants={product.variants || []}
             allowsCustomization={product.allowsCustomization}
@@ -51,8 +52,8 @@ export default async function page({ params }: { params: Promise<{ productsid: s
       {/* Reviews */}
       <div className="lg:grid lg:grid-cols-4 lg:gap-16 mb-12 px-10">
         <div className="lg:col-span-1 p-8">
-          <h4 className="italic text-[27px] mb-8">Customer Stories</h4>
-          <p className="text-7xl font-bold mb-4">
+          <h4 className="italic text-xl mb-8">Customer Stories</h4>
+          <p className="text-xl font-bold mb-4">
             {product.averageRating > 0 ? product.averageRating : "—"}
           </p>
           <span className="text-[#BC5439] mb-4 text-lg">
@@ -71,7 +72,7 @@ export default async function page({ params }: { params: Promise<{ productsid: s
 
       {/* You Might Also Like */}
       <div className="flex justify-between items-center mb-10 px-10">
-        <h4 className="text-3xl italic">You Might Also Like</h4>
+        <h4 className="text-xl italic">You Might Also Like</h4>
         <Link href="/products" className="tracking-widest text-xs">
           Explore All <i className="fa-solid fa-arrow-right" />
         </Link>
