@@ -20,9 +20,11 @@ async function getMyProductsClient(brandId: number) {
 export default function InventoryTap() {
   const queryClient = useQueryClient();
   const { brandId } = useSelector((appState: AppState) => appState.brand);
-  
+
   const [view, setView] = useState<"grid" | "table">("grid");
-  const [statusFilter, setStatusFilter] = useState<"All" | "Approved" | "Pending" | "Rejected">("All");
+  const [statusFilter, setStatusFilter] = useState<
+    "All" | "Approved" | "Pending" | "Rejected"
+  >("All");
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["myProducts", brandId],
@@ -30,39 +32,41 @@ export default function InventoryTap() {
     enabled: !!brandId,
   });
 
-  
-
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteProductClient(id),
     onSuccess: (data) => {
       toast.success(data?.message || "Product deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["myProducts", brandId] }); // ← بيعمل refetch تلقائي
+      queryClient.invalidateQueries({ queryKey: ["myProducts", brandId] });
     },
     onError: (error: any) => {
-  const data = error.response?.data;
-  const message = Array.isArray(data) ? data[0] : data?.message || "Failed to delete product";
-  toast.error(message);
-},
+      const data = error.response?.data;
+      const message = Array.isArray(data)
+        ? data[0]
+        : data?.message || "Failed to delete product";
+      toast.error(message);
+    },
   });
 
-  const filtered = statusFilter === "All"
-    ? products
-    : products.filter((p: Product) => p.approvalStatusText === statusFilter);
+  const filtered =
+    statusFilter === "All"
+      ? products
+      : products.filter((p: Product) => p.approvalStatusText === statusFilter);
 
   const [editProduct, setEditProduct] = useState<Product | null>(null);
-const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-function handleEdit(product: Product) {
-  setEditProduct(product);
-  setIsEditModalOpen(true);
-}
+  function handleEdit(product: Product) {
+    setEditProduct(product);
+    setIsEditModalOpen(true);
+  }
 
   function handleDelete(id: number) {
     deleteMutation.mutate(id);
   }
 
   if (!brandId) return <p className="p-8 text-stone-500">No brand found.</p>;
-  if (isLoading) return <p className="p-8 text-stone-500">Loading products...</p>;
+  if (isLoading)
+    return <p className="p-8 text-stone-500">Loading products...</p>;
 
   return (
     <div className="p-6 space-y-6">
@@ -99,19 +103,27 @@ function handleEdit(product: Product) {
       {filtered.length === 0 ? (
         <p className="text-stone-400 text-sm">No products found.</p>
       ) : view === "grid" ? (
-        <InventoryGrid products={filtered} onEdit={handleEdit} onDelete={handleDelete} />
+        <InventoryGrid
+          products={filtered}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       ) : (
-        <InventoryTable products={filtered} onEdit={handleEdit} onDelete={handleDelete} />
+        <InventoryTable
+          products={filtered}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       )}
       <EditProductModal
-      product={editProduct}
-      isOpen={isEditModalOpen}
-      onClose={() => {
-        setIsEditModalOpen(false);
-        setEditProduct(null);
-        queryClient.invalidateQueries({ queryKey: ["myProducts", brandId] });
-      }}
-    />
+        product={editProduct}
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditProduct(null);
+          queryClient.invalidateQueries({ queryKey: ["myProducts", brandId] });
+        }}
+      />
     </div>
   );
 }

@@ -57,7 +57,9 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
       });
 
       const updatedCart = await getLoggedUserCart();
-      dispatch(setCart(updatedCart));
+      if (updatedCart) {
+        dispatch(setCart(updatedCart));
+      }
 
       toast.success("Added to cart! ");
     } catch (err: any) {

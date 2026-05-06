@@ -4,7 +4,6 @@ import { Exo } from "next/font/google";
 import { Bounce, ToastContainer } from "react-toastify";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
 import Providers from "./providers/Providers";
 import { getAuthData, getMyRequestData } from "./server/auth.actions";
 import { getLoggedUserCart } from "./api/cart.api";
@@ -28,7 +27,13 @@ export default async function RootLayout({
   let cartData = null;
   let myBrand = null;
   myBrand = await getMyBrands();
-if(authData?.userInfo.userType === 'Customer'){cartData = await getLoggedUserCart();}
+if(authData?.userInfo.userType === 'Customer'){
+
+try {
+  cartData = await getLoggedUserCart();
+} catch (e) {
+  cartData = null;
+}}
   
   const preloadedState = {
     auth: authData
@@ -55,6 +60,7 @@ if(authData?.userInfo.userType === 'Customer'){cartData = await getLoggedUserCar
     <html lang="en">
       <Providers preloadedState={preloadedState}>
         <body className={`${exo.className} font-medium`}>
+          {/* {authData?.userInfo.userType === 'Customer'&&<Nav />} */}
           <Nav />
 
           {children}

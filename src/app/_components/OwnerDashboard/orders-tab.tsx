@@ -1,12 +1,15 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown, MapPin, Clock} from "lucide-react"
+import { useState, useEffect } from "react"
+import { ChevronDown, MapPin, Clock } from "lucide-react"
+import { getAllOrders } from '@/app/api/order.api';
+import { updateOrderStatus } from "@/app/api/product.api";
 
-type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered"
+type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled"
 
 interface Order {
   id: string
+  orderId: number
   customer: string
   city: string
   product: string
@@ -18,66 +21,111 @@ interface Order {
   avatar: string
 }
 
-const INITIAL_ORDERS: Order[] = [
-  { id: "#ORD-4821", customer: "Nour El-Din Hassan", city: "Cairo", product: "Indigo Washed Hoodie", details: "Black · Size L", customization: "Embroidery on Left Sleeve", amount: 1450, status: "Processing", date: "Apr 13, 2026", avatar: "N" },
-  { id: "#ORD-4820", customer: "Farah Youssef", city: "Alexandria", product: "Terracotta Tote Bag", details: "Natural · One Size", customization: "Screen Print — Custom Logo (Front)", amount: 890, status: "Shipped", date: "Apr 12, 2026", avatar: "F" },
-  { id: "#ORD-4819", customer: "Karim Selim", city: "Giza", product: "Cream Oversized Crewneck", details: "Cream · Size XL", customization: null, amount: 2200, status: "Delivered", date: "Apr 11, 2026", avatar: "K" },
-  { id: "#ORD-4818", customer: "Sara Mahmoud", city: "Cairo", product: "Indigo Washed Hoodie", details: "Black · Size M", customization: "Heat Transfer — Back Print", amount: 1650, status: "Pending", date: "Apr 14, 2026", avatar: "S" },
-  { id: "#ORD-4817", customer: "Omar Tarek", city: "Hurghada", product: "Desert Sand Cap", details: "Beige · One Size", customization: "Embroidery on Front Panel", amount: 650, status: "Processing", date: "Apr 13, 2026", avatar: "O" },
-]
-
 const LIFECYCLE: OrderStatus[] = ["Pending", "Processing", "Shipped", "Delivered"]
+
+const STATUS_TO_INT: Record<OrderStatus, number> = {
+  Pending: 1,
+  Processing: 2,
+  Shipped: 3,
+  Delivered: 4,
+  Cancelled: 5,
+}
+
 const STATUS_COLORS: Record<OrderStatus, string> = {
   Pending: "bg-amber-50 text-amber-700 border-amber-200",
   Processing: "bg-blue-50 text-blue-700 border-blue-200",
   Shipped: "bg-indigo-50 text-indigo-700 border-indigo-200",
   Delivered: "bg-emerald-50 text-emerald-700 border-emerald-200",
-}
-const STATUS_DOT: Record<OrderStatus, string> = {
-  Pending: "bg-amber-400", Processing: "bg-blue-500", Shipped: "bg-indigo-500", Delivered: "bg-emerald-500",
+  Cancelled: "bg-red-50 text-red-700 border-red-200",
 }
 
-function StatusDropdown({ 
-  orderId, currentStatus, onUpdate, onToggle 
-}: { 
-  orderId: string; currentStatus: OrderStatus; onUpdate: (id: string, s: OrderStatus) => void; onToggle: (open: boolean) => void;
+const STATUS_DOT: Record<OrderStatus, string> = {
+  Pending: "bg-amber-400",
+  Processing: "bg-blue-500",
+  Shipped: "bg-indigo-500",
+  Delivered: "bg-emerald-500",
+  Cancelled: "bg-red-500",
+}
+
+function StatusDropdown({
+  orderId,
+  currentStatus,
+  onUpdate,
+}: {
+  orderId: number
+  currentStatus: OrderStatus
+  onUpdate: (id: number, newStatus: OrderStatus) => void
 }) {
   const [open, setOpen] = useState(false)
-  const allowedNext = LIFECYCLE.filter((s) => LIFECYCLE.indexOf(s) >= LIFECYCLE.indexOf(currentStatus))
+  const [loading, setLoading] = useState(false)
 
-  const handleOpen = () => {
-    const newState = !open
-    setOpen(newState)
-    onToggle(newState)
+  const isLocked = currentStatus === "Delivered" || currentStatus === "Cancelled"
+
+  const allowedNext = LIFECYCLE.filter(
+    (s) => LIFECYCLE.indexOf(s) > LIFECYCLE.indexOf(currentStatus)
+  )
+
+  const handleSelect = async (status: OrderStatus) => {
+    setOpen(false)
+    setLoading(true)
+    try {
+      const result = await updateOrderStatus(orderId, STATUS_TO_INT[status])
+      onUpdate(orderId, status)
+    } catch (err) {
+      console.error("Failed to update order status:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (isLocked) {
+    return (
+      <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${STATUS_COLORS[currentStatus]}`}>
+        <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[currentStatus]}`} />
+        {currentStatus}
+      </div>
+    )
   }
 
   return (
-    <div className="relative  inline-block">
+    <div className="relative inline-block text-left">
       <button
-        onClick={handleOpen}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${STATUS_COLORS[currentStatus]} hover:brightness-95`}
+        onClick={() => setOpen((o) => !o)}
+        disabled={loading || allowedNext.length === 0}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
+          STATUS_COLORS[currentStatus]
+        } ${loading ? "opacity-60 cursor-not-allowed" : "hover:shadow-sm"}`}
       >
-        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${STATUS_DOT[currentStatus]}`} />
+        {loading ? (
+          <span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[currentStatus]}`} />
+        )}
         {currentStatus}
-        <ChevronDown className={`w-3 h-3 ml-0.5 transition-transform ${open ? "rotate-180" : ""}`} />
+        {(!loading && allowedNext.length > 0) && <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />}
       </button>
 
       {open && (
         <>
-          <div className="fixed inset-0 z-[100]" onClick={() => { setOpen(false); onToggle(false); }} />
-          <div className="absolute right-0 top-full mt-2 w-44 z-[110] bg-white border border-gray-200 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-            <div className="py-1">
-              {allowedNext.map((status) => (
-                <button
-                  key={status}
-                  onClick={() => { onUpdate(orderId, status); setOpen(false); onToggle(false); }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-medium text-left hover:bg-gray-50 border-b border-gray-50 last:border-0 ${status === currentStatus ? "bg-gray-50 text-[#BC5439]" : "text-gray-700"}`}
-                >
-                  <span className={`w-2 h-2 rounded-full shrink-0 ${STATUS_DOT[status]}`} />
-                  {status}
-                </button>
-              ))}
-            </div>
+          <div className="fixed inset-0 z-100" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 top-full mt-2 w-44 z-110 bg-white border rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-150">
+            {allowedNext.map((status) => (
+              <button
+                key={status}
+                onClick={() => handleSelect(status)}
+                className="w-full px-4 py-2.5 text-xs text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[status]}`} />
+                {status}
+              </button>
+            ))}
+            <button
+              onClick={() => handleSelect("Cancelled")}
+              className="w-full px-4 py-2.5 text-xs text-left hover:bg-red-50 flex items-center gap-2 text-red-600 border-t border-gray-50"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+              Cancel Order
+            </button>
           </div>
         </>
       )}
@@ -87,12 +135,22 @@ function StatusDropdown({
 
 function ProgressBar({ status }: { status: OrderStatus }) {
   const step = LIFECYCLE.indexOf(status) + 1
+  if (status === "Cancelled") return <div className="mt-2 text-[10px] text-red-500 font-medium">Order Cancelled</div>
+
   return (
     <div className="flex items-center gap-1 mt-2">
       {LIFECYCLE.map((_, i) => (
         <div key={i} className="flex items-center gap-1">
-          <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${i + 1 <= step ? "bg-[#BC5439]" : "bg-gray-200"}`} />
-          {i < LIFECYCLE.length - 1 && <div className={`h-0.5 w-4 transition-all duration-500 ${i + 1 < step ? "bg-[#BC5439]" : "bg-gray-200"}`} />}
+          <div
+            className={`w-1.5 h-1.5 rounded-full ${
+              i + 1 <= step ? "bg-[#BC5439]" : "bg-gray-200"
+            }`}
+          />
+          {i < LIFECYCLE.length - 1 && (
+            <div
+              className={`h-0.5 w-4 ${i + 1 < step ? "bg-[#BC5439]" : "bg-gray-200"}`}
+            />
+          )}
         </div>
       ))}
     </div>
@@ -100,96 +158,132 @@ function ProgressBar({ status }: { status: OrderStatus }) {
 }
 
 export function OrdersTab() {
-  const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS)
+  const [orders, setOrders] = useState<Order[]>([])
   const [filterStatus, setFilterStatus] = useState<"All" | OrderStatus>("All")
-  const [activeOrderId, setActiveOrderId] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const handleUpdate = (id: string, s: OrderStatus) => {
-    setOrders(prev => prev.map(o => o.id === id ? { ...o, status: s } : o))
+  const load = async () => {
+    try {
+      const data = await getAllOrders()
+      if (!data) return
+
+      const mapped: Order[] = data.map((o: any) => {
+        const item = o.items?.[0]
+        return {
+          id: `#ORD-${o.orderId}`,
+          orderId: o.orderId,
+          customer: o.customerName,
+          city: o.shippingAddress?.split("-")[1]?.trim() || "N/A",
+          product: item?.productName || "Unknown Product",
+          details: `${item?.color || ""} · ${item?.size || ""}`,
+          customization: item?.customization ? "Customized" : null,
+          amount: o.finalTotal,
+          status: (o.orderStatusText || "Pending") as OrderStatus,
+          date: new Date(o.createdAt).toLocaleDateString(),
+          avatar: o.customerName?.[0]?.toUpperCase() || "U",
+        }
+      })
+      setOrders(mapped)
+    } catch (err) {
+      console.error("Load orders error:", err)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const filtered = filterStatus === "All" ? orders : orders.filter((o) => o.status === filterStatus)
+  useEffect(() => {
+    load()
+  }, [])
 
-  const totals = {
-    Pending: orders.filter((o) => o.status === "Pending").length,
-    Processing: orders.filter((o) => o.status === "Processing").length,
-    Shipped: orders.filter((o) => o.status === "Shipped").length,
-    Delivered: orders.filter((o) => o.status === "Delivered").length,
+  const handleUpdate = (orderId: number, newStatus: OrderStatus) => {
+    setOrders((prev) =>
+      prev.map((o) => (o.orderId === orderId ? { ...o, status: newStatus } : o))
+    )
+  }
+
+  const filtered =
+    filterStatus === "All" ? orders : orders.filter((o) => o.status === filterStatus)
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20 text-gray-400 text-sm">
+        <span className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin mr-2" />
+        Loading orders...
+      </div>
+    )
   }
 
   return (
-    <div className="container mx-auto px-12 py-10 space-y-6">
-      
-
-      {/* 2. Filter Tabs */}
-      <div className="flex items-center gap-1 p-1 bg-[#E8E4E0]/50 rounded-lg w-fit">
-        {(["All", "Pending", "Processing", "Shipped", "Delivered"] as const).map((s) => (
-          <button
-            key={s}
-            onClick={() => setFilterStatus(s)}
-            className={`text-xs font-medium px-4 py-1.5 rounded-md transition-all ${filterStatus === s ? "bg-white text-[#2D2D2D] shadow-sm" : "text-gray-500 hover:text-[#2D2D2D]"}`}
-          >
-            {s}
-          </button>
-        ))}
+    <div className="container mx-auto px-4 md:px-12 py-10 space-y-6">
+      {/* Filter */}
+      <div className="flex items-center gap-1 p-1 bg-[#E8E4E0]/50 rounded-lg w-fit overflow-x-auto">
+        {(["All", "Pending", "Processing", "Shipped", "Delivered", "Cancelled"] as const).map(
+          (s) => (
+            <button
+              key={s}
+              onClick={() => setFilterStatus(s)}
+              className={`text-xs px-4 py-1.5 rounded-md whitespace-nowrap transition-all ${
+                filterStatus === s ? "bg-white shadow-sm font-semibold text-[#BC5439]" : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {s}
+            </button>
+          )
+        )}
       </div>
 
-      {/* 3. Orders List */}
-      <div className="space-y-3">
-        {filtered.map((order) => (
-          <div 
-            key={order.id} 
-            className={`bg-white border border-gray-200 rounded-2xl p-5 transition-all relative ${activeOrderId === order.id ? 'z-[50] shadow-xl' : 'z-[10]'}`}
-          >
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              {/* Customer */}
-              <div className="flex items-start gap-4 flex-1">
-                <div className="w-10 h-10 rounded-full bg-[#BC5439]/10 flex items-center justify-center text-[#BC5439] font-bold shrink-0">
-                  {order.avatar}
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="font-bold text-gray-900 truncate">{order.customer}</p>
-                    <span className="text-[10px] font-mono text-gray-400">{order.id}</span>
+      {/* Orders List */}
+      {filtered.length === 0 ? (
+        <div className="text-center py-16 text-gray-400 text-sm bg-white border rounded-2xl border-dashed">
+          No orders found in this category.
+        </div>
+      ) : (
+        <div className="grid gap-3">
+          {filtered.map((order) => (
+            <div key={order.id} className="bg-white border border-[#E8E4E0] rounded-2xl p-5 hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#BC5439]/10 text-[#BC5439] flex items-center justify-center font-bold text-xs">
+                      {order.avatar}
+                    </div>
+                    <p className="font-bold text-gray-900">{order.customer}</p>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-500 text-[11px] mt-0.5">
-                    <MapPin className="w-3 h-3" /> {order.city} • <Clock className="w-3 h-3" /> {order.date}
+                  <div className="text-[11px] text-gray-500 flex items-center gap-3 mt-2">
+                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {order.city}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {order.date}</span>
+                    <span className="font-medium text-gray-400">{order.id}</span>
                   </div>
                   <ProgressBar status={order.status} />
                 </div>
+
+                <div className="text-right flex flex-col items-end gap-2">
+                  <div className="font-bold text-lg text-gray-900">EGP {order.amount.toLocaleString()}</div>
+                  <StatusDropdown
+                    orderId={order.orderId}
+                    currentStatus={order.status}
+                    onUpdate={handleUpdate}
+                  />
+                </div>
               </div>
 
-              {/* Product */}
-              <div className="hidden lg:block flex-1 min-w-0 border-x border-gray-100 px-6">
-                <p className="text-sm font-semibold text-gray-800 truncate">{order.product}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{order.details}</p>
-                {order.customization && (
-                   <span className="inline-flex items-center gap-1 mt-2 text-[10px] font-medium text-[#BC5439] bg-[#BC5439]/5 px-2 py-0.5 rounded-full border border-[#BC5439]/10">
+              <div className="mt-4 pt-4 border-t border-gray-50">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="font-bold text-sm text-gray-800">{order.product}</p>
+                    <p className="text-xs text-gray-500 mt-1">{order.details}</p>
+                  </div>
+                  {order.customization && (
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full border border-amber-200 uppercase">
                       {order.customization}
-                   </span>
-                )}
-              </div>
-
-              {/* Price & Dropdown */}
-              <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-4">
-                <div className="text-lg font-black text-gray-900">EGP {order.amount.toLocaleString()}</div>
-                <StatusDropdown 
-                  orderId={order.id} 
-                  currentStatus={order.status} 
-                  onUpdate={handleUpdate}
-                  onToggle={(isOpen) => setActiveOrderId(isOpen ? order.id : null)} 
-                />
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-
-        {filtered.length === 0 && (
-          <div className="py-20 text-center bg-white rounded-2xl border border-dashed border-gray-300 text-gray-500 text-sm">
-            No orders found in this category
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

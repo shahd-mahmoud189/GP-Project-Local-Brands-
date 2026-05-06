@@ -18,7 +18,7 @@ import { Loader2 } from "lucide-react";
 
 export interface AddProductTabProps {
   initialData?: Partial<ProductFormValues>;
-  productId?: number; // ← جديد
+  productId?: number; 
   onSuccess?: () => void;
 }
 
@@ -127,7 +127,6 @@ export function AddProductTab({ initialData, productId, onSuccess }: AddProductT
     return;
   }
 
-  // الـ Images required بس في الـ add mode
   if (!productId && (!data.Images || data.Images.length === 0)) {
     toast.error("Please upload at least one product image.");
     return;

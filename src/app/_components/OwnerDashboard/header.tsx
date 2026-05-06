@@ -8,6 +8,7 @@ const TAB_TITLES: Record<Tab, string> = {
   profile: "Profile ",
   inventory: "My Products",
   "add-product": "Add New Product",
+  "my-brand": "My Brand",
   orders: "Orders Management",
 }
 

@@ -64,7 +64,7 @@ export function VariantsSection({
 
       {variantsEnabled && (
         <div className="pt-4 border-t border-gray-50 overflow-x-auto">
-          <table className="w-full text-left min-w-[600px]">
+          <table className="w-full text-left min-w-150">
             <thead>
               <tr className="text-[10px] uppercase text-gray-400 font-bold">
                 <th className="pb-2">Size</th>

@@ -40,12 +40,13 @@ export default function CategoryListClient({ initialData }: { initialData?: cate
               Take control of your product categories. <br />
               Streamline organization, maintain consistency, and optimize your catalog structure.
             </p>
-          </div>
-          <AddCategoryForm
+            <AddCategoryForm
             showForm={showForm}
             setShowForm={handleCloseForm}
             editCategoryData={editCategoryData}
           />
+          </div>
+          
         </>
       ) : (
         <div className="mb-6 px-12">

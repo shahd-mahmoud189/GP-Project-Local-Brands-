@@ -73,7 +73,7 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto px-12 py-10">
+    <div className="container mx-auto md:px-12 py-10">
 
       <div className="mb-6 px-12 flex justify-between items-end">
         <div>

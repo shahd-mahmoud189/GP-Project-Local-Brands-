@@ -12,6 +12,7 @@ const getActiveTab = (): Tab => {
   if (pathname === "/ownerAccount/dashboard") return "dashboard"
   if (pathname === "/ownerAccount/inventory") return "inventory"
   if (pathname === "/ownerAccount/add-product") return "add-product"
+  if (pathname === "/ownerAccount/my-brand") return "my-brand"
   if (pathname === "/ownerAccount/orders") return "orders"
   return "dashboard"
 }
@@ -22,6 +23,7 @@ const getActiveTab = (): Tab => {
       dashboard: "/ownerAccount/dashboard",
       inventory: "/ownerAccount/inventory",
       "add-product": "/ownerAccount/add-product",
+      "my-brand": "/ownerAccount/my-brand",
       orders: "/ownerAccount/orders",
     }
     router.push(routes[tab])

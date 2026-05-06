@@ -5,7 +5,7 @@ export default function page() {
   return (
     <>
       <div className="grid lg:grid-cols-3 my-5">
-        <div className="lg:col-span-2 mt-10">
+        <div className="lg:col-span-2 mt-10 px-5">
          <div className="flex justify-center items-center flex-col">
            <h2 className="text-4xl font-bold text-[#864227]">
             Empowering Egyptian <br /> brands to reach every home

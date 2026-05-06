@@ -8,12 +8,12 @@ import CancelOrderButton from './CancelOrderButton';
 export default async function OrdersPage() {
   let orders: Order[] = [];
   try {
-    orders = await getUserOrders();
+    orders = (await getUserOrders()) ?? [];
   } catch (err) {
     console.error("Failed to load orders", err);
   }
 
-  const sortedOrders = orders?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) || [];
+  const sortedOrders = orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
     <div className='w-full max-w-7xl px-4 md:px-12 py-10 mx-auto '>
@@ -125,7 +125,7 @@ export default async function OrdersPage() {
                     </span>
                   </h4>
 
-                  <div className="flex-1 space-y-3 max-h-[400px] overflow-y-auto pr-2 overflow-x-hidden">
+                  <div className="flex-1 space-y-3 max-h-100 overflow-y-auto pr-2 overflow-x-hidden">
                     {order.items?.map((item) => (
                       <div
                         key={item.orderItemId}

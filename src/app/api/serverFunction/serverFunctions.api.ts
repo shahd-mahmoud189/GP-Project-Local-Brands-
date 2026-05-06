@@ -1,7 +1,8 @@
+import { BrandDetailsResponse } from "@/app/types/brand.type";
 import { ProductList } from "@/app/types/product.type";
 import { cookies } from "next/headers";
 
-async function refreshTokens(): Promise<string | null> {
+export async function refreshTokens(): Promise<string | null> {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
@@ -228,5 +229,15 @@ export async function getMyProducts(brandId:number):Promise<ProductList> {
   }
 
   if (!response.ok) return [];  
+  return response.json();
+}
+
+
+export async function getBrandById(brandId: number): Promise<BrandDetailsResponse> {
+  const response = await fetch(
+    `https://brands-system-production-c110.up.railway.app/api/Brands/${brandId}`,
+    { cache: "no-store" }
+  );
+  if (!response.ok) throw new Error("Failed to fetch brand");
   return response.json();
 }

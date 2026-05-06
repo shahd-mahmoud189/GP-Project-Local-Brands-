@@ -332,7 +332,7 @@ export default function Nav() {
                 </li>
               </>
             )}
-            <li
+            {userInfo?.userType === "Customer" &&<><li
               className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
             >
               <Link
@@ -360,7 +360,7 @@ export default function Nav() {
                 <i className="fa-regular fa-heart mr-2"></i>
                 <span className="text-sm">Whishlist</span>
               </Link>
-            </li>
+            </li></>}
             {isAuthinticated && (
               <>
                 <li

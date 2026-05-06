@@ -18,7 +18,7 @@ export function ProductDashboardCard({ product, onEdit, onDelete }: ProductDashb
 
     return (
         <div className={`group bg-white rounded-2xl border border-[#E8E4E0] overflow-hidden transition-all hover:shadow-md ${isLowStock ? "ring-1 ring-amber-200" : ""}`}>
-            <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+            <div className="relative aspect-4/3 bg-gray-100 overflow-hidden">
                 <img
                     src={getImageUrl(product.imageUrls)}
                     alt={product.productName}

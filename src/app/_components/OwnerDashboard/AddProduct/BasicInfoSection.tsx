@@ -40,12 +40,10 @@ export function BasicInfoSection({
   const description = watch("Description");
   const categoryId = watch("CategoryId");
 
-  // جيب الكاتيجوريز
   useEffect(() => {
     getAllCategory().then(setCategories).catch(() => setCategories([]));
   }, []);
 
-  // Moderate Text — debounce 800ms
   useEffect(() => {
     if (!productName || !description || !categoryId) return;
     if (moderationTimer.current) clearTimeout(moderationTimer.current);
@@ -74,7 +72,6 @@ export function BasicInfoSection({
     return () => { if (moderationTimer.current) clearTimeout(moderationTimer.current); };
   }, [productName, description, categoryId]);
 
-  // Generate Description — debounce 600ms
   useEffect(() => {
     if (!productName || !categoryId) return;
     if (suggestionTimer.current) clearTimeout(suggestionTimer.current);

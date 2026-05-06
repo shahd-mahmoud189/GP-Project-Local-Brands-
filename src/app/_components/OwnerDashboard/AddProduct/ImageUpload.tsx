@@ -10,9 +10,8 @@ interface ImageUploadProps {
   control: Control<ProductFormValues>;
   errors: FieldErrors<ProductFormValues>;
   onImageUpload: (files: File[]) => void;
-  initialImageUrl?: string; // ← الصورة الحالية للمنتج
+  initialImageUrl?: string;
 }
-
 
 type ScanStatus = "idle" | "scanning" | "approved" | "rejected";
 
@@ -21,11 +20,21 @@ interface ScanResult {
   message: string;
 }
 
-export function ImageUpload({ control, errors, onImageUpload, initialImageUrl }: ImageUploadProps) {
-  const [scanResults, setScanResults] = useState<Record<number, ScanResult>>({});
+export function ImageUpload({
+  control,
+  errors,
+  onImageUpload,
+  initialImageUrl,
+}: ImageUploadProps) {
+  const [scanResults, setScanResults] = useState<Record<number, ScanResult>>(
+    {},
+  );
 
   const scanImage = async (file: File, index: number) => {
-    setScanResults((prev) => ({ ...prev, [index]: { status: "scanning", message: "" } }));
+    setScanResults((prev) => ({
+      ...prev,
+      [index]: { status: "scanning", message: "" },
+    }));
     try {
       const result = await validateImage(file);
       setScanResults((prev) => ({
@@ -52,12 +61,13 @@ export function ImageUpload({ control, errors, onImageUpload, initialImageUrl }:
           const files: File[] = field.value || [];
           const previews = files.map((f) => URL.createObjectURL(f));
 
-          const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+          const handleChange = async (
+            e: React.ChangeEvent<HTMLInputElement>,
+          ) => {
             const newFiles = Array.from(e.target.files || []);
             const merged = [...files, ...newFiles];
             field.onChange(merged);
             onImageUpload(merged);
-            // scan كل صورة جديدة
             for (let i = 0; i < newFiles.length; i++) {
               await scanImage(newFiles[i], files.length + i);
             }
@@ -76,7 +86,7 @@ export function ImageUpload({ control, errors, onImageUpload, initialImageUrl }:
             <div className="space-y-3">
               <label
                 htmlFor="file-upload"
-                className="min-h-[160px] border-2 border-dashed rounded-2xl p-4 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all border-gray-200 hover:bg-gray-50 hover:border-amber-400"
+                className="min-h-40 border-2 border-dashed rounded-2xl p-4 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all border-gray-200 hover:bg-gray-50 hover:border-amber-400"
               >
                 <input
                   id="file-upload"
@@ -88,20 +98,24 @@ export function ImageUpload({ control, errors, onImageUpload, initialImageUrl }:
                 />
                 <UploadCloud className="w-8 h-8 text-gray-400" />
                 <p className="font-bold text-[11px] uppercase tracking-wide text-gray-500">
-                  {files.length > 0 ? "Add More Images" : "Upload Product Photos"}
+                  {files.length > 0
+                    ? "Add More Images"
+                    : "Upload Product Photos"}
                 </p>
               </label>
 
               {previews.length === 0 && initialImageUrl && (
-        <div className="relative aspect-square">
-          <img
-            src={initialImageUrl}
-            alt="current"
-            className="w-full h-full object-cover rounded-xl border border-[#E8E4E0] opacity-60"
-          />
-          <p className="text-[10px] text-center text-gray-400 mt-1">Current image — upload new to replace</p>
-        </div>
-      )}
+                <div className="relative aspect-square">
+                  <img
+                    src={initialImageUrl}
+                    alt="current"
+                    className="w-full h-full object-cover rounded-xl border border-[#E8E4E0] opacity-60"
+                  />
+                  <p className="text-[10px] text-center text-gray-400 mt-1">
+                    Current image — upload new to replace
+                  </p>
+                </div>
+              )}
 
               {previews.length > 0 && (
                 <div className="grid grid-cols-3 gap-2">
@@ -116,8 +130,8 @@ export function ImageUpload({ control, errors, onImageUpload, initialImageUrl }:
                             scan?.status === "approved"
                               ? "border-green-400"
                               : scan?.status === "rejected"
-                              ? "border-red-400"
-                              : "border-[#E8E4E0]"
+                                ? "border-red-400"
+                                : "border-[#E8E4E0]"
                           }`}
                         />
                         {/* Scan Status Icon */}
@@ -149,7 +163,9 @@ export function ImageUpload({ control, errors, onImageUpload, initialImageUrl }:
                                 : "bg-red-500/80 text-white"
                             }`}
                           >
-                            {scan.status === "approved" ? "✓ Valid" : "✗ Invalid"}
+                            {scan.status === "approved"
+                              ? "✓ Valid"
+                              : "✗ Invalid"}
                           </div>
                         )}
                       </div>
