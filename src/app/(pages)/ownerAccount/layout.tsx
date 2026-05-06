@@ -34,7 +34,7 @@ const getActiveTab = (): Tab => {
   return (
     <div className="flex min-h-screen bg-[#FAF8F6]">
       <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
-      <div className="ml-[72px] flex-1 flex flex-col">
+      <div className="ml-18 flex-1 flex flex-col">
         <Header activeTab={activeTab} />
         <main className="flex-1 p-6">
           {children}

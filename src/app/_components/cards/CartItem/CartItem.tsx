@@ -39,6 +39,9 @@ export default function CartItem({ item }: { item: CartItemType }) {
       });
 
       const updatedCart = await getLoggedUserCart();
+      if (!updatedCart) {
+        throw new Error("Failed to fetch updated cart");
+      }
       dispatch(setCart(updatedCart));
 
     } catch (err: any) {
@@ -87,6 +90,9 @@ export default function CartItem({ item }: { item: CartItemType }) {
         await removeProductFromCart(cartItemId);
 
         const updatedCart = await getLoggedUserCart();
+        if (!updatedCart) {
+          throw new Error("Failed to fetch updated cart");
+        }
         dispatch(setCart(updatedCart));
 
         Swal.fire({
