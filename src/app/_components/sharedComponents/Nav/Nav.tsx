@@ -37,7 +37,7 @@ export default function Nav() {
     removeUserInfo();
     removeBrandRequest();
     dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
-    toast.success("Logged out successfully");
+    //toast.success("Logged out successfully");
   }
 
   return (

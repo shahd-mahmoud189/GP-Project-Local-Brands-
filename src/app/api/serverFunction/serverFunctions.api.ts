@@ -232,7 +232,6 @@ export async function getMyProducts(brandId:number):Promise<ProductList> {
   return response.json();
 }
 
-
 export async function getBrandById(brandId: number): Promise<BrandDetailsResponse> {
   const response = await fetch(
     `https://brands-system-production-c110.up.railway.app/api/Brands/${brandId}`,

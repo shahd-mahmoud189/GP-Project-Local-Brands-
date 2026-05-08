@@ -56,6 +56,13 @@ export default function CustomerAside() {
           <i className="fa-regular fa-paper-plane mr-3"></i>{" "}
           <span>Brand Request</span>
         </Link>
+        <Link
+          href={"messages"}
+          className={`w-full ${pathName === "/customerAccount/messages" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
+        >
+          <i className="fa-solid fa-message mr-3"></i>{" "}
+          <span>Chats</span>
+        </Link>
       </ul>
     </nav>
   );

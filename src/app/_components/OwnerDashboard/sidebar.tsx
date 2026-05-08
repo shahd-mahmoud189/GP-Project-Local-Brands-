@@ -1,12 +1,12 @@
 "use client"
 import { removeBrandRequest, removeTokens, removeUserInfo } from "@/app/server/auth.actions";
 import { setAuthInfo } from "@/app/store/slices/auth.slice";
-import { LayoutDashboard,User, Package, PlusSquare, ShoppingBag, LogOut, Store } from "lucide-react"
+import { LayoutDashboard,User, Package, PlusSquare, ShoppingBag, LogOut, Store , MessageCircle} from "lucide-react"
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
-export type Tab = "dashboard" | "profile" | "inventory" | "add-product" | "my-brand" | "orders"
+export type Tab = "dashboard" | "profile" | "inventory" | "add-product" | "my-brand" | "orders" | "messages"
 
 const NAV_ITEMS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "dashboard", label: "Dashboard", icon:  LayoutDashboard},
@@ -15,6 +15,7 @@ const NAV_ITEMS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "add-product", label: "Add Product", icon: PlusSquare },
   { id: "my-brand", label: "My Brand", icon: Package },
   { id: "orders", label: "Orders", icon: ShoppingBag },
+  { id: "messages", label: "messages", icon: MessageCircle },
 ]
 
 interface SidebarProps {
@@ -32,7 +33,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
     removeUserInfo();
     removeBrandRequest();
     dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
-    toast.success("Logged out successfully");
+    //toast.success("Logged out successfully");
   }
   return (
     <aside className="fixed inset-y-0 left-0 z-40 w-18 flex flex-col items-center py-6 gap-2 bg-[#F7F2EA] border-r border-[#864227]">

@@ -10,6 +10,7 @@ const TAB_TITLES: Record<Tab, string> = {
   "add-product": "Add New Product",
   "my-brand": "My Brand",
   orders: "Orders Management",
+  messages: "Chats",
 }
 
 interface HeaderProps {

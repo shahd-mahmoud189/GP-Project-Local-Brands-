@@ -83,7 +83,7 @@
 
 import ReviewCard from "@/app/_components/cards/ReviewCard/ReviewCard";
 import ProductInteractive from "@/app/_components/ProductInteractive/ProductInteractive";
-import { getProductById, getBrandById } from "@/app/api/serverFunction/serverFunctions.api";
+import { getProductById } from "@/app/api/serverFunction/serverFunctions.api";
 import { getImageUrl } from "@/app/utils/imageUrl";
 import { ContactSellerButton } from "@/app/_components/ContactSellerButton/ContactSellerButton";
 import Image from "next/image";
@@ -101,10 +101,6 @@ export default async function page({
     return (
       <div className="container mx-auto px-12 py-10">Product not found.</div>
     );
-
-  const brand = await getBrandById(product.brandId);
-  console.log(brand);
-  
 
   return (
     <div className="container mx-auto px-12 py-10">
@@ -142,7 +138,7 @@ export default async function page({
             customizationOptions={product.customizationOptions}
           />
 
-          <ContactSellerButton ownerId={brand.userId} />
+          <ContactSellerButton ownerId={product.ownerId} />
         </div>
       </div>
 
