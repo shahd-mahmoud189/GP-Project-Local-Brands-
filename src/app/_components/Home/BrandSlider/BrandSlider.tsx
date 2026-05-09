@@ -29,7 +29,7 @@ const steps = [
         icon: <ImagePlus className="text-[#864227]" size={28} />,
         visual: (
             <div className="w-full h-full bg-white p-8 flex flex-col justify-center">
-                <div className="w-full aspect-[4/3] rounded-2xl border-2 border-dashed border-[#864227]/20 bg-[#FAF8F5] flex flex-col items-center justify-center gap-3 mb-4">
+                <div className="w-full aspect-4/3 rounded-2xl border-2 border-dashed border-[#864227]/20 bg-[#FAF8F5] flex flex-col items-center justify-center gap-3 mb-4">
                     <div className="p-4 bg-white rounded-full shadow-sm">
                         <ImagePlus size={28} className="text-[#864227]" />
                     </div>
@@ -89,7 +89,7 @@ export default function BrandSlider() {
                     {/* Visual Container - Light & Soft */}
                     <div className="relative flex justify-center order-2 lg:order-1">
                         
-                        <div className="relative w-full max-w-[400px] aspect-square bg-[#FAF8F5] rounded-[60px] p-8 shadow-[0_40px_100px_-20px_rgba(188,84,57,0.05)] border border-[#F5F1EB]">
+                        <div className="relative w-full max-w-100 aspect-square bg-[#FAF8F5] rounded-[60px] p-8 shadow-[0_40px_100px_-20px_rgba(188,84,57,0.05)] border border-[#F5F1EB]">
                             <div className="w-full h-full rounded-[40px] overflow-hidden shadow-2xl bg-white border border-[#F5F1EB]">
                                 {steps[current].visual}
                             </div>
@@ -110,7 +110,7 @@ export default function BrandSlider() {
                             </h2>
                         </div>
 
-                        <div className="space-y-4 min-h-[140px]">
+                        <div className="space-y-4 min-h-35">
                             <div className="flex items-center gap-4">
                                 <div className="p-3 bg-[#BC5439]/5 rounded-2xl">
                                     {steps[current].icon}

@@ -51,3 +51,11 @@ export async function updateProduct(productId: number, formData: FormData) {
   );
   return data;
 }
+
+export async function updateOrderStatus(orderId: number, status: number) {
+  const { data } = await api.put(
+    `/api/Orders/${orderId}/status?status=${status}`, 
+    {} 
+  );
+  return data;
+}

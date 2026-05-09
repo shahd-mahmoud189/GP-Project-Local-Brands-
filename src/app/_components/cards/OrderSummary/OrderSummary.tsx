@@ -23,7 +23,7 @@ export default function OrderSummary({
       </h3>
 
       {showItems && items.length > 0 && (
-        <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+        <div className="space-y-4 mb-8 max-h-75 overflow-y-auto pr-2 custom-scrollbar">
           {items.map((item) => (
             <OrderItem key={item.cartItemId} item={item} status={false} />
           ))}
@@ -55,7 +55,7 @@ export default function OrderSummary({
           {showItems ? 'Complete Purchase' : 'Proceed to Checkout'}
         </Link>
 
-        <Link href={'/products'} className="w-full inline-block bg-white hover:bg-[#FAF8F5] rounded-xl text-[#864227] border-2 border-[#864227] font-semibold py-3   transition-all duration-200 active:scale-95 text-center">
+        <Link href={'/products'} className="w-full inline-block bg-white hover:bg-[#FAF8F5] rounded-xl text-[#864227] border-2 border-[#864227] font-semibold py-3 px-2 transition-all duration-200 active:scale-95 text-center">
           Continue Shopping
         </Link>
 

@@ -15,6 +15,7 @@ export type ProductVariant = {
 
 export type Product = {
   productId: number;
+  ownerId: number;
   brandId: number;
   brandName: string;
   categoryId: number;
