@@ -1,26 +1,54 @@
 'use server'
-import axios, { AxiosRequestConfig } from "axios";
 import { cookies } from "next/headers";
 import { AddToCartRequest, CartResponse } from "../types/cart.type";
+import { refreshTokens } from "./serverFunction/serverFunctions.api";
 
-export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
+async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value || null;
+  let token = cookieStore.get("token")?.value || null;
 
   if (!token) {
     throw new Error("Authentication required");
   }
 
-  const { data } = await axios.post(
+  const headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  let response = await fetch(url, { ...options, headers });
+
+  if (response.status === 401) {
+    const newToken = await refreshTokens();
+    if (newToken) {
+      const retryHeaders = {
+        ...options.headers,
+        Authorization: `Bearer ${newToken}`,
+        "Content-Type": "application/json",
+      };
+      response = await fetch(url, { ...options, headers: retryHeaders });
+    }
+  }
+
+  return response;
+}
+
+export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
+  const response = await fetchWithAuth(
     "https://brands-system-production-c110.up.railway.app/api/Cart",
-    body,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      method: "POST",
+      body: JSON.stringify(body),
     }
   );
-  return data;
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData || "Failed to add product to cart");
+  }
+
+  return response.json();
 }
 
 export async function getLoggedUserCart(): Promise<CartResponse> {
@@ -28,70 +56,60 @@ export async function getLoggedUserCart(): Promise<CartResponse> {
   const token = cookieStore.get("token")?.value || null;
 
   if (!token) {
-    throw new Error("Authentication required");
+    return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
   }
 
   try {
-    const options: AxiosRequestConfig = {
-      url: "https://brands-system-production-c110.up.railway.app/api/Cart",
+    const response = await fetchWithAuth("https://brands-system-production-c110.up.railway.app/api/Cart", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+      cache: "no-store",
+    });
 
-    const { data } = await axios.request(options);
-    return data;
-  }
-  catch (error) {
-    throw error;
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`CART API ERROR [${response.status}]:`, errorText);
+
+      // Handle 400/404 gracefully
+      if (response.status === 400 || response.status === 404) {
+        return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
+      }
+      throw new Error(`Failed to fetch cart: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    console.error("GET LOGGED USER CART EXCEPTION:", error.message);
+    return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
   }
 }
 
 export async function removeProductFromCart(cartItemId: number): Promise<CartResponse> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value || null;
+  const response = await fetchWithAuth(
+    `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}`,
+    {
+      method: "DELETE",
+    }
+  );
 
-  if (!token) {
-    throw new Error("Authentication required");
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData || "Failed to remove product from cart");
   }
 
-  try {
-    const { data } = await axios.delete(
-      `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return data;
-  }
-  catch (error) {
-    throw error;
-  }
+  return response.json();
 }
 
 export async function clearCartApi(): Promise<void> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value || null;
+  const response = await fetchWithAuth(
+    "https://brands-system-production-c110.up.railway.app/api/Cart",
+    {
+      method: "DELETE",
+    }
+  );
 
-  if (!token) {
-    throw new Error("Authentication required");
-  }
-
-  try {
-    await axios.delete(
-      "https://brands-system-production-c110.up.railway.app/api/Cart",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-  }
-  catch (error) {
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData || "Failed to clear cart");
   }
 }
 
@@ -102,27 +120,23 @@ export async function updateProductQuantity({
   cartItemId: number;
   quantity: number;
 }): Promise<any> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-
-  if (!token) {
-    throw new Error("Authentication required");
-  }
-
   try {
-    const { data } = await axios({
-      method: "PUT",
-      url: `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}?quantity=${quantity}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetchWithAuth(
+      `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}?quantity=${quantity}`,
+      {
+        method: "PUT",
+      }
+    );
 
-    return data;
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("UPDATE CART ERROR:", errorData);
+      throw new Error(errorData || "Failed to update quantity");
+    }
+
+    return response.json();
   } catch (error: any) {
-    const errorData = error.response?.data || error.message;
-    console.error("UPDATE CART ERROR:", errorData);
-    throw new Error(errorData);
+    console.error("UPDATE CART EXCEPTION:", error.message);
+    throw error;
   }
 }
-

@@ -45,6 +45,7 @@ export default async function page({ params }: { params: Promise<{ productsid: s
             variants={product.variants || []}
             allowsCustomization={product.allowsCustomization}
             customizationOptions={product.customizationOptions}
+            product={product}
           />
         </div>
       </div>

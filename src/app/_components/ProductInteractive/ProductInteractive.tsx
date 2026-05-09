@@ -1,12 +1,13 @@
 // src/app/_components/products/ProductInteractive/ProductInteractive.tsx
 "use client";
-import { CustomizationOptions, ProductVariant } from "@/app/types/product.type";
+import { CustomizationOptions, ProductVariant, Product } from "@/app/types/product.type";
 import { useState } from "react";
-import { useAppDispatch } from "@/app/store/store";
+import { useAppDispatch, useAppSelector } from "@/app/store/store";
 import { addProductToCart, getLoggedUserCart } from "@/app/api/cart.api";
 import { setCart } from "@/app/store/slices/cart.slice";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { addToCompare } from "@/app/store/slices/compare.slice";
 
 interface Props {
   productId: number;
@@ -14,6 +15,7 @@ interface Props {
   variants: ProductVariant[];
   allowsCustomization: boolean;
   customizationOptions: CustomizationOptions | null;
+  product?: Product;
 }
 
 export default function ProductInteractive({
@@ -22,8 +24,25 @@ export default function ProductInteractive({
   variants,
   allowsCustomization,
   customizationOptions,
+  product
 }: Props) {
   const dispatch = useAppDispatch();
+  const compareItems = useAppSelector((state) => state.compare.items);
+  const isCompared = compareItems.some((item) => item.productId === productId);
+
+  const handleCompare = () => {
+    if (!product) return;
+    if (isCompared) {
+      toast.info("Product is already in comparison list");
+      return;
+    }
+    if (compareItems.length >= 4) {
+      toast.warning("You can only compare up to 4 products at once");
+      return;
+    }
+    dispatch(addToCompare(product));
+    toast.success("Added to comparison!");
+  };
   const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
   const sizes = [...new Set(variants.map((v) => v.size))];
@@ -129,8 +148,8 @@ export default function ProductInteractive({
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${selectedSize === size
-                    ? "border-[#864227] bg-[#864227] text-white"
-                    : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
+                  ? "border-[#864227] bg-[#864227] text-white"
+                  : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
                   }`}
               >
                 {size}
@@ -156,8 +175,8 @@ export default function ProductInteractive({
                 onClick={() => setSelectedColor(color)}
                 title={color}
                 className={`flex items-center gap-2 px-3 py-2 rounded-full border-2 transition-all ${selectedColor === color
-                    ? "border-[#864227]"
-                    : "border-stone-300 hover:border-[#864227]"
+                  ? "border-[#864227]"
+                  : "border-stone-300 hover:border-[#864227]"
                   }`}
               >
                 <span
@@ -254,8 +273,8 @@ export default function ProductInteractive({
                     key={zone}
                     onClick={() => toggleZone(zone)}
                     className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${selectedZones.includes(zone)
-                        ? "border-[#864227] bg-[#864227] text-white"
-                        : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
+                      ? "border-[#864227] bg-[#864227] text-white"
+                      : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
                       }`}
                   >
                     {zone}
@@ -293,9 +312,13 @@ export default function ProductInteractive({
           )}
           Add to cart
         </button>
-        <button className="flex-1 bg-[#864227] hover:bg-[#9F5538] text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm">
+        <button
+          onClick={handleCompare}
+          disabled={!product}
+          className={`flex-1 text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm ${!product ? 'bg-stone-400' : isCompared ? 'bg-[#9F5538]' : 'bg-[#864227] hover:bg-[#9F5538]'}`}
+        >
           <i className="fa-solid fa-arrow-right-arrow-left text-sm" />
-          Compare
+          {isCompared ? "Compared" : "Compare"}
         </button>
       </div>
     </div>

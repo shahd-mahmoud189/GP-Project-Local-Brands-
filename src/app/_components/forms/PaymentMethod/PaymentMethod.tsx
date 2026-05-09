@@ -31,7 +31,7 @@ export default function PaymentMethod({
   }, [selected, setValue]);
 
   const selectCash = () =>
-    setValue("paymentMethod", 1); // بدون shouldValidate عشان متفحصش قبل ما اليوزر يدوس Submit
+    setValue("paymentMethod", 1); 
 
   const selectOnline = () =>
     setValue("paymentMethod", 2);

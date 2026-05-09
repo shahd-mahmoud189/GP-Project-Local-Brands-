@@ -7,13 +7,17 @@ import Link from "next/link";
 import { useAppDispatch } from "@/app/store/store";
 import { addProductToCart, getLoggedUserCart } from "../../../api/cart.api";
 import { setCart } from "@/app/store/slices/cart.slice";
+import { addToCompare } from "@/app/store/slices/compare.slice";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/app/store/store";
+import { addToWishlist as addToWishlistApi, removeFromWishlist as removeFromWishlistApi, getWishlist } from "@/app/api/wishlist.api";
+import { addToWishlist, removeFromWishlist, setWishlist } from "@/app/store/slices/wishlist.slice";
 
 const BASE_URL = "https://brands-system-production-c110.up.railway.app";
 
 interface ProductCardProps {
   product: Product;
-  saved: boolean;
 }
 
 const colorMap: Record<string, string> = {
@@ -29,8 +33,16 @@ const colorMap: Record<string, string> = {
   Beige: "#D4B896",
 };
 
-export default function ProductCard({ product, saved }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { isAuthinticated } = useAppSelector((state) => state.auth);
+  const compareItems = useAppSelector((state) => state.compare.items);
+  const isCompared = compareItems.some((item) => item.productId === product.productId);
+
+  const wishlistItems = useAppSelector((state) => state.wishlist.items);
+  const wishlistItem = wishlistItems.find((item) => item.productId === product.productId);
+  const isWishlisted = !!wishlistItem;
 
   const getImageUrl = (path: string) => {
     if (!path) return "/unnamed.png";
@@ -44,6 +56,12 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
     : [];
 
   const handleAddToCart = async () => {
+    if (!isAuthinticated) {
+      toast.info("Please login to add items to cart!");
+      router.push("/login");
+      return;
+    }
+
     try {
       const defaultVariantId = product.variants && product.variants.length > 0
         ? product.variants[0].variantId
@@ -61,24 +79,77 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
 
       toast.success("Added to cart! ");
     } catch (err: any) {
-      console.error("ADD FAILED ❌", err);
+      console.error("ADD FAILED ", err);
       toast.error("Failed to add to cart. Please try again.");
     }
   };
 
+  const handleCompare = () => {
+    if (isCompared) {
+      toast.info("Product is already in comparison list");
+      return;
+    }
+    if (compareItems.length >= 4) {
+      toast.warning("You can only compare up to 4 products at once");
+      return;
+    }
+    dispatch(addToCompare(product));
+    toast.success("Added to comparison!");
+  };
+
+  const handleWishlistToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!isAuthinticated) {
+      toast.info("Please login to manage wishlist!");
+      router.push("/login");
+      return;
+    }
+
+    try {
+      if (isWishlisted) {
+        await removeFromWishlistApi({ productId: product.productId });
+        dispatch(removeFromWishlist(wishlistItem?.wishlistItemId || product.productId));
+
+        toast.success("Removed from wishlist");
+      } else {
+
+        await addToWishlistApi({ productId: product.productId });
+
+        const updatedWishlist = await getWishlist();
+        if (updatedWishlist && Array.isArray(updatedWishlist)) {
+          dispatch(setWishlist(updatedWishlist));
+        }
+
+        toast.success("Added to wishlist!");
+      }
+    } catch (err: any) {
+      console.error("WISHLIST TOGGLE FAILED ", err);
+      toast.error(`Failed to update wishlist: ${err.message || "Please try again."}`);
+    }
+  };
+
   return (
-    <div className="group relative bg-white rounded-3xl p-3 border-2 border-gray-200 transition-all duration-500 hover:shadow-md hover:-translate-y-1">
+    <div className="group relative bg-white rounded-3xl p-3 border-2 border-gray-200 transition-all duration-500 hover:shadow-md hover:-translate-y-1 flex flex-col h-full">
 
       {/* IMAGE */}
       <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-[#F9F8F7]">
 
         <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
 
-          <button className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#864227] hover:bg-[#864227] hover:text-white transition-all">
-            <i className={`${saved ? "fa-solid" : "fa-regular"} fa-heart text-sm`} />
+          <button
+            onClick={handleWishlistToggle}
+            title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#864227] hover:bg-[#864227] hover:text-white transition-all"
+          >
+            <i className={`${isWishlisted ? "fa-solid" : "fa-regular"} fa-heart text-sm`} />
           </button>
 
-          <button className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#864227] hover:bg-[#864227] hover:text-white transition-all">
+          <button
+            onClick={handleCompare}
+            title="Add to compare"
+            className={`w-9 h-9 rounded-full shadow-md flex items-center justify-center transition-all ${isCompared ? "bg-[#864227] text-white" : "bg-white text-[#864227] hover:bg-[#864227] hover:text-white"
+              }`}
+          >
             <i className="fa-solid fa-arrow-right-arrow-left text-sm" />
           </button>
         </div>
@@ -95,7 +166,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
       </div>
 
       {/* INFO */}
-      <div className="pt-4 pb-1 px-1 flex flex-col">
+      <div className="pt-4 pb-1 px-1 flex flex-col flex-1">
 
         <Link href={"/brandDetails"} className="text-sm font-semibold text-[#864227] block mb-2">
           {product.brandName}
@@ -127,7 +198,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
         )}
 
         {/* PRICE + ADD */}
-        <div className="flex items-end justify-between mt-3">
+        <div className="flex items-end justify-between mt-auto pt-3">
 
           <div className="flex flex-col">
             <span className="text-[10px] text-gray-400 uppercase font-medium">
