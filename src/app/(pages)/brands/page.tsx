@@ -11,17 +11,17 @@ export default async function BrandsPage() {
 
       <div className="relative container mx-auto px-6 py-10">
         <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[2px] text-gray-400 mb-10">
-          <Link href="/" className="hover:text-[#864227] transition-colors">
+          <Link href="/" className="hover:text-[#0288d1] transition-colors">
             Home
           </Link>
           <span className="text-gray-300">/</span>
-          <span className="text-[#864227] font-bold">All Brands</span>
+          <span className="text-[#0288d1] font-bold">All Brands</span>
         </nav>
 
-        <div className="mb-16 border-l-4 border-[#864227] pl-6">
+        <div className="mb-16 border-l-4 border-[#0288d1] pl-6">
           <h1 className="mt-2 text-4xl md:text-6xl text-[#1f1e1d]">
             Egyptian <br />
-            <span className="text-[#864227]">Brands.</span>
+            <span className="text-[#0288d1]">Brands.</span>
           </h1>
         </div>
         <BrandListClient brands={response} />

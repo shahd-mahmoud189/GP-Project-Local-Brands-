@@ -7,7 +7,7 @@ export default function loading(){
         visible={true}
         height="60"
         width="60"
-        color="#5c4033" 
+        color="#03A9F4" 
         ariaLabel="tail-spin-loading"
         radius="1"
         wrapperStyle={{}}
@@ -15,10 +15,10 @@ export default function loading(){
       />
       
       <div className="mt-6 flex flex-col items-center gap-1">
-        <span className="text-[#5c4033] font-serif italic text-lg tracking-widest uppercase">
+        <span className="text-slate-600 font-serif italic text-lg tracking-widest uppercase">
           Brandy
         </span>
-        <span className="text-[#8c7a6b] text-xs font-light tracking-[0.2em]">
+        <span className="text-slate-600 text-xs font-light tracking-[0.2em]">
           Loading...
         </span>
       </div>

@@ -35,8 +35,8 @@ export default function CategoryListClient({ initialData }: { initialData?: cate
       {userInfo?.userType === "Admin" ? (
         <>
           <div className="mb-6 px-12">
-            <h2 className="text-[#864227] text-4xl font-bold">Manage Categories</h2>
-            <p className="text-[#796C63] mt-4 font-light">
+            <h2 className="text-slate-700 text-4xl font-bold">Manage Categories</h2>
+            <p className="text-slate-600 mt-4 font-light">
               Take control of your product categories. <br />
               Streamline organization, maintain consistency, and optimize your catalog structure.
             </p>
@@ -50,8 +50,8 @@ export default function CategoryListClient({ initialData }: { initialData?: cate
         </>
       ) : (
         <div className="mb-6 px-12">
-          <h2 className="text-[#864227] text-4xl font-bold">Discover Our Collections</h2>
-          <p className="text-[#796C63] mt-4 font-light">
+          <h2 className="text-slate-700  text-4xl font-bold">Discover Our Collections</h2>
+          <p className="text-slate-600 mt-4 font-light">
             From daily essentials to premium picks, dive into our <br />
             diverse categories and discover a world of quality crafted just for you.
           </p>

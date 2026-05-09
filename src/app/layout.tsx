@@ -81,7 +81,8 @@ export default async function RootLayout({
     <html lang="en">
       <Providers preloadedState={preloadedState}>
         <body className={`${exo.className} font-medium`}>
-          <Nav />
+          {authData?.userInfo.userType !== 'BrandOwner'&& <Nav />}
+          
           <main>
             {children}
           </main>

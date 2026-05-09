@@ -1,45 +1,53 @@
 import CustomerSignupForm from "@/app/_components/forms/CustomerSignupForm/CustomerSignupForm";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-4 md:p-8">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">    
-          <div className="lg:col-span-3 flex flex-col space-y-10 items-center lg:items-start text-center lg:text-left">
-            <h2 className="text-4xl md:text-6xl lg:text-5xl font-bold text-[#864227] leading-[1.1] tracking-tight">
-              Empowering Egyptian <br className="hidden md:block" /> 
-              <span className="text-[#BC5439]">brands</span> to reach <br className="hidden md:block" /> every home
-            </h2>
-            <div className="relative w-full max-w-[400px] md:max-w-[550px] aspect-square">
-              <Image
-                src="/logo.jpeg"
-                alt="logo"
-                fill
-                priority
-                className="object-contain mix-blend-multiply"
-              />
+    <main className="min-h-screen bg-[#FDFDFD] flex items-center justify-center py-6 px-4 relative overflow-hidden">
+      <div className="absolute top-[-10%] left-[-10%] w-[30%] h-[30%] bg-[#03a9f4]/5 rounded-full blur-3xl" />
+      
+      <div className="w-full max-w-6xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div className="lg:col-span-6 flex flex-col space-y-4 text-center lg:text-left items-center lg:items-start">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-100 shadow-sm">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#03a9f4] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#03a9f4]"></span>
+              </span>
+              <span className="text-[10px] font-bold tracking-widest uppercase text-gray-400">Join the movement</span>
             </div>
+
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1A1C1E] leading-[1.1] tracking-tight">
+              Empowering <br /> 
+              <span className="text-[#03a9f4] italic font-light">Egyptian</span> <br /> 
+              brands.
+            </h2>
+            
+            <p className="text-gray-400 text-sm md:text-base max-w-sm font-light leading-relaxed">
+              The premier destination to discover and support local excellence. 
+            </p>
           </div>
-          <div className="lg:col-span-2 w-full flex justify-center lg:justify-end">
-            <div className="w-full bg-white rounded-[2rem]  p-8 md:p-12 border border-[#bfbfbf]">
-              <div className="mb-8">
-                <h4 className="text-3xl font-bold text-slate-800 mb-2">
-                  Create Account
-                </h4>
-                <p className="text-xs md:text-sm text-[#BC5439] font-medium opacity-70">
-                  Join our community and explore top Egyptian brands.
+
+          <div className="lg:col-span-6 w-full flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-105">
+              <div className="relative bg-white rounded-[1.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-gray-100 p-6 md:p-8">
+                <div className="mb-6">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-1 tracking-tight">
+                    Get Started
+                  </h4>
+                  <p className="text-gray-400 text-[13px]">
+                    Create your account to start exploring.
+                  </p>
+                </div>
+
+                <div className="w-full">
+                  <CustomerSignupForm />
+                </div>
+
+                <p className="mt-6 text-center text-[9px] text-gray-300 uppercase tracking-[0.2em] font-medium border-t border-gray-50 pt-4">
+                  © {new Date().getFullYear()} Your Brand Name
                 </p>
               </div>
-
-              <div className="w-full">
-                <CustomerSignupForm />
-              </div>
-          
-              <p className="mt-8 text-center text-[10px] text-slate-300 uppercase tracking-widest font-light">
-                © {new Date().getFullYear()} Your Brand Name. All rights reserved.
-              </p>
             </div>
           </div>
 
@@ -48,3 +56,4 @@ export default function Page() {
     </main>
   );
 }
+

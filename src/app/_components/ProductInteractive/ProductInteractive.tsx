@@ -299,7 +299,7 @@ export default function ProductInteractive({
       <button
         onClick={handleBuyNow}
         disabled={isAdding}
-        className="w-full font-bold bg-[#864227] hover:bg-[#9F5538] text-white py-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-stone-400"
+        className="w-full font-bold bg-[#03a9f4] hover:bg-[#0288d1] text-white py-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-stone-400"
       >
         {isAdding ? "Processing..." : "Buy Now"}
       </button>
@@ -307,7 +307,7 @@ export default function ProductInteractive({
         <button
           onClick={handleAddToCart}
           disabled={isAdding}
-          className="flex-1 bg-[#864227] hover:bg-[#9F5538] text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm disabled:bg-stone-400"
+          className="flex-1 bg-[#03a9f4] hover:bg-[#0288d1] text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm disabled:bg-stone-400"
         >
           {isAdding ? (
             <i className="fa-solid fa-spinner fa-spin" />
@@ -319,7 +319,7 @@ export default function ProductInteractive({
         <button
           onClick={handleCompare}
           disabled={!product}
-          className={`flex-1 text-white p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm ${!product ? 'bg-stone-400' : isCompared ? 'bg-[#9F5538]' : 'bg-[#864227] hover:bg-[#9F5538]'}`}
+          className={`flex-1  p-4 rounded-3xl transition-all duration-200 flex items-center justify-center gap-2 font-semibold text-sm ${!product ? 'bg-stone-400' : isCompared ? 'bg-[#D2EEFC] text-[#377ED0]' : 'bg-[#03a9f4] hover:bg-[#0288d1] text-white'}`}
         >
           <i className="fa-solid fa-arrow-right-arrow-left text-sm" />
           {isCompared ? "Compared" : "Compare"}

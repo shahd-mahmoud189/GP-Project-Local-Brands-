@@ -101,7 +101,7 @@ export default function Nav() {
     if (!showDropdown || (!isDropdownSearching && !dropdownResults)) return null;
 
     return (
-      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-[100] max-h-[80vh] sm:max-h-96 overflow-y-auto">
+      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-100 max-h-[80vh] sm:max-h-96 overflow-y-auto">
         {isDropdownSearching ? (
           <div className="p-4 text-center text-sm text-gray-500">Searching...</div>
         ) : (
@@ -185,7 +185,7 @@ export default function Nav() {
       <div className="container mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
         {/* Logo */}
         <div>
-          <Link href={"/"} className="font-bold text-3xl text-[#864227]">
+          <Link href={"/"} className="font-bold text-3xl text-[#03a9f4]">
             Brandy
           </Link>
         </div>
@@ -199,9 +199,9 @@ export default function Nav() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => { if (searchTerm.trim()) setShowDropdown(true); }}
               placeholder="search for products, brands..."
-              className="w-full px-4 py-2 rounded-xl text-slate-700 border border-gray-200 focus:outline-none focus:border-[#864227] transition-all"
+              className="w-full px-4 py-2 rounded-xl text-slate-700 border border-gray-200 focus:outline-none focus:border-[#03a9f4] transition-all"
             />
-            <button type="submit" className="absolute right-3 top-2.5 text-gray-400 hover:text-[#864227] transition-colors">
+            <button type="submit" className="absolute right-3 top-2.5 text-gray-400 hover:text-[#03a9f4] transition-colors">
               <Search className="size-5" />
             </button>
           </form>
@@ -214,11 +214,11 @@ export default function Nav() {
             <>
               {/* Cart */}
               <li>
-                <Link href="/cart" className={`relative flex flex-col items-center gap-1 group ${pathName === "/cart" ? "text-[#864227]" : "text-slate-600"}`}>
+                <Link href="/cart" className={`relative flex flex-col items-center gap-1 group ${pathName === "/cart" ? "text-[#03a9f4]" : "text-slate-600"}`}>
                   <div className="relative">
-                    <ShoppingCart className="size-6 stroke-[1.5px] group-hover:text-[#864227] transition-colors" />
+                    <ShoppingCart className="size-6 stroke-[1.5px] group-hover:text-[#03a9f4] transition-colors" />
                     {totalItems > 0 && (
-                      <span className="absolute -top-1.5 -right-2 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
+                      <span className="absolute -top-1.5 -right-2 bg-[#03a9f4] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
                         {totalItems}
                       </span>
                     )}
@@ -229,11 +229,11 @@ export default function Nav() {
 
               {/* Wishlist */}
               <li>
-                <Link href="/wishlist" className={`relative flex flex-col items-center gap-1 group ${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-600"}`}>
+                <Link href="/wishlist" className={`relative flex flex-col items-center gap-1 group ${pathName === "/wishlist" ? "text-[#03a9f4]" : "text-slate-600"}`}>
                   <div className="relative">
-                    <Heart className="size-6 stroke-[1.5px] group-hover:text-[#864227] transition-colors" />
+                    <Heart className="size-6 stroke-[1.5px] group-hover:text-[#03a9f4] transition-colors" />
                     {wishlistCount > 0 && (
-                      <span className="absolute -top-1.5 -right-2 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
+                      <span className="absolute -top-1.5 -right-2 bg-[#03a9f4] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
                         {wishlistCount}
                       </span>
                     )}
@@ -248,8 +248,8 @@ export default function Nav() {
             <>
               {/* Account */}
               <li>
-                <Link href={userInfo ? getAccountLink(userInfo.userType) : "/login"} className={`flex flex-col items-center gap-1 group ${pathName.includes("Account") ? "text-[#864227]" : "text-slate-600"}`}>
-                  <UserCircle className="size-6 stroke-[1.5px] group-hover:text-[#864227] transition-colors" />
+                <Link href={userInfo ? getAccountLink(userInfo.userType) : "/login"} className={`flex flex-col items-center gap-1 group ${pathName.includes("Account") ? "text-[#03a9f4]" : "text-slate-600"}`}>
+                  <UserCircle className="size-6 stroke-[1.5px] group-hover:text-[#03a9f4] transition-colors" />
                   <span className="text-xs font-medium">Account</span>
                 </Link>
               </li>
@@ -265,14 +265,14 @@ export default function Nav() {
             <>
               {/* SignUp */}
               <li>
-                <Link href="/register" className="flex flex-col items-center gap-1 text-slate-600 hover:text-[#864227]">
+                <Link href="/register" className="flex flex-col items-center gap-1 text-slate-600 hover:text-[#03a9f4]">
                   <UserPlus className="size-6 stroke-[1.5px]" />
                   <span className="text-xs font-medium">SignUp</span>
                 </Link>
               </li>
               {/* Login */}
               <li>
-                <Link href="/login" className="flex flex-col items-center gap-1 text-slate-600 hover:text-[#864227]">
+                <Link href="/login" className="flex flex-col items-center gap-1 text-slate-600 hover:text-[#03a9f4]">
                   <LogIn className="size-6 stroke-[1.5px]" />
                   <span className="text-xs font-medium">Login</span>
                 </Link>
@@ -282,19 +282,19 @@ export default function Nav() {
         </ul>
 
         {/* Mobile Menu Toggle */}
-        <button className="lg:hidden text-[#864227] p-2" onClick={toggle}>
+        <button className="lg:hidden text-[#03a9f4] p-2" onClick={toggle}>
           {isOpen ? <X className="size-7" /> : <Menu className="size-7" />}
         </button>
       </div>
 
       {/* --- Bottom Navbar (Categories) - Desktop --- */}
-      <div className="hidden lg:block bg-[#F7F2EA]">
+      <div className="hidden lg:block bg-[#F9FAFB]">
         <div className="container py-3 px-12 mx-auto">
           <ul className="flex items-center gap-8 text-sm font-medium text-slate-700">
-            <li><Link href="/" className={`hover:text-[#864227] transition-colors ${pathName === "/" ? "text-[#864227]" : ""}`}>Home</Link></li>
-            <li><Link href="/brands" className={`hover:text-[#864227] transition-colors ${pathName === "/brands" ? "text-[#864227]" : ""}`}>Brands</Link></li>
-            <li><Link href="/categories" className={`hover:text-[#864227] transition-colors ${pathName === "/categories" ? "text-[#864227]" : ""}`}>Categories</Link></li>
-            <li><Link href="/products" className={`hover:text-[#864227] transition-colors ${pathName === "/products" ? "text-[#864227]" : ""}`}>Products</Link></li>
+            <li><Link href="/" className={`hover:text-[#03a9f4] transition-colors ${pathName === "/" ? "text-[#03a9f4]" : ""}`}>Home</Link></li>
+            <li><Link href="/brands" className={`hover:text-[#03a9f4] transition-colors ${pathName === "/brands" ? "text-[#03a9f4]" : ""}`}>Brands</Link></li>
+            <li><Link href="/categories" className={`hover:text-[#03a9f4] transition-colors ${pathName === "/categories" ? "text-[#03a9f4]" : ""}`}>Categories</Link></li>
+            <li><Link href="/products" className={`hover:text-[#03a9f4] transition-colors ${pathName === "/products" ? "text-[#03a9f4]" : ""}`}>Products</Link></li>
           </ul>
         </div>
       </div>
@@ -304,11 +304,11 @@ export default function Nav() {
         className={`fixed inset-0 bg-black/40 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={toggle}
       />
-      <aside className={`fixed top-0 left-0 bottom-0 w-72 bg-[#FCF9F4] z-[60] p-6 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed top-0 left-0 bottom-0 w-72 bg-[#FCF9F4] z-60 p-6 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
-          <span className="font-bold text-2xl text-[#864227]">Brandy</span>
+          <span className="font-bold text-2xl text-[#03a9f4]">Brandy</span>
           <button onClick={toggle} className="p-2 bg-white rounded-full shadow-sm">
-            <X className="size-5 text-[#864227]" />
+            <X className="size-5 text-[#03a9f4]" />
           </button>
         </div>
 
@@ -321,7 +321,7 @@ export default function Nav() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => { if (searchTerm.trim()) setShowDropdown(true); }}
               placeholder="Search..."
-              className="w-full px-4 py-2 rounded-xl text-slate-700 border border-gray-200 focus:outline-none focus:border-[#864227]"
+              className="w-full px-4 py-2 rounded-xl text-slate-700 border border-gray-200 focus:outline-none focus:border-[#03a9f4]"
             />
             <button type="submit" className="absolute right-3 top-2.5 text-gray-400">
               <Search className="size-5" />
@@ -335,10 +335,10 @@ export default function Nav() {
           <div>
             <p className="text-xs font-bold uppercase text-gray-400 mb-4 tracking-wider">Main Menu</p>
             <ul className="space-y-4 text-slate-700">
-              <li><Link onClick={toggle} href="/" className="flex items-center gap-3 hover:text-[#864227]"><Home className="size-5 stroke-[1.5px]" /> Home</Link></li>
-              <li><Link onClick={toggle} href="/brands" className="flex items-center gap-3 hover:text-[#864227]"><LayoutGrid className="size-5 stroke-[1.5px]" /> Brands</Link></li>
-              <li><Link onClick={toggle} href="/categories" className="flex items-center gap-3 hover:text-[#864227]"><Layers className="size-5 stroke-[1.5px]" /> Categories</Link></li>
-              <li><Link onClick={toggle} href="/products" className="flex items-center gap-3 hover:text-[#864227]"><PackageSearch className="size-5 stroke-[1.5px]" /> Products</Link></li>
+              <li><Link onClick={toggle} href="/" className="flex items-center gap-3 hover:text-[#03a9f4]"><Home className="size-5 stroke-[1.5px]" /> Home</Link></li>
+              <li><Link onClick={toggle} href="/brands" className="flex items-center gap-3 hover:text-[#03a9f4]"><LayoutGrid className="size-5 stroke-[1.5px]" /> Brands</Link></li>
+              <li><Link onClick={toggle} href="/categories" className="flex items-center gap-3 hover:text-[#03a9f4]"><Layers className="size-5 stroke-[1.5px]" /> Categories</Link></li>
+              <li><Link onClick={toggle} href="/products" className="flex items-center gap-3 hover:text-[#03a9f4]"><PackageSearch className="size-5 stroke-[1.5px]" /> Products</Link></li>
             </ul>
           </div>
 
@@ -349,12 +349,12 @@ export default function Nav() {
               <ul className="space-y-4 text-slate-700">
                 <li>
                   <Link onClick={toggle} href="/cart" className="flex items-center justify-between group">
-                    <div className="flex items-center gap-3 group-hover:text-[#864227]">
+                    <div className="flex items-center gap-3 group-hover:text-[#03a9f4]">
                       <ShoppingCart className="size-5 stroke-[1.5px]" />
                       <span>Cart</span>
                     </div>
                     {totalItems > 0 && (
-                      <span className="bg-[#864227] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
+                      <span className="bg-[#03a9f4] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
                         {totalItems}
                       </span>
                     )}
@@ -362,12 +362,12 @@ export default function Nav() {
                 </li>
                 <li>
                   <Link onClick={toggle} href="/wishlist" className="flex items-center justify-between group">
-                    <div className="flex items-center gap-3 group-hover:text-[#864227]">
+                    <div className="flex items-center gap-3 group-hover:text-[#03a9f4]">
                       <Heart className="size-5 stroke-[1.5px]" />
                       <span>Wishlist</span>
                     </div>
                     {wishlistCount > 0 && (
-                      <span className="bg-[#864227] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
+                      <span className="bg-[#03a9f4] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
                         {wishlistCount}
                       </span>
                     )}
@@ -383,13 +383,13 @@ export default function Nav() {
             <ul className="space-y-4 text-slate-700">
               {isAuthinticated ? (
                 <>
-                  <li><Link onClick={toggle} href={userInfo ? getAccountLink(userInfo.userType) : "/login"} className="flex items-center gap-3 hover:text-[#864227]"><UserCircle className="size-5 stroke-[1.5px]" /> My Account</Link></li>
+                  <li><Link onClick={toggle} href={userInfo ? getAccountLink(userInfo.userType) : "/login"} className="flex items-center gap-3 hover:text-[#03a9f4]"><UserCircle className="size-5 stroke-[1.5px]" /> My Account</Link></li>
                   <li><button onClick={() => { toggle(); handleLogOut(); }} className="flex items-center gap-3 text-red-600 hover:text-red-700"><LogOut className="size-5 stroke-[1.5px]" /> Logout</button></li>
                 </>
               ) : (
                 <>
-                  <li><Link onClick={toggle} href="/login" className="flex items-center gap-3 hover:text-[#864227]"><LogIn className="size-5 stroke-[1.5px]" /> Login</Link></li>
-                  <li><Link onClick={toggle} href="/register" className="flex items-center gap-3 hover:text-[#864227]"><UserPlus className="size-5 stroke-[1.5px]" /> Register</Link></li>
+                  <li><Link onClick={toggle} href="/login" className="flex items-center gap-3 hover:text-[#03a9f4]"><LogIn className="size-5 stroke-[1.5px]" /> Login</Link></li>
+                  <li><Link onClick={toggle} href="/register" className="flex items-center gap-3 hover:text-[#03a9f4]"><UserPlus className="size-5 stroke-[1.5px]" /> Register</Link></li>
                 </>
               )}
             </ul>

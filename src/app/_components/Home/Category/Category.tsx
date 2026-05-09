@@ -12,12 +12,12 @@ export default async function Category() {
         <div className="flex items-center justify-between mb-12">
           <div className="space-y-2">
             <h2 className="text-4xl  text-[#2D3A30]">
-              Explore Our <span className=" text-[#864227]">Categories</span>
+              Explore Our <span className=" text-[#03A9F4]">Categories</span>
             </h2>
-            <div className="h-0.5 w-16 bg-[#864227]" />
+            <div className="h-0.5 w-16 bg-[#03A9F4]" />
           </div>
 
-          <Link href='/categories' className="text-sm font-bold tracking-widest uppercase text-[#864227] hover:opacity-70 transition-opacity">
+          <Link href='/categories' className="text-sm font-bold tracking-widest uppercase text-[#03A9F4] hover:opacity-70 transition-opacity">
             View All
           </Link>
         </div>

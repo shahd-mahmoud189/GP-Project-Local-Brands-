@@ -13,10 +13,10 @@ export default async function page({ params }: any) {
   return (
     <div className="container mx-auto px-4 md:px-12 py-10">
       <div className="mb-16 md:px-10">
-        <h2 className="text-[#864227] text-4xl capitalize">
+        <h2 className="text-slate-700 text-4xl capitalize">
           {response.categoryName}
         </h2>
-        <p className="text-[#796C63] mt-4 font-light max-w-2xl">
+        <p className="text-slate-600 mt-4 font-light max-w-2xl">
           Dive into our exclusive range of high-quality essentials. Whether
           you're looking for inspiration or a specific must-have, our collection
           offers the perfect balance of variety and excellence.

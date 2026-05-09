@@ -1,7 +1,7 @@
 "use client";
 import { categoryType } from "@/app/types/category.type";
 import Link from "next/link";
-import { Trash2, Edit } from "lucide-react";
+import { Trash2, Edit, ShoppingBag, ArrowRight } from "lucide-react"; // استبدلت الـ FontAwesome بـ Lucide لتوحيد الشكل
 import { useSelector } from "react-redux";
 import { AppState } from "@/app/store/store";
 import { deleteCategory } from "@/app/api/category.api";
@@ -24,68 +24,67 @@ export default function CategoryCard({ category, onEdit }: CategoryCardProps) {
       toast.success("Category deleted successfully!");
     },
     onError: (error: any) => {
-  const data = error.response?.data;
-  const message = Array.isArray(data) ? data[0] : data?.message || "Failed to delete category";
-  toast.error(message);
-},
+      const data = error.response?.data;
+      const message = Array.isArray(data) ? data[0] : data?.message || "Failed to delete category";
+      toast.error(message);
+    },
   });
 
   return (
-    <Link href={`/categoryDetails/${category.categoryId}`} className="group">
-      <div className="bg-white rounded-lg overflow-hidden border border-stone-200 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-        <div className="bg-linear-to-br from-amber-700 to-amber-800 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between min-h-40 sm:min-h-48">
-          <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-white opacity-10 rounded-full -mr-12 -mt-12"></div>
-          <div className="absolute bottom-0 left-0 w-20 h-20 sm:w-24 sm:h-24 bg-white opacity-10 rounded-full -ml-10 -mb-10"></div>
-
-          <div className="flex items-start justify-between relative z-10">
-            <div className="bg-white bg-opacity-20 p-3 sm:p-4 rounded-full group-hover:bg-opacity-30 transition-all">
-              <i className="fa-solid fa-shopping-bag text-amber-800 text-xl sm:w-6 sm:h-6"></i>
-            </div>
-            <div className="bg-white text-amber-800 px-3 sm:px-4 py-1 sm:py-2 rounded-full font-bold text-xs sm:text-sm">
-              {category?.productCount}
-            </div>
+    <Link href={`/categoryDetails/${category.categoryId}`} className="group block h-full">
+      <div className="relative bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 h-full flex flex-col">
+        
+        {/* Header Section with Gradient */}
+        <div className="relative p-6 sm:p-8 bg-linear-to-br from-sky-600 to-cyan-700 overflow-hidden min-h-35 flex flex-col justify-end">
+          {/* Decorative Shapes */}
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all duration-500"></div>
+          <div className="absolute top-4 right-4 z-20">
+             <div className="bg-white/20 backdrop-blur-md border border-white/30 text-white px-3 py-1 rounded-lg text-xs font-bold shadow-sm">
+                {category?.productCount} Products
+             </div>
           </div>
-
-          <h2 className="text-2xl font-bold text-white mt-4 relative z-10 group-hover:text-amber-50 transition">
-            {category?.categoryName}
-          </h2>
+          
+          <div className="relative z-10">
+            <div className="mb-3 inline-flex p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white">
+              <ShoppingBag size={24} />
+            </div>
+            <h2 className="text-2xl font-bold text-white tracking-tight leading-tight line-clamp-1">
+              {category?.categoryName}
+            </h2>
+          </div>
         </div>
 
-        <div className="p-4 sm:p-6 flex flex-col grow">
-          <p className="text-stone-600 text-sm sm:text-base mb-6 line-clamp-2 group-hover:text-stone-700 transition grow">
-            {category?.description}
+        {/* Content Section */}
+        <div className="p-6 flex flex-col grow bg-white">
+          <p className="text-slate-500 text-sm sm:text-base leading-relaxed line-clamp-2 mb-6 group-hover:text-slate-700 transition-colors">
+            {category?.description || "Explore our exclusive collection of products in this category."}
           </p>
 
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-amber-800 font-semibold group-hover:text-amber-900 group-hover:gap-3 transition-all">
-              <span className="text-sm sm:text-base">View Products</span>
-              <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          <div className="mt-auto pt-4 border-t border-slate-50 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+                <span className="text-sky-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Browse Collection <ArrowRight size={16} />
+                </span>
             </div>
 
-            {userInfo?.userType === "Admin" && (
-              <div className="flex gap-2 pt-2" onClick={(e) => e.preventDefault()}>
-                {onEdit&&
-                <>
+            {/* Admin Actions */}
+            {userInfo?.userType === "Admin" && onEdit && (
+              <div className="flex gap-2" onClick={(e) => e.preventDefault()}>
                 <button
                   onClick={() => onEdit(category)}
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#B1571A] hover:bg-amber-900 text-white px-3 sm:px-4 py-2 rounded-full font-semibold transition text-xs sm:text-sm"
+                  className="flex-1 flex items-center justify-center gap-2 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-700 py-2.5 rounded-xl font-bold transition-all duration-200 text-xs sm:text-sm"
                 >
                   <Edit size={16} />
-                  <span className="hidden sm:inline">Edit</span>
+                  <span>Edit</span>
                 </button>
                 <button
                   onClick={() => deleteMutation.mutate()}
                   disabled={deleteMutation.isPending}
-                  className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white px-3 sm:px-4 py-2 rounded-full font-semibold transition text-xs sm:text-sm"
+                  className="flex-1 flex items-center justify-center gap-2 bg-red-50 hover:bg-red-500 text-red-500 hover:text-white py-2.5 rounded-xl font-bold transition-all duration-200 disabled:opacity-50 text-xs sm:text-sm"
                 >
                   <Trash2 size={16} />
-                  <span className="hidden sm:inline">
-                    {deleteMutation.isPending ? "..." : "Delete"}
-                  </span>
+                  <span>{deleteMutation.isPending ? "..." : "Delete"}</span>
                 </button>
-                </>
-                }
-                
               </div>
             )}
           </div>

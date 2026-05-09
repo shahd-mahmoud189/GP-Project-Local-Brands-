@@ -120,7 +120,7 @@ export default function CompareDrawer() {
                                             <h3 className="text-xs font-bold text-slate-800 line-clamp-1 mb-2">
                                                 {product.productName}
                                             </h3>
-                                            <div className="w-8 h-[2px] bg-gray-100 mb-2"></div>
+                                            <div className="w-8 h-0.5 bg-gray-100 mb-2"></div>
                                             <p className="text-sm font-black text-slate-900">
                                                 {product.basePrice} <span className="text-[10px] text-gray-400">EGP</span>
                                             </p>

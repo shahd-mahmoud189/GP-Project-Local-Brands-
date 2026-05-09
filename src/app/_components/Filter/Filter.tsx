@@ -47,7 +47,7 @@ const toggleBrand = (brandId: number) => {
               id={option.id}
               checked={selectedPrice === option.id}
               onChange={() => handlePrice(option.id)}
-              className="accent-[#864227] size-4 mr-2"
+              className="accent-[#03A9F4] size-4 mr-2"
             />
             <label htmlFor={option.id} className="text-slate-700 font-light cursor-pointer">
               {option.label}
@@ -65,7 +65,7 @@ const toggleBrand = (brandId: number) => {
               id={`brand${brand.brandId}`}
               checked={selectedBrands.includes(brand.brandId)}
               onChange={() => toggleBrand(brand.brandId)}
-              className="accent-[#864227] size-4 mr-2"
+              className="accent-[#03A9F4] size-4 mr-2"
             />
             <label htmlFor={`brand${brand.brandId}`} className="text-slate-700 font-light cursor-pointer">
               {brand.brandName}
@@ -77,7 +77,7 @@ const toggleBrand = (brandId: number) => {
       {(selectedPrice || selectedBrands.length > 0) && (
         <button
           onClick={() => { onPriceChange(""); onBrandsChange([]); }}
-          className="text-xs text-[#864227] underline mt-4"
+          className="text-xs text-[#03A9F4] underline mt-4"
         >
           Clear all filters
         </button>

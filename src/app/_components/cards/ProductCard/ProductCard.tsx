@@ -78,7 +78,6 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
       });
 
       const updatedCart = await getLoggedUserCart();
-      // التعديل الأساسي هنا: استخدام as CartResponse لحل مشكلة الـ null
       if (updatedCart) {
         dispatch(setCart(updatedCart as CartResponse));
         toast.success("Added to cart! ");
@@ -137,7 +136,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
           <button
             onClick={handleWishlistToggle}
             title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-            className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#864227] hover:bg-[#864227] hover:text-white transition-all"
+            className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#0288d1] hover:bg-[#0288d1] hover:text-white transition-all"
           >
             <i className={`${isWishlisted ? "fa-solid" : "fa-regular"} fa-heart text-sm`} />
           </button>
@@ -145,7 +144,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
           <button
             onClick={handleCompare}
             title="Add to compare"
-            className={`w-9 h-9 rounded-full shadow-md flex items-center justify-center transition-all ${isCompared ? "bg-[#864227] text-white" : "bg-white text-[#864227] hover:bg-[#864227] hover:text-white"
+            className={`w-9 h-9 rounded-full shadow-md flex items-center justify-center transition-all ${isCompared ? "bg-[#0288d1] text-white" : "bg-white text-[#0288d1] hover:bg-[#0288d1] hover:text-white"
               }`}
           >
             <i className="fa-solid fa-arrow-right-arrow-left text-sm" />
@@ -165,12 +164,12 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
 
       {/* INFO */}
       <div className="pt-4 pb-1 px-1 flex flex-col flex-1">
-        <Link href={"/brandDetails"} className="text-sm font-semibold text-[#864227] block mb-2">
+        <Link href={"/brandDetails"} className="text-sm font-semibold text-[#0288d1] block mb-2">
           {product.brandName}
         </Link>
 
         <Link href={`/products/${product.productId}`}>
-          <h3 className="text-lg text-slate-800 font-medium line-clamp-1 group-hover:text-[#864227] transition-colors leading-tight">
+          <h3 className="text-lg text-slate-800 font-medium line-clamp-1 group-hover:text-[#0288d1] transition-colors leading-tight">
             {product.productName}
           </h3>
         </Link>
@@ -212,7 +211,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
               e.preventDefault();
               handleAddToCart();
             }}
-            className="h-10 w-10 rounded-full bg-[#864227] text-white flex items-center justify-center hover:bg-[#6d351f] transition-all shadow-lg active:scale-90"
+            className="h-10 w-10 rounded-full bg-[#03a9f4] hover:bg-[#0288d1] text-white flex items-center justify-center  transition-all shadow-lg active:scale-90"
           >
             <i className="fa-solid fa-plus" />
           </button>

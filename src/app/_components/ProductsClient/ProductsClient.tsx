@@ -43,14 +43,14 @@ export default function ProductsClient({ products, brands, categoryName }: Props
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 px-4 bg-[#F9F8F6] rounded-[2rem] border border-dashed border-[#E8E4E0] text-center">
+          <div className="flex flex-col items-center justify-center py-20 px-4 bg-[#F0F9FF] rounded-[2rem] border border-dashed text-slate-600 text-center">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-6">
-              <ShoppingBag className="w-10 h-10 text-[#D1C7BD]" />
+              <ShoppingBag className="w-10 h-10 text-slate-600" />
             </div>
-            <h3 className="text-[#864227] text-2xl font-semibold mb-2">
+            <h3 className="text-[#03A9F4] text-2xl font-semibold mb-2">
               No Products Found
             </h3>
-            <p className="text-[#796C63] font-light max-w-sm">
+            <p className="text-slate-600 font-light max-w-sm">
               No products match your selected filters in{" "}
               <span className="font-medium">"{categoryName}"</span>. Try
               adjusting your filters.

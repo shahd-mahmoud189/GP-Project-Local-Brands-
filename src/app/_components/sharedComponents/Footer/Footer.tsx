@@ -3,11 +3,11 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F7F2EA]">
+    <footer className="bg-[#F9FAFB]">
       <div className="">
         <div className="container  px-12 pt-8  lg:flex lg:items-start lg:justify-between lg:gap-16 space-y-5">
           <div className="lg:w-1/3">
-            <h1 className="font-bold text-3xl text-[#864227] mb-3">
+            <h1 className="font-bold text-3xl text-[#03a9f4] mb-3">
               Brandy
             </h1>
             <p className="font-light text-slate-600 text-sm leading-loose">
@@ -23,7 +23,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={"/"}
-                  className="hover:text-[#864227] transition-all duration-200 hover:transform hover:translate-x-1 block "
+                  className="hover:text-[#03a9f4] transition-all duration-200 hover:transform hover:translate-x-1 block "
                 >
                   <i className="fa-solid fa-angle-right"></i>
                   <span className="text-sm">Home</span>
@@ -32,7 +32,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={"/brands"}
-                  className="hover:text-[#864227] transition-all duration-200 hover:transform hover:translate-x-1 block"
+                  className="hover:text-[#03a9f4] transition-all duration-200 hover:transform hover:translate-x-1 block"
                 >
                   <i className="fa-solid fa-angle-right"></i>
                   <span className="text-sm">Brands</span>
@@ -41,7 +41,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={"/categories"}
-                  className="hover:text-[#864227] transition-all duration-200 hover:transform hover:translate-x-1 block"
+                  className="hover:text-[#03a9f4] transition-all duration-200 hover:transform hover:translate-x-1 block"
                 >
                   <i className="fa-solid fa-angle-right"></i>
                   <span className="text-sm">All Categories</span>
@@ -50,7 +50,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={"/products"}
-                  className="hover:text-[#864227] transition-all duration-200 hover:transform hover:translate-x-1 block"
+                  className="hover:text-[#03a9f4] transition-all duration-200 hover:transform hover:translate-x-1 block"
                 >
                   <i className="fa-solid fa-angle-right"></i>
                   <span className="text-sm">Featured Products</span>
@@ -60,7 +60,7 @@ export default function Footer() {
           </div>
           <div className="lg:w-1/3">
             <h3 className="text-slate-700 text-xl font-bold mb-3">Follow Us</h3>
-            <ul className="flex space-y-4 gap-5 *:text-xl *:hover:text-[#864227] *:transition-colors *:duration-200 *:text-slate-700">
+            <ul className="flex space-y-4 gap-5 *:text-xl *:hover:text-[#03a9f4] *:transition-colors *:duration-200 *:text-slate-700">
               <li>
                 <i className="fa-brands fa-facebook-f"></i>
               </li>

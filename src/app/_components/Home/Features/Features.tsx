@@ -35,7 +35,7 @@ export default function Features() {
           <div className="md:col-span-5 space-y-6">
             <h2 className="text-6xl md:text-7xl  text-[#2D3A30] leading-none">
               The <br />
-              <span className="italic text-[#864227] ml-8">Brandy</span> <br />
+              <span className="italic text-[#35BAF6] ml-8">Brandy</span> <br />
               Standard.
             </h2>
             <p className="text-[#2D3A30]/60 text-lg font-light max-w-sm">
@@ -48,9 +48,9 @@ export default function Features() {
             {values.map((v, i) => (
               <div 
                 key={i} 
-                className={`p-8 rounded-[3rem] bg-[#FAF8F5] border border-[#F5F1EB] transition-all duration-500 hover:shadow-xl hover:shadow-[#864227]/5 ${v.position}`}
+                className={`p-8 rounded-[3rem] bg-[#F0F9FF] border border-[#F5F1EB] transition-all duration-500 hover:shadow-xl hover:shadow-[]/5 ${v.position}`}
               >
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#864227] mb-6 shadow-sm">
+                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#35BAF6] mb-6 shadow-sm">
                   {v.icon}
                 </div>
                 <h3 className="text-xl font-bold text-[#2D3A30] mb-3 leading-tight">{v.title}</h3>
