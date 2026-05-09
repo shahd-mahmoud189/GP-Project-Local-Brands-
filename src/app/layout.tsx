@@ -10,6 +10,10 @@ import { getLoggedUserCart } from "./api/cart.api";
 import { getMyBrands } from "./api/serverFunction/serverFunctions.api";
 
 import { initialState as cartInitialState } from "./store/slices/cart.slice";
+import { compareInitialState } from "./store/slices/compare.slice";
+import { initialState as wishlistInitialState } from "./store/slices/wishlist.slice";
+import CompareDrawer from "./_components/sharedComponents/Compare/CompareDrawer";
+import { getWishlist } from "./api/wishlist.api";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -21,24 +25,34 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
 
+  // 1. Fetching Initial Server Data
   const authData = await getAuthData();
   const brandRequestData = await getMyRequestData();
-
+  
   let cartData = null;
   let myBrand = null;
-  myBrand = await getMyBrands();
-if(authData?.userInfo.userType === 'Customer'){
+  let wishlistData = null;
 
-try {
-  cartData = await getLoggedUserCart();
-} catch (e) {
-  cartData = null;
-}}
-  
+  // 2. Fetch Data based on User Role
+  try {
+    myBrand = await getMyBrands();
+
+    if (authData?.isAuthinticated && authData?.userInfo?.userType === 'Customer') {
+      // بنجيب السلة والـ Wishlist فقط لو اليوزر زبون (Customer)
+      const [cart, wishlist] = await Promise.all([
+        getLoggedUserCart().catch(() => null),
+        getWishlist().catch(() => null)
+      ]);
+      cartData = cart;
+      wishlistData = wishlist;
+    }
+  } catch (error) {
+    console.error("Error preloading layout data:", error);
+  }
+
+  // 3. Preloaded State for Redux
   const preloadedState = {
-    auth: authData
-      ? authData
-      : { isAuthinticated: false, userInfo: null },
+    auth: authData || { isAuthinticated: false, userInfo: null },
 
     brandRequest: brandRequestData
       ? {
@@ -53,18 +67,25 @@ try {
       error: null,
     },
 
-    brand: myBrand? myBrand[0]: {brandId:null}
+    wishlist: {
+      items: wishlistData || wishlistInitialState.items,
+      loading: false,
+      error: null,
+    },
+
+    brand: myBrand && myBrand.length > 0 ? myBrand[0] : { brandId: null },
+    compare: compareInitialState,
   };
 
   return (
     <html lang="en">
       <Providers preloadedState={preloadedState}>
         <body className={`${exo.className} font-medium`}>
-          {/* {authData?.userInfo.userType === 'Customer'&&<Nav />} */}
           <Nav />
-
-          {children}
-
+          <main>
+            {children}
+          </main>
+          <CompareDrawer />
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -78,7 +99,6 @@ try {
             theme="light"
             transition={Bounce}
           />
-
           <Footer />
         </body>
       </Providers>

@@ -136,6 +136,7 @@ export default async function page({
             variants={product.variants || []}
             allowsCustomization={product.allowsCustomization}
             customizationOptions={product.customizationOptions}
+            product={product}
           />
 
           <ContactSellerButton ownerId={product.ownerId} />

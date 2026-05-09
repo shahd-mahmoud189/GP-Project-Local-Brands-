@@ -5,12 +5,18 @@ import { authReducer, AuthState } from "./slices/auth.slice";
 import { brandRequestReducer, brandRequestState } from "./slices/brandRequest.slice";
 import { brandReducer, BrandState } from "./slices/brand.slice";
 import { cartReducer, CartState } from "./slices/cart.slice";
+import { compareReducer, CompareState } from "./slices/compare.slice";
+import { wishlistReducer, WishlistState } from "./slices/wishlist.slice";
+
 
 export type PreloadedState = {
   auth: AuthState;
   brandRequest: brandRequestState;
   brand: BrandState;
   cart: CartState;
+  wishlist: WishlistState;
+    compare: CompareState;
+
 };
 
 export function createStore(preloadedState: PreloadedState) {
@@ -20,6 +26,8 @@ export function createStore(preloadedState: PreloadedState) {
       brandRequest: brandRequestReducer,
       brand: brandReducer,
       cart: cartReducer,
+      compare: compareReducer,
+      wishlist: wishlistReducer,
     },
     preloadedState,
   });

@@ -13,7 +13,7 @@ export async function refreshTokens(): Promise<string | null> {
   const res = await fetch(`${baseUrl}/api/auth/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken }), 
+    body: JSON.stringify({ refreshToken }),
     cache: "no-store",
   });
 
@@ -157,7 +157,7 @@ export async function getProfile() {
     response = await fetchWithToken(newToken);
   }
 
-  if (!response.ok) return null;  
+  if (!response.ok) return null;
   return response.json();
 }
 
@@ -205,11 +205,11 @@ export async function getMyBrands() {
     response = await fetchWithToken(newToken);
   }
 
-  if (!response.ok) return null;  
+  if (!response.ok) return null;
   return response.json();
 }
 
-export async function getMyProducts(brandId:number):Promise<ProductList> {
+export async function getMyProducts(brandId: number): Promise<ProductList> {
   const cookieStore = await cookies();
   let token = cookieStore.get("token")?.value;
   if (!token) return [];
@@ -228,7 +228,7 @@ export async function getMyProducts(brandId:number):Promise<ProductList> {
     response = await fetchWithToken(newToken);
   }
 
-  if (!response.ok) return [];  
+  if (!response.ok) return [];
   return response.json();
 }
 

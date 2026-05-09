@@ -19,12 +19,30 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-api.interceptors.request.use((config) => {
-  const token = getCookie("token");
+api.interceptors.request.use(async (config) => {
+  let token;
+
+  if (typeof window !== "undefined") {
+    
+    token = getCookie("token");
+  } 
+  else {
+    try {
+      const { cookies } = await import("next/headers");
+      
+      const cookieStore = await cookies(); 
+      token = cookieStore.get("token")?.value;
+    } catch (err) {
+      console.log("Not in a server environment");
+    }
+  }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 api.interceptors.response.use(

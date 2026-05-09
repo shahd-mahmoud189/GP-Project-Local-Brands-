@@ -1,217 +1,112 @@
-// 'use server'
-// import axios, { AxiosRequestConfig } from "axios";
-// import { cookies } from "next/headers";
-// import { AddToCartRequest, CartResponse } from "../types/cart.type";
-
-// export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
-//   const cookieStore = await cookies();
-//   const token = cookieStore.get("token")?.value || null;
-
-//   if (!token) {
-//     throw new Error("Authentication required");
-//   }
-
-//   const { data } = await axios.post(
-//     "https://brands-system-production-c110.up.railway.app/api/Cart",
-//     body,
-//     {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     }
-//   );
-//   return data;
-// }
-
-// export async function getLoggedUserCart(): Promise<CartResponse> {
-//   const cookieStore = await cookies();
-//   const token = cookieStore.get("token")?.value || null;
-
-//   if (!token) {
-//     throw new Error("Authentication required");
-//   }
-
-//   try {
-//     const options: AxiosRequestConfig = {
-//       url: "https://brands-system-production-c110.up.railway.app/api/Cart",
-//       method: "GET",
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     };
-
-//     const { data } = await axios.request(options);
-//     return data;
-//   }
-//   catch (error) {
-//     throw error;
-//   }
-// }
-
-// export async function removeProductFromCart(cartItemId: number): Promise<CartResponse> {
-//   const cookieStore = await cookies();
-//   const token = cookieStore.get("token")?.value || null;
-
-//   if (!token) {
-//     throw new Error("Authentication required");
-//   }
-
-//   try {
-//     const { data } = await axios.delete(
-//       `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     return data;
-//   }
-//   catch (error) {
-//     throw error;
-//   }
-// }
-
-// export async function clearCartApi(): Promise<void> {
-//   const cookieStore = await cookies();
-//   const token = cookieStore.get("token")?.value || null;
-
-//   if (!token) {
-//     throw new Error("Authentication required");
-//   }
-
-//   try {
-//     await axios.delete(
-//       "https://brands-system-production-c110.up.railway.app/api/Cart",
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//   }
-//   catch (error) {
-//     throw error;
-//   }
-// }
-
-// export async function updateProductQuantity({
-//   cartItemId,
-//   quantity,
-// }: {
-//   cartItemId: number;
-//   quantity: number;
-// }): Promise<any> {
-//   const cookieStore = await cookies();
-//   const token = cookieStore.get("token")?.value;
-
-//   if (!token) {
-//     throw new Error("Authentication required");
-//   }
-
-//   try {
-//     const { data } = await axios({
-//       method: "PUT",
-//       url: `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}?quantity=${quantity}`,
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-
-//     return data;
-//   } catch (error: any) {
-//     const errorData = error.response?.data || error.message;
-//     console.error("UPDATE CART ERROR:", errorData);
-//     throw new Error(errorData);
-//   }
-// }
-
-
 'use server'
+
 import { cookies } from "next/headers";
 import { AddToCartRequest, CartResponse } from "../types/cart.type";
 import { refreshTokens } from "./serverFunction/serverFunctions.api";
 
+const BASE = "https://brands-system-production-c110.up.railway.app";
+
+// دالة موحدة للتعامل مع الـ Fetch وإعادة المحاولة في حال انتهى التوكن
 async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
+  let token = cookieStore.get("token")?.value || null;
 
   if (!token) throw new Error("Authentication required");
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
+  const headers = {
+    ...options.headers,
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  let response = await fetch(url, { 
+    ...options, 
+    headers,
+    cache: "no-store" 
   });
 
+  // إذا كان التوكن منتهي (401)، نحاول تجديده مرة واحدة
   if (response.status === 401) {
-  const newToken = await refreshTokens();
+    const newToken = await refreshTokens();
 
-  if (!newToken) {
-    // ❗ هنا اعملي logout بدل ما ترمي error
-    const cookieStore = await cookies();
-    cookieStore.delete("token");
-    cookieStore.delete("refreshToken");
+    if (!newToken) {
+      // لو معرفش يجدد التوكن، بنعمل Logout ونمسح الكوكيز
+      const cookieStore = await cookies();
+      cookieStore.delete("token");
+      cookieStore.delete("refreshToken");
+      return new Response(null, { status: 401 });
+    }
 
-    return new Response(null, { status: 401 });
-  }
-
-  return fetch(url, {
-    ...options,
-    headers: {
+    // إعادة المحاولة بالتوكن الجديد
+    const retryHeaders = {
       ...options.headers,
-      Authorization: `Bearer ${newToken}`,
+      "Authorization": `Bearer ${newToken}`,
       "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
-}
+    };
+    response = await fetch(url, { ...options, headers: retryHeaders, cache: "no-store" });
+  }
 
   return response;
 }
 
-const BASE = "https://brands-system-production-c110.up.railway.app";
-
+// 1. جلب بيانات السلة
 export async function getLoggedUserCart(): Promise<CartResponse | null> {
-  const response = await fetchWithAuth(`${BASE}/api/Cart`);
+  try {
+    const response = await fetchWithAuth(`${BASE}/api/Cart`);
 
-  if (response.status === 401) {
-    return null; // user مش logged in
+    if (response.status === 401) return null;
+
+    if (!response.ok) {
+       // لو السلة فاضية أو مش موجودة (404/400) بنرجع سلة صفرية بدل ما نضرب Error
+      if (response.status === 400 || response.status === 404) {
+        return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
+      }
+      throw new Error("Failed to get cart");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("GET CART ERROR:", error);
+    return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
   }
-
-  if (!response.ok) throw new Error("Failed to get cart");
-
-  return response.json();
 }
 
+// 2. إضافة منتج للسلة
 export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
   const response = await fetchWithAuth(`${BASE}/api/Cart`, {
     method: "POST",
     body: JSON.stringify(body),
   });
-  if (!response.ok) throw new Error("Failed to add to cart");
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData || "Failed to add to cart");
+  }
+
   return response.json();
 }
 
+// 3. حذف منتج من السلة
 export async function removeProductFromCart(cartItemId: number): Promise<CartResponse> {
   const response = await fetchWithAuth(`${BASE}/api/Cart/${cartItemId}`, {
     method: "DELETE",
   });
+
   if (!response.ok) throw new Error("Failed to remove from cart");
+
   return response.json();
 }
 
+// 4. مسح السلة بالكامل
 export async function clearCartApi(): Promise<void> {
   const response = await fetchWithAuth(`${BASE}/api/Cart`, {
     method: "DELETE",
   });
+
   if (!response.ok) throw new Error("Failed to clear cart");
 }
 
+// 5. تحديث الكمية
 export async function updateProductQuantity({
   cartItemId,
   quantity,
@@ -223,6 +118,11 @@ export async function updateProductQuantity({
     `${BASE}/api/Cart/${cartItemId}?quantity=${quantity}`,
     { method: "PUT" }
   );
-  if (!response.ok) throw new Error("Failed to update quantity");
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData || "Failed to update quantity");
+  }
+
   return response.json();
 }

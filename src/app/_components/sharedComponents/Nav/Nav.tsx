@@ -1,21 +1,169 @@
 "use client";
+
+import {
+  ShoppingCart,
+  Heart,
+  UserCircle,
+  UserPlus,
+  LogIn,
+  LogOut,
+  Search,
+  Menu,
+  X,
+  Home,
+  LayoutGrid,
+  Layers,
+  PackageSearch
+} from "lucide-react";
+
 import { removeBrandRequest, removeTokens, removeUserInfo } from "@/app/server/auth.actions";
 import { setAuthInfo } from "@/app/store/slices/auth.slice";
 import { AppState } from "@/app/store/store";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useContext, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { searchProducts } from "@/app/api/search.api";
+import { SearchResponse } from "@/app/types/search.type";
 
 export default function Nav() {
-  const { isAuthinticated, userInfo } = useSelector(
-    (appState: AppState) => appState.auth,
-  );
+  // --- Redux Selectors ---
+  const { isAuthinticated, userInfo } = useSelector((appState: AppState) => appState.auth);
+  const { totalItems } = useSelector((appState: AppState) => appState.cart);
+  const wishlistItems = useSelector((appState: AppState) => appState.wishlist.items);
+  const wishlistCount = wishlistItems?.length || 0;
 
-  const { totalItems } = useSelector(
-    (appState: AppState) => appState.cart,
-  );
+  // --- Search & Navigation Logic ---
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  // -- Dropdown Logic --
+  const [dropdownResults, setDropdownResults] = useState<SearchResponse | null>(null);
+  const [isDropdownSearching, setIsDropdownSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchWrapperRefDesktop = useRef<HTMLDivElement>(null);
+  const searchWrapperRefMobile = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+  const pathName = usePathname();
+  const dispatch = useDispatch();
+
+  const toggle = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (searchTerm.trim().length > 0) {
+        setIsDropdownSearching(true);
+        setShowDropdown(true);
+        try {
+          const data = await searchProducts(searchTerm);
+          setDropdownResults(data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsDropdownSearching(false);
+        }
+      } else {
+        setDropdownResults(null);
+        setShowDropdown(false);
+      }
+    }, 400);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchWrapperRefDesktop.current && !searchWrapperRefDesktop.current.contains(event.target as Node) &&
+        searchWrapperRefMobile.current && !searchWrapperRefMobile.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSearch = (e: React.FormEvent, searchVal?: string) => {
+    e.preventDefault();
+    const val = searchVal !== undefined ? searchVal : searchTerm;
+    if (val.trim()) {
+      router.push(`/search?query=${encodeURIComponent(val)}`);
+      setSearchTerm("");
+      setShowDropdown(false);
+      setIsOpen(false);
+    }
+  };
+
+  const renderDropdown = () => {
+    if (!showDropdown || (!isDropdownSearching && !dropdownResults)) return null;
+
+    return (
+      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-[100] max-h-[80vh] sm:max-h-96 overflow-y-auto">
+        {isDropdownSearching ? (
+          <div className="p-4 text-center text-sm text-gray-500">Searching...</div>
+        ) : (
+          <>
+            {(!dropdownResults?.products?.length && !dropdownResults?.brands?.length && !dropdownResults?.categories?.length) ? (
+              <div className="p-4 text-center text-sm text-gray-500">No results found</div>
+            ) : (
+              <div className="py-2">
+                {dropdownResults?.products && dropdownResults.products.length > 0 && (
+                  <div className="px-4 py-2">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Products</h3>
+                    <ul className="space-y-1">
+                      {dropdownResults.products.slice(0, 3).map(p => (
+                        <li key={`prod-${p.productId}`}>
+                          <button type="button" onClick={(e) => handleSearch(e, p.productName)} className="w-full text-left px-2 py-1.5 hover:bg-gray-50 rounded-lg text-sm text-slate-700 truncate line-clamp-1">
+                            {p.productName}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {dropdownResults?.brands && dropdownResults.brands.length > 0 && (
+                  <div className="px-4 py-2 border-t border-gray-50">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Brands</h3>
+                    <ul className="space-y-1">
+                      {dropdownResults.brands.slice(0, 3).map(b => (
+                        <li key={`brand-${b.brandId}`}>
+                          <button type="button" onClick={(e) => handleSearch(e, b.brandName)} className="w-full text-left px-2 py-1.5 hover:bg-gray-50 rounded-lg text-sm text-slate-700 truncate line-clamp-1">
+                            {b.brandName}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {dropdownResults?.categories && dropdownResults.categories.length > 0 && (
+                  <div className="px-4 py-2 border-t border-gray-50">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categories</h3>
+                    <ul className="space-y-1">
+                      {dropdownResults.categories.slice(0, 3).map(c => (
+                        <li key={`cat-${c.categoryId}`}>
+                          <button type="button" onClick={(e) => handleSearch(e, c.categoryName)} className="w-full text-left px-2 py-1.5 hover:bg-gray-50 rounded-lg text-sm text-slate-700 truncate line-clamp-1">
+                            {c.categoryName}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <div className="px-4 pt-2 pb-1 border-t border-gray-50">
+                  <button type="button" onClick={(e) => handleSearch(e, searchTerm)} className="w-full text-center text-sm text-[#864227] font-medium hover:underline">
+                    See all results for "{searchTerm}"
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    );
+  };
 
   const getAccountLink = (role: string) => {
     if (role === "Admin") return "/adminAccount";
@@ -23,366 +171,231 @@ export default function Nav() {
     return "/customerAccount";
   };
 
-  const pathName = usePathname();
-
-  const [isOpen, setIsOpen] = useState(false);
-  function toggle() {
-    setIsOpen(!isOpen);
-  }
-
-  const dispatch = useDispatch();
-
-  function logOut() {
+  function handleLogOut() {
     removeTokens();
     removeUserInfo();
     removeBrandRequest();
     dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
-    //toast.success("Logged out successfully");
+    // toast.success("Logged out successfully");
   }
 
   return (
-    <nav className="">
-      {/* top navbar */}
-      <div className="container mx-auto px-12 py-4 flex justify-between items-center">
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+      {/* --- Top Navbar --- */}
+      <div className="container mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
+        {/* Logo */}
         <div>
           <Link href={"/"} className="font-bold text-3xl text-[#864227]">
             Brandy
           </Link>
         </div>
-        <div className="relative hidden lg:block">
-          <input
-            type="text"
-            placeholder="search for products"
-            className="w-2xs px-3 py-1.5 rounded-xl text-slate-700 border border-gray-400/40 focus:outline-none focus:border-[#864227]"
-          />
-          <i className="fa-brands fa-sistrix absolute right-2 top-3"></i>
+
+        {/* Search Bar - Desktop */}
+        <div ref={searchWrapperRefDesktop} className="relative hidden lg:block z-50">
+          <form onSubmit={(e) => handleSearch(e)} className="relative w-72">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => { if (searchTerm.trim()) setShowDropdown(true); }}
+              placeholder="search for products, brands..."
+              className="w-full px-4 py-2 rounded-xl text-slate-700 border border-gray-200 focus:outline-none focus:border-[#864227] transition-all"
+            />
+            <button type="submit" className="absolute right-3 top-2.5 text-gray-400 hover:text-[#864227] transition-colors">
+              <Search className="size-5" />
+            </button>
+          </form>
+          {renderDropdown()}
         </div>
-        <ul className="hidden lg:flex items-center gap-6 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
+
+        {/* Desktop Icons */}
+        <ul className="hidden lg:flex items-center gap-8">
           {userInfo?.userType === "Customer" && (
             <>
-              <li
-                className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
-              >
-                <Link
-                  href={"/cart"}
-                  className="flex flex-col items-center justify-center gap-2 relative"
-                >
-                  <i className="fa-solid fa-cart-shopping text-xl"></i>
-                  {totalItems > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
-                      {totalItems}
-                    </span>
-                  )}
-                  <span className="text-sm">Cart</span>
+              {/* Cart */}
+              <li>
+                <Link href="/cart" className={`relative flex flex-col items-center gap-1 group ${pathName === "/cart" ? "text-[#864227]" : "text-slate-600"}`}>
+                  <div className="relative">
+                    <ShoppingCart className="size-6 stroke-[1.5px] group-hover:text-[#864227] transition-colors" />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-1.5 -right-2 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
+                        {totalItems}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs font-medium">Cart</span>
                 </Link>
               </li>
-              <li
-                className={`${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-700"}`}
-              >
-                <Link
-                  href={"/wishlist"}
-                  className="flex flex-col items-center justify-center gap-2"
-                >
-                  <i className="fa-regular fa-heart text-xl"></i>
-                  <span className="text-sm">Whishlist</span>
+
+              {/* Wishlist */}
+              <li>
+                <Link href="/wishlist" className={`relative flex flex-col items-center gap-1 group ${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-600"}`}>
+                  <div className="relative">
+                    <Heart className="size-6 stroke-[1.5px] group-hover:text-[#864227] transition-colors" />
+                    {wishlistCount > 0 && (
+                      <span className="absolute -top-1.5 -right-2 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-white">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs font-medium">Wishlist</span>
                 </Link>
               </li>
             </>
           )}
-          {isAuthinticated && (
-            <li
-              className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                href={userInfo ? getAccountLink(userInfo.userType) : "/login"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <i className="fa-regular fa-circle-user text-xl"></i>
-                <span className="text-sm">Account</span>
-              </Link>
-            </li>
-          )}
-          {!isAuthinticated && (
+
+          {isAuthinticated ? (
             <>
-              {" "}
-              <li
-                className={`${pathName === "/register" ? "text-[#864227]" : "text-slate-700"}`}
-              >
-                <Link
-                  href={"/register"}
-                  className="flex flex-col items-center justify-center gap-2"
-                >
-                  <i className="fa-solid fa-user-plus text-xl"></i>
-                  <span className="text-sm">SignUp</span>
+              {/* Account */}
+              <li>
+                <Link href={userInfo ? getAccountLink(userInfo.userType) : "/login"} className={`flex flex-col items-center gap-1 group ${pathName.includes("Account") ? "text-[#864227]" : "text-slate-600"}`}>
+                  <UserCircle className="size-6 stroke-[1.5px] group-hover:text-[#864227] transition-colors" />
+                  <span className="text-xs font-medium">Account</span>
                 </Link>
               </li>
-              <li
-                className={`${pathName === "/login" ? "text-[#864227]" : "text-slate-700"}`}
-              >
-                <Link
-                  href={"/login"}
-                  className="flex flex-col items-center justify-center gap-2"
-                >
-                  <i className="fa-regular fa-address-card text-xl"></i>
-                  <span className="text-sm">Login</span>
+              {/* Logout */}
+              <li>
+                <button onClick={handleLogOut} className="flex flex-col items-center gap-1 text-slate-600 hover:text-red-600 transition-colors">
+                  <LogOut className="size-6 stroke-[1.5px]" />
+                  <span className="text-xs font-medium">Logout</span>
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              {/* SignUp */}
+              <li>
+                <Link href="/register" className="flex flex-col items-center gap-1 text-slate-600 hover:text-[#864227]">
+                  <UserPlus className="size-6 stroke-[1.5px]" />
+                  <span className="text-xs font-medium">SignUp</span>
+                </Link>
+              </li>
+              {/* Login */}
+              <li>
+                <Link href="/login" className="flex flex-col items-center gap-1 text-slate-600 hover:text-[#864227]">
+                  <LogIn className="size-6 stroke-[1.5px]" />
+                  <span className="text-xs font-medium">Login</span>
                 </Link>
               </li>
             </>
-          )}
-          {isAuthinticated && (
-            <li
-              className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => logOut()}
-                href={"/login"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <i className="fa-solid fa-arrow-right-from-bracket text-xl"></i>
-                <span className="text-sm">LogOut</span>
-              </Link>
-            </li>
           )}
         </ul>
-        <button
-          className="lg:hidden bg-[#864227] px-1.5 py-1 rounded text-white"
-          onClick={() => toggle()}
-        >
-          {isOpen ? (
-            <i className="fa-solid fa-xmark"></i>
-          ) : (
-            <i className="fa-solid fa-bars"></i>
-          )}
+
+        {/* Mobile Menu Toggle */}
+        <button className="lg:hidden text-[#864227] p-2" onClick={toggle}>
+          {isOpen ? <X className="size-7" /> : <Menu className="size-7" />}
         </button>
       </div>
-      {/* bottom navbar */}
+
+      {/* --- Bottom Navbar (Categories) - Desktop --- */}
       <div className="hidden lg:block bg-[#F7F2EA]">
         <div className="container py-3 px-12 mx-auto">
-          <ul className="flex items-center gap-5 *:font-light *:hover:text-[#864227] *:transition-colors *:duration-200">
-            <li
-              className={`${pathName === "/" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                href={"/"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <span className="text-sm">Home</span>
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/brands" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                href={"/brands"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <span className="text-sm">Brands</span>
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/categories" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                href={"/categories"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <span className="text-sm">All Categories</span>
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/products" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                href={"/products"}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <span className="text-sm">Featured Products</span>
-              </Link>
-            </li>
+          <ul className="flex items-center gap-8 text-sm font-medium text-slate-700">
+            <li><Link href="/" className={`hover:text-[#864227] transition-colors ${pathName === "/" ? "text-[#864227]" : ""}`}>Home</Link></li>
+            <li><Link href="/brands" className={`hover:text-[#864227] transition-colors ${pathName === "/brands" ? "text-[#864227]" : ""}`}>Brands</Link></li>
+            <li><Link href="/categories" className={`hover:text-[#864227] transition-colors ${pathName === "/categories" ? "text-[#864227]" : ""}`}>Categories</Link></li>
+            <li><Link href="/products" className={`hover:text-[#864227] transition-colors ${pathName === "/products" ? "text-[#864227]" : ""}`}>Products</Link></li>
           </ul>
         </div>
       </div>
-      {/* offcanvas */}
+
+      {/* --- Mobile Sidebar (Drawer) --- */}
       <div
-        className={`inset-0 bg-black/50 z-30 ${isOpen ? "fixed" : "hidden"} cursor-pointer`}
-        onClick={() => toggle()}
-      ></div>
-      <div
-        className={`bg-[#FCF9F4] z-40 top-0 left-0 bottom-0 p-4 w-70 ${isOpen ? "fixed" : "hidden"} animate-slide-in`}
-      >
-        <div className="flex items-center justify-between border-b border-gray-300/50 pb-4">
-          <Link
-            onClick={() => toggle()}
-            href={"/"}
-            className="font-bold text-2xl text-[#864227] block"
-          >
-            Brandy
-          </Link>
-          <button
-            onClick={() => toggle()}
-            className="p-2 rounded-full size-8 flex items-center justify-center bg-[#EFE7E2]"
-          >
-            <i className="fa-solid fa-xmark text-sm text-[#864227]"></i>
+        className={`fixed inset-0 bg-black/40 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        onClick={toggle}
+      />
+      <aside className={`fixed top-0 left-0 bottom-0 w-72 bg-[#FCF9F4] z-[60] p-6 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
+          <span className="font-bold text-2xl text-[#864227]">Brandy</span>
+          <button onClick={toggle} className="p-2 bg-white rounded-full shadow-sm">
+            <X className="size-5 text-[#864227]" />
           </button>
         </div>
-        <div className="relative my-6">
-          <input
-            type="text"
-            placeholder="search for products"
-            className="w-62 px-3 py-1.5 rounded-xl text-slate-700 border border-gray-400/40 focus:outline-none focus:border-[#864227]"
-          />
-          <i className="fa-brands fa-sistrix absolute right-2 top-3"></i>
+
+        {/* Mobile Search */}
+        <div ref={searchWrapperRefMobile} className="relative mb-8 lg:hidden z-50">
+          <form onSubmit={(e) => handleSearch(e)} className="relative">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => { if (searchTerm.trim()) setShowDropdown(true); }}
+              placeholder="Search..."
+              className="w-full px-4 py-2 rounded-xl text-slate-700 border border-gray-200 focus:outline-none focus:border-[#864227]"
+            />
+            <button type="submit" className="absolute right-3 top-2.5 text-gray-400">
+              <Search className="size-5" />
+            </button>
+          </form>
+          {renderDropdown()}
         </div>
-        <div className="border-b border-gray-300/50 pb-4">
-          <h3 className="font-bold text-xl text-slate-700 mb-5">Main Menu</h3>
-          <ul className="text-slate-600 space-y-5 font-light">
-            <li
-              className={`${pathName === "/" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => toggle()}
-                href={"/"}
-                className="hover:text-[#864227] transition-all duration-200 block "
-              >
-                <i className="fa-solid fa-home mr-2"></i>
-                <span className="text-sm">Home</span>
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/brands" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => toggle()}
-                href={"/brands"}
-                className="hover:text-[#864227] transition-all duration-200 block"
-              >
-                <i className="fa-solid fa-table-cells-large mr-2"></i>
-                <span className="text-sm">Brands</span>
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/categories" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => toggle()}
-                href={"/categories"}
-                className="hover:text-[#864227] transition-all duration-200 block"
-              >
-                <i className="fa-solid fa-layer-group mr-2"></i>
-                <span className="text-sm">All Categories</span>
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/products" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => toggle()}
-                href={"/products"}
-                className="hover:text-[#864227] transition-all duration-200 block"
-              >
-                <i className="fa-solid fa-boxes-stacked mr-2"></i>
-                <span className="text-sm">Featured Products</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="pt-4">
-          <h3 className="font-bold text-xl text-slate-700 mb-5">Account</h3>
-          <ul className="text-slate-600 space-y-5 font-light">
-            {isAuthinticated && (
-              <li
-                className={`${pathName === "/account" ? "text-[#864227]" : "text-slate-700"}`}
-              >
-                <Link
-                  onClick={() => toggle()}
-                  href={userInfo ? getAccountLink(userInfo.userType) : "/login"}
-                  className="hover:text-[#864227] transition-all duration-200 block "
-                >
-                  <i className="fa-regular fa-circle-user mr-2"></i>
-                  <span className="text-sm">My Account</span>
-                </Link>
-              </li>
-            )}
-            {!isAuthinticated && (
-              <>
-                {" "}
-                <li
-                  className={`${pathName === "/register" ? "text-[#864227]" : "text-slate-700"}`}
-                >
-                  <Link
-                    onClick={() => toggle()}
-                    href={"/register"}
-                    className="hover:text-[#864227] transition-all duration-200 block"
-                  >
-                    <i className="fa-solid fa-user-plus mr-2"></i>
-                    <span className="text-sm">SignUp</span>
+
+        <nav className="space-y-8 overflow-y-auto max-h-[calc(100vh-160px)]">
+          {/* Main Menu Section */}
+          <div>
+            <p className="text-xs font-bold uppercase text-gray-400 mb-4 tracking-wider">Main Menu</p>
+            <ul className="space-y-4 text-slate-700">
+              <li><Link onClick={toggle} href="/" className="flex items-center gap-3 hover:text-[#864227]"><Home className="size-5 stroke-[1.5px]" /> Home</Link></li>
+              <li><Link onClick={toggle} href="/brands" className="flex items-center gap-3 hover:text-[#864227]"><LayoutGrid className="size-5 stroke-[1.5px]" /> Brands</Link></li>
+              <li><Link onClick={toggle} href="/categories" className="flex items-center gap-3 hover:text-[#864227]"><Layers className="size-5 stroke-[1.5px]" /> Categories</Link></li>
+              <li><Link onClick={toggle} href="/products" className="flex items-center gap-3 hover:text-[#864227]"><PackageSearch className="size-5 stroke-[1.5px]" /> Products</Link></li>
+            </ul>
+          </div>
+
+          {/* Shop Section */}
+          {userInfo?.userType === "Customer" && (
+            <div className="pt-2">
+              <p className="text-xs font-bold uppercase text-gray-400 mb-4 tracking-wider">My Shop</p>
+              <ul className="space-y-4 text-slate-700">
+                <li>
+                  <Link onClick={toggle} href="/cart" className="flex items-center justify-between group">
+                    <div className="flex items-center gap-3 group-hover:text-[#864227]">
+                      <ShoppingCart className="size-5 stroke-[1.5px]" />
+                      <span>Cart</span>
+                    </div>
+                    {totalItems > 0 && (
+                      <span className="bg-[#864227] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
+                        {totalItems}
+                      </span>
+                    )}
                   </Link>
                 </li>
-                <li
-                  className={`${pathName === "/login" ? "text-[#864227]" : "text-slate-700"}`}
-                >
-                  <Link
-                    onClick={() => toggle()}
-                    href={"/login"}
-                    className="hover:text-[#864227] transition-all duration-200 block"
-                  >
-                    <i className="fa-regular fa-address-card mr-2"></i>
-                    <span className="text-sm">Login</span>
+                <li>
+                  <Link onClick={toggle} href="/wishlist" className="flex items-center justify-between group">
+                    <div className="flex items-center gap-3 group-hover:text-[#864227]">
+                      <Heart className="size-5 stroke-[1.5px]" />
+                      <span>Wishlist</span>
+                    </div>
+                    {wishlistCount > 0 && (
+                      <span className="bg-[#864227] text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">
+                        {wishlistCount}
+                      </span>
+                    )}
                   </Link>
                 </li>
-              </>
-            )}
-            {userInfo?.userType === "Customer" &&<><li
-              className={`${pathName === "/cart" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => toggle()}
-                href={"/cart"}
-                className="hover:text-[#864227] transition-all duration-200 block relative"
-              >
-                <i className="fa-solid fa-cart-shopping mr-2"></i>
-                <span className="text-sm">Cart</span>
-                {totalItems > 0 && (
-                  <span className="absolute left-3 -top-2 bg-[#864227] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold border-2 border-[#FCF9F4]">
-                    {totalItems}
-                  </span>
-                )}
-              </Link>
-            </li>
-            <li
-              className={`${pathName === "/wishlist" ? "text-[#864227]" : "text-slate-700"}`}
-            >
-              <Link
-                onClick={() => toggle()}
-                href={"/wishlist"}
-                className="hover:text-[#864227] transition-all duration-200 block"
-              >
-                <i className="fa-regular fa-heart mr-2"></i>
-                <span className="text-sm">Whishlist</span>
-              </Link>
-            </li></>}
-            {isAuthinticated && (
-              <>
-                <li
-                  className={`${pathName === "" ? "text-[#864227]" : "text-slate-700"}`}
-                >
-                  <Link
-                    onClick={() => {
-                      toggle();
-                      logOut();
-                    }}
-                    href={"/login"}
-                    className="hover:text-[#864227] transition-all duration-200 block"
-                  >
-                    <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>
-                    <span className="text-sm">LogOut</span>
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
-      </div>
+              </ul>
+            </div>
+          )}
+
+          {/* Account Section */}
+          <div className="pt-2 border-t border-gray-200">
+            <p className="text-xs font-bold uppercase text-gray-400 mb-4 tracking-wider pt-4">Account</p>
+            <ul className="space-y-4 text-slate-700">
+              {isAuthinticated ? (
+                <>
+                  <li><Link onClick={toggle} href={userInfo ? getAccountLink(userInfo.userType) : "/login"} className="flex items-center gap-3 hover:text-[#864227]"><UserCircle className="size-5 stroke-[1.5px]" /> My Account</Link></li>
+                  <li><button onClick={() => { toggle(); handleLogOut(); }} className="flex items-center gap-3 text-red-600 hover:text-red-700"><LogOut className="size-5 stroke-[1.5px]" /> Logout</button></li>
+                </>
+              ) : (
+                <>
+                  <li><Link onClick={toggle} href="/login" className="flex items-center gap-3 hover:text-[#864227]"><LogIn className="size-5 stroke-[1.5px]" /> Login</Link></li>
+                  <li><Link onClick={toggle} href="/register" className="flex items-center gap-3 hover:text-[#864227]"><UserPlus className="size-5 stroke-[1.5px]" /> Register</Link></li>
+                </>
+              )}
+            </ul>
+          </div>
+        </nav>
+      </aside>
     </nav>
   );
 }
