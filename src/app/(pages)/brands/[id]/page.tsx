@@ -101,7 +101,7 @@ export default async function BrandsDetails({ params }: any) {
               <ProductCard
                 key={product.productId}
                 product={product}
-                saved={false}
+                // saved={false}
               />
             ))}
           </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import { WishlistItem } from "@/app/types/wishlist.type";
+// استيراد النوع لحل مشكلة الـ TypeScript
+import { CartResponse } from "@/app/types/cart.type"; 
 import Link from "next/link";
 import Image from "next/image";
 import { useAppDispatch } from "@/app/store/store";
@@ -29,17 +31,15 @@ export default function WishlistCard({ item }: WishlistCardProps) {
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-   
       await removeFromWishlistApi({ productId: item.productId }); 
-
       dispatch(removeFromWishlist(item.wishlistItemId));
-      
       toast.success("Removed from wishlist");
     } catch (err) {
       console.error("REMOVE ERROR:", err);
       toast.error("Failed to remove item");
     }
-};
+  };
+
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
@@ -49,11 +49,15 @@ export default function WishlistCard({ item }: WishlistCardProps) {
         variantId: undefined,
         customization: null,
       });
-      const updatedCart = await getLoggedUserCart();
-      dispatch(setCart(updatedCart));
-      toast.success("Added to cart!");
 
-   
+      const updatedCart = await getLoggedUserCart();
+
+      // التعديل هنا: التأكد من أن updatedCart ليست null واستخدام Type Assertion
+      if (updatedCart) {
+        dispatch(setCart(updatedCart as CartResponse));
+        toast.success("Added to cart!");
+      }
+
       handleRemove(e);
     } catch (err) {
       toast.error("Failed to add to cart");
