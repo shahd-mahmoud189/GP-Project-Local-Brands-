@@ -6,7 +6,7 @@ import React from "react";
 export default async function page() {
   const response = await getAllProducts();
   return (
-    <div className="container mx-auto px-12 py-10">
+    <div className="container mx-auto md:px-12 py-10">
       <div className="mb-6 px-10">
         <h2 className="text-[#864227] text-4xl ">Shop All Products</h2>
         <p className="text-[#796C63] mt-4 font-light">

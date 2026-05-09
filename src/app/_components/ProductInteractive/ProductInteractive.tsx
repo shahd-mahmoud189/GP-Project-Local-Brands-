@@ -94,8 +94,12 @@ export default function ProductInteractive({
         quantity: 1,
       });
       const updatedCart = await getLoggedUserCart();
-      dispatch(setCart(updatedCart));
-      toast.success("Added to cart");
+      if (updatedCart) {
+        dispatch(setCart(updatedCart));
+        toast.success("Added to cart");
+      } else {
+        toast.error("Failed to update cart");
+      }
     } catch (error: any) {
       toast.error(error.message || "Failed to add to cart");
     } finally {
@@ -204,7 +208,7 @@ export default function ProductInteractive({
           {/* Text */}
           {customizationOptions.allowsText && (
             <div>
-              <label className="text-sm font-medium text-stone-700 block mb-2 flex items-center gap-2">
+              <label className="text-sm font-medium text-stone-700 mb-2 flex items-center gap-2">
                 <span className="w-5 h-5 bg-[#864227] rounded flex items-center justify-center text-white text-xs">
                   T
                 </span>
@@ -227,7 +231,7 @@ export default function ProductInteractive({
           {/* Photo */}
           {customizationOptions.allowsPrinting && (
             <div>
-              <label className="text-sm font-medium text-stone-700 block mb-2 flex items-center gap-2">
+              <label className="text-sm font-medium text-stone-700 mb-2 flex items-center gap-2">
                 <span className="w-5 h-5 bg-[#864227] rounded flex items-center justify-center text-white text-xs">
                   <i
                     className="fa-regular fa-image"

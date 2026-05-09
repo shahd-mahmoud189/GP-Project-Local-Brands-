@@ -43,13 +43,6 @@ export default function AdminAside() {
           <span>Brand Request</span>
         </Link>
         <Link
-          href={"productReview"}
-          className={`w-full ${pathName === "/adminAccount/productReview" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
-        >
-          <i className="fa-solid fa-cubes mr-3"></i>
-          <span>Product Review</span>
-        </Link>
-        <Link
           href={"reviewManagement"}
           className={`w-full ${pathName === "/adminAccount/reviewManagement" ? "text-[#1c1c19] bg-white border-l-4 border-[#A4593C]" : "text-[#6B5B54]"}`}
         >

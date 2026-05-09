@@ -1,118 +1,112 @@
 'use server'
+
 import { cookies } from "next/headers";
 import { AddToCartRequest, CartResponse } from "../types/cart.type";
 import { refreshTokens } from "./serverFunction/serverFunctions.api";
 
+const BASE = "https://brands-system-production-c110.up.railway.app";
+
+// دالة موحدة للتعامل مع الـ Fetch وإعادة المحاولة في حال انتهى التوكن
 async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
   let token = cookieStore.get("token")?.value || null;
 
-  if (!token) {
-    throw new Error("Authentication required");
-  }
+  if (!token) throw new Error("Authentication required");
 
   const headers = {
     ...options.headers,
-    Authorization: `Bearer ${token}`,
+    "Authorization": `Bearer ${token}`,
     "Content-Type": "application/json",
   };
 
-  let response = await fetch(url, { ...options, headers });
+  let response = await fetch(url, { 
+    ...options, 
+    headers,
+    cache: "no-store" 
+  });
 
+  // إذا كان التوكن منتهي (401)، نحاول تجديده مرة واحدة
   if (response.status === 401) {
     const newToken = await refreshTokens();
-    if (newToken) {
-      const retryHeaders = {
-        ...options.headers,
-        Authorization: `Bearer ${newToken}`,
-        "Content-Type": "application/json",
-      };
-      response = await fetch(url, { ...options, headers: retryHeaders });
+
+    if (!newToken) {
+      // لو معرفش يجدد التوكن، بنعمل Logout ونمسح الكوكيز
+      const cookieStore = await cookies();
+      cookieStore.delete("token");
+      cookieStore.delete("refreshToken");
+      return new Response(null, { status: 401 });
     }
+
+    // إعادة المحاولة بالتوكن الجديد
+    const retryHeaders = {
+      ...options.headers,
+      "Authorization": `Bearer ${newToken}`,
+      "Content-Type": "application/json",
+    };
+    response = await fetch(url, { ...options, headers: retryHeaders, cache: "no-store" });
   }
 
   return response;
 }
 
-export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
-  const response = await fetchWithAuth(
-    "https://brands-system-production-c110.up.railway.app/api/Cart",
-    {
-      method: "POST",
-      body: JSON.stringify(body),
-    }
-  );
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    throw new Error(errorData || "Failed to add product to cart");
-  }
-
-  return response.json();
-}
-
-export async function getLoggedUserCart(): Promise<CartResponse> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value || null;
-
-  if (!token) {
-    return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
-  }
-
+// 1. جلب بيانات السلة
+export async function getLoggedUserCart(): Promise<CartResponse | null> {
   try {
-    const response = await fetchWithAuth("https://brands-system-production-c110.up.railway.app/api/Cart", {
-      method: "GET",
-      cache: "no-store",
-    });
+    const response = await fetchWithAuth(`${BASE}/api/Cart`);
+
+    if (response.status === 401) return null;
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`CART API ERROR [${response.status}]:`, errorText);
-
-      // Handle 400/404 gracefully
+       // لو السلة فاضية أو مش موجودة (404/400) بنرجع سلة صفرية بدل ما نضرب Error
       if (response.status === 400 || response.status === 404) {
         return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
       }
-      throw new Error(`Failed to fetch cart: ${response.status}`);
+      throw new Error("Failed to get cart");
     }
 
     return await response.json();
-  } catch (error: any) {
-    console.error("GET LOGGED USER CART EXCEPTION:", error.message);
+  } catch (error) {
+    console.error("GET CART ERROR:", error);
     return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
   }
 }
 
-export async function removeProductFromCart(cartItemId: number): Promise<CartResponse> {
-  const response = await fetchWithAuth(
-    `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}`,
-    {
-      method: "DELETE",
-    }
-  );
+// 2. إضافة منتج للسلة
+export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
+  const response = await fetchWithAuth(`${BASE}/api/Cart`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
 
   if (!response.ok) {
     const errorData = await response.text();
-    throw new Error(errorData || "Failed to remove product from cart");
+    throw new Error(errorData || "Failed to add to cart");
   }
 
   return response.json();
 }
 
-export async function clearCartApi(): Promise<void> {
-  const response = await fetchWithAuth(
-    "https://brands-system-production-c110.up.railway.app/api/Cart",
-    {
-      method: "DELETE",
-    }
-  );
+// 3. حذف منتج من السلة
+export async function removeProductFromCart(cartItemId: number): Promise<CartResponse> {
+  const response = await fetchWithAuth(`${BASE}/api/Cart/${cartItemId}`, {
+    method: "DELETE",
+  });
 
-  if (!response.ok) {
-    const errorData = await response.text();
-    throw new Error(errorData || "Failed to clear cart");
-  }
+  if (!response.ok) throw new Error("Failed to remove from cart");
+
+  return response.json();
 }
 
+// 4. مسح السلة بالكامل
+export async function clearCartApi(): Promise<void> {
+  const response = await fetchWithAuth(`${BASE}/api/Cart`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) throw new Error("Failed to clear cart");
+}
+
+// 5. تحديث الكمية
 export async function updateProductQuantity({
   cartItemId,
   quantity,
@@ -120,23 +114,15 @@ export async function updateProductQuantity({
   cartItemId: number;
   quantity: number;
 }): Promise<any> {
-  try {
-    const response = await fetchWithAuth(
-      `https://brands-system-production-c110.up.railway.app/api/Cart/${cartItemId}?quantity=${quantity}`,
-      {
-        method: "PUT",
-      }
-    );
+  const response = await fetchWithAuth(
+    `${BASE}/api/Cart/${cartItemId}?quantity=${quantity}`,
+    { method: "PUT" }
+  );
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("UPDATE CART ERROR:", errorData);
-      throw new Error(errorData || "Failed to update quantity");
-    }
-
-    return response.json();
-  } catch (error: any) {
-    console.error("UPDATE CART EXCEPTION:", error.message);
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData || "Failed to update quantity");
   }
+
+  return response.json();
 }

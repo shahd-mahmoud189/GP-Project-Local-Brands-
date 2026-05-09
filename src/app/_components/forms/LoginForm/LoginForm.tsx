@@ -37,7 +37,7 @@ export default function LoginForm() {
       setTokens(data.token,data.refreshToken)
       setUserInfo(data.email,data.userType)
       dispatch(setAuthInfo({isAuthinticated:true,userInfo:{email:data.email,userType:data.userType}}))
-      toast.success(data.isSuccess && "Logged in successfully");
+      //toast.success(data.isSuccess && "Logged in successfully");
       setTimeout(() => {
         router.push("/");
       }, 2000);

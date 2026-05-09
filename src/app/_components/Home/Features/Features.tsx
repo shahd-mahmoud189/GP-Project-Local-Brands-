@@ -26,7 +26,7 @@ const values = [
 
 export default function Features() {
   return (
-    <section className="py-32 bg-[#fff]">
+    <section className="py-32 bg-white">
       <div className="container mx-auto px-6">
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">

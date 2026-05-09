@@ -136,7 +136,7 @@ export default function Hero() {
       {heroSlides.map((_, index) => (
         <div key={index} className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           {bgs[index]}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/5 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/20 via-black/5 to-transparent" />
         </div>
       ))}
 

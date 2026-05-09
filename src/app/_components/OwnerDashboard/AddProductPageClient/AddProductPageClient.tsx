@@ -20,7 +20,7 @@ export default function AddProductPageClient({
           onAccepted={() => setAccepted(true)}
         />
       )}
-      <AddProductTab />
+      {accepted && <AddProductTab />}
     </>
   );
 }

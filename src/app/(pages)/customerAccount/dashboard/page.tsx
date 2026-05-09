@@ -14,8 +14,11 @@ const getImageUrl = (path: string) => {
 export default async function DashboardPage() {
   let orders: Order[] = [];
   try {
-    orders = await getUserOrders();
+    const result = await getUserOrders();
+    orders = result || [];
+    
   } catch (err) {
+    
     console.error("Failed to fetch orders in dashboard", err);
   }
 
@@ -118,7 +121,7 @@ export default async function DashboardPage() {
                 </div>
               ) : (
                 <ul className="space-y-8 relative mt-10">
-                  <div className="w-0.5 bg-[#EEEEEE] h-full absolute left-[8px] top-4 bottom-4 z-0"></div>
+                  <div className="w-0.5 bg-[#EEEEEE] h-full absolute left-2 top-4 bottom-4 z-0"></div>
 
                   {/* Step 1: Placed */}
                   <li className="flex items-center gap-4 relative z-10">
