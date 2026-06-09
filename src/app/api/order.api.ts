@@ -101,7 +101,7 @@ import { cookies } from "next/headers";
 import { CheckoutRequest } from "../types/checkout.type";
 import { refreshTokens } from "./serverFunction/serverFunctions.api";
 
-const BASE = "https://brands-system-production-c110.up.railway.app";
+const BASE = "https://graduationprojectclean-production.up.railway.app";
 
 export async function placeOrder(data: CheckoutRequest) {
   const cookieStore = await cookies();

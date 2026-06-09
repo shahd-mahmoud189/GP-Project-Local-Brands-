@@ -13,7 +13,7 @@ import { useAppDispatch } from "@/app/store/store";
 import { setCart } from "@/app/store/slices/cart.slice";
 import { toast } from "react-toastify";
 
-const BASE_URL = "https://brands-system-production-c110.up.railway.app";
+const BASE_URL = "https://graduationprojectclean-production.up.railway.app";
 
 export default function CartItem({ item }: { item: CartItemType }) {
   const dispatch = useAppDispatch();

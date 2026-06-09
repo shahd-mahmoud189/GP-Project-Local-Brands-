@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 const api = axios.create({
-  baseURL: "https://brands-system-production-c110.up.railway.app",
+  baseURL: "https://graduationprojectclean-production.up.railway.app",
 });
 
 let isRefreshing = false;
@@ -83,7 +83,7 @@ api.interceptors.response.use(
       try {
         // بيكلم السيرفر الخارجي مباشرة
         const { data } = await axios.post(
-          "https://brands-system-production-c110.up.railway.app/api/Auth/refresh-token",
+          "https://graduationprojectclean-production.up.railway.app/api/Auth/refresh-token",
           { refreshToken: refreshToken }
         );
 

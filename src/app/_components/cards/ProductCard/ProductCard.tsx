@@ -1,7 +1,7 @@
 "use client";
 
 import { Product } from "@/app/types/product.type";
-// استيراد CartResponse ضروري لحل مشكلة الـ Type Error
+
 import { CartResponse } from "@/app/types/cart.type"; 
 import { getImageUrl } from "@/app/utils/imageUrl";
 import Image from "next/image";
@@ -16,7 +16,7 @@ import { useAppSelector } from "@/app/store/store";
 import { addToWishlist as addToWishlistApi, removeFromWishlist as removeFromWishlistApi, getWishlist } from "@/app/api/wishlist.api";
 import { addToWishlist, removeFromWishlist, setWishlist } from "@/app/store/slices/wishlist.slice";
 
-const BASE_URL = "https://brands-system-production-c110.up.railway.app";
+const BASE_URL = "https://graduationprojectclean-production.up.railway.app"; // Adjust this to your actual base URL if needed
 
 interface ProductCardProps {
   product: Product;
@@ -82,6 +82,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
         dispatch(setCart(updatedCart as CartResponse));
         toast.success("Added to cart! ");
       }
+   
     } catch (err: any) {
       console.error("ADD FAILED ", err);
       toast.error("Failed to add to cart. Please try again.");
@@ -114,6 +115,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
         await removeFromWishlistApi({ productId: product.productId });
         dispatch(removeFromWishlist(wishlistItem?.wishlistItemId || product.productId));
         toast.success("Removed from wishlist");
+ 
       } else {
         await addToWishlistApi({ productId: product.productId });
         const updatedWishlist = await getWishlist();
@@ -121,6 +123,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
           dispatch(setWishlist(updatedWishlist));
         }
         toast.success("Added to wishlist!");
+
       }
     } catch (err: any) {
       console.error("WISHLIST TOGGLE FAILED ", err);

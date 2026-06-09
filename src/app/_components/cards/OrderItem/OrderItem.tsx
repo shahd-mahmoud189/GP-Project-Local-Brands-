@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { CartItem } from "@/app/types/cart.type";
 
-const BASE_URL = "https://brands-system-production-c110.up.railway.app";
+const BASE_URL = "https://graduationprojectclean-production.up.railway.app";
 
 export default function OrderItem({ item, status }: { item?: CartItem, status?: boolean }) {
   if (!item) return null;

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { X, ArrowRightLeft, Trash2, LayoutGrid, LayoutPanelLeft } from "lucide-react";
 import Swal from "sweetalert2"; 
 
-const BASE_URL = "https://brands-system-production-c110.up.railway.app";
+const BASE_URL = "https://graduationprojectclean-production.up.railway.app";
 
 export default function CompareDrawer() {
     const dispatch = useAppDispatch();

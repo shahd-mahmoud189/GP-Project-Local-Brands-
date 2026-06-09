@@ -142,13 +142,13 @@ export default function RequestsTable() {
                   </label>
                   <div className="mt-2 w-full h-64 rounded-lg border border-stone-200 overflow-hidden bg-stone-50">
                     <iframe
-                      src={`https://brands-system-production-c110.up.railway.app${selectedRequest.businessLicense}`}
+                      src={`https://graduationprojectclean-production.up.railway.app${selectedRequest.businessLicense}`}
                       className="w-full h-full"
                       title="Business License"
                     />
                   </div>
                   <a
-                    href={`https://brands-system-production-c110.up.railway.app${selectedRequest.businessLicense}`}
+                    href={`https://graduationprojectclean-production.up.railway.app${selectedRequest.businessLicense}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block mt-2 text-amber-800 underline hover:text-amber-900 text-sm"
