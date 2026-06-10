@@ -14,6 +14,7 @@ import { compareInitialState } from "./store/slices/compare.slice";
 import { initialState as wishlistInitialState } from "./store/slices/wishlist.slice";
 import CompareDrawer from "./_components/sharedComponents/Compare/CompareDrawer";
 import { getWishlist } from "./api/wishlist.api";
+import SessionInitializer from "./_components/SessionInitializer/SessionInitializer";
 
 const exo = Exo({
   subsets: ["latin"],
@@ -38,7 +39,7 @@ export default async function RootLayout({
     myBrand = await getMyBrands();
 
     if (authData?.isAuthinticated && authData?.userInfo?.userType === 'Customer') {
-      // بنجيب السلة والـ Wishlist فقط لو اليوزر زبون (Customer)
+      
       const [cart, wishlist] = await Promise.all([
         getLoggedUserCart().catch(() => null),
         getWishlist().catch(() => null)
@@ -81,6 +82,7 @@ export default async function RootLayout({
     <html lang="en">
       <Providers preloadedState={preloadedState}>
         <body className={`${exo.className} font-medium`}>
+          <SessionInitializer />
           {authData?.userInfo.userType !== 'BrandOwner'&& <Nav />}
           
           <main>
@@ -100,7 +102,8 @@ export default async function RootLayout({
             theme="light"
             transition={Bounce}
           />
-          <Footer />
+          
+{authData?.userInfo.userType !== 'BrandOwner' && <Footer />}
         </body>
       </Providers>
     </html>

@@ -1,8 +1,7 @@
 "use client";
 
 import { Product } from "@/app/types/product.type";
-
-import { CartResponse } from "@/app/types/cart.type"; 
+import { CartResponse } from "@/app/types/cart.type";
 import { getImageUrl } from "@/app/utils/imageUrl";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,10 +12,19 @@ import { addToCompare } from "@/app/store/slices/compare.slice";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/app/store/store";
-import { addToWishlist as addToWishlistApi, removeFromWishlist as removeFromWishlistApi, getWishlist } from "@/app/api/wishlist.api";
-import { addToWishlist, removeFromWishlist, setWishlist } from "@/app/store/slices/wishlist.slice";
+import {
+  addToWishlist as addToWishlistApi,
+  removeFromWishlist as removeFromWishlistApi,
+  getWishlist,
+} from "@/app/api/wishlist.api";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  setWishlist,
+} from "@/app/store/slices/wishlist.slice";
+import { getOrCreateSession, trackEvent } from "@/app/api/userBehavior.api";
 
-const BASE_URL = "https://graduationprojectclean-production.up.railway.app"; // Adjust this to your actual base URL if needed
+const BASE_URL = "https://graduationprojectclean-production.up.railway.app";
 
 interface ProductCardProps {
   product: Product;
@@ -41,15 +49,19 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
   const router = useRouter();
   const { isAuthinticated } = useAppSelector((state) => state.auth);
   const compareItems = useAppSelector((state) => state.compare.items);
-  const isCompared = compareItems.some((item) => item.productId === product.productId);
+  const isCompared = compareItems.some(
+    (item) => item.productId === product.productId
+  );
 
   const wishlistItems = useAppSelector((state) => state.wishlist.items);
-  const wishlistItem = wishlistItems.find((item) => item.productId === product.productId);
+  const wishlistItem = wishlistItems.find(
+    (item) => item.productId === product.productId
+  );
   const isWishlisted = !!wishlistItem;
 
   const getImageUrlLocal = (path: string) => {
     if (!path) return "/unnamed.png";
-    const firstImage = path.split(',')[0];
+    const firstImage = path.split(",")[0];
     if (firstImage.startsWith("http")) return firstImage;
     return `${BASE_URL}${firstImage.startsWith("/") ? "" : "/"}${firstImage}`;
   };
@@ -58,6 +70,26 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
     ? [...new Set(product.variants.map((v: any) => v.color))]
     : [];
 
+
+  const sendTrackingEvent = async (
+    actionType: string,
+    extraData?: Record<string, any>
+  ) => {
+    const sessionId = await getOrCreateSession();
+    if (!sessionId) return;
+
+    await trackEvent({
+      sessionId,
+      actionType,
+      productId: product.productId,
+      categoryId: product.categoryId,
+      brandId: product.brandId,
+      sourcePage: "product_card",
+      ...extraData,
+    });
+  };
+
+  
   const handleAddToCart = async () => {
     if (!isAuthinticated) {
       toast.info("Please login to add items to cart!");
@@ -66,9 +98,10 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
     }
 
     try {
-      const defaultVariantId = product.variants && product.variants.length > 0
-        ? product.variants[0].variantId
-        : undefined;
+      const defaultVariantId =
+        product.variants && product.variants.length > 0
+          ? product.variants[0].variantId
+          : undefined;
 
       await addProductToCart({
         productId: product.productId,
@@ -81,13 +114,15 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
       if (updatedCart) {
         dispatch(setCart(updatedCart as CartResponse));
         toast.success("Added to cart! ");
+       
+        await sendTrackingEvent("cart", { variantId: defaultVariantId });
       }
-   
     } catch (err: any) {
       console.error("ADD FAILED ", err);
       toast.error("Failed to add to cart. Please try again.");
     }
   };
+
 
   const handleCompare = () => {
     if (isCompared) {
@@ -100,8 +135,11 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
     }
     dispatch(addToCompare(product));
     toast.success("Added to comparison!");
+   
+    sendTrackingEvent("click");
   };
 
+  
   const handleWishlistToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isAuthinticated) {
@@ -113,9 +151,12 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
     try {
       if (isWishlisted) {
         await removeFromWishlistApi({ productId: product.productId });
-        dispatch(removeFromWishlist(wishlistItem?.wishlistItemId || product.productId));
+        dispatch(
+          removeFromWishlist(wishlistItem?.wishlistItemId || product.productId)
+        );
         toast.success("Removed from wishlist");
- 
+      
+        await sendTrackingEvent("wishlist");
       } else {
         await addToWishlistApi({ productId: product.productId });
         const updatedWishlist = await getWishlist();
@@ -123,11 +164,14 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
           dispatch(setWishlist(updatedWishlist));
         }
         toast.success("Added to wishlist!");
-
+      
+        await sendTrackingEvent("wishlist");
       }
     } catch (err: any) {
       console.error("WISHLIST TOGGLE FAILED ", err);
-      toast.error(`Failed to update wishlist: ${err.message || "Please try again."}`);
+      toast.error(
+        `Failed to update wishlist: ${err.message || "Please try again."}`
+      );
     }
   };
 
@@ -141,20 +185,30 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
             title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#0288d1] hover:bg-[#0288d1] hover:text-white transition-all"
           >
-            <i className={`${isWishlisted ? "fa-solid" : "fa-regular"} fa-heart text-sm`} />
+            <i
+              className={`${
+                isWishlisted ? "fa-solid" : "fa-regular"
+              } fa-heart text-sm`}
+            />
           </button>
 
           <button
             onClick={handleCompare}
             title="Add to compare"
-            className={`w-9 h-9 rounded-full shadow-md flex items-center justify-center transition-all ${isCompared ? "bg-[#0288d1] text-white" : "bg-white text-[#0288d1] hover:bg-[#0288d1] hover:text-white"
-              }`}
+            className={`w-9 h-9 rounded-full shadow-md flex items-center justify-center transition-all ${
+              isCompared
+                ? "bg-[#0288d1] text-white"
+                : "bg-white text-[#0288d1] hover:bg-[#0288d1] hover:text-white"
+            }`}
           >
             <i className="fa-solid fa-arrow-right-arrow-left text-sm" />
           </button>
         </div>
 
-        <Link href={`/products/${product.productId}`} className="block w-full h-full">
+        <Link
+          href={`/products/${product.productId}`}
+          className="block w-full h-full"
+        >
           <Image
             src={getImageUrlLocal(product.imageUrls)}
             alt={product.productName}
@@ -167,7 +221,10 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
 
       {/* INFO */}
       <div className="pt-4 pb-1 px-1 flex flex-col flex-1">
-        <Link href={"/brandDetails"} className="text-sm font-semibold text-[#0288d1] block mb-2">
+        <Link
+          href={"/brandDetails"}
+          className="text-sm font-semibold text-[#0288d1] block mb-2"
+        >
           {product.brandName}
         </Link>
 
@@ -214,7 +271,7 @@ export default function ProductCard({ product, saved }: ProductCardProps) {
               e.preventDefault();
               handleAddToCart();
             }}
-            className="h-10 w-10 rounded-full bg-[#03a9f4] hover:bg-[#0288d1] text-white flex items-center justify-center  transition-all shadow-lg active:scale-90"
+            className="h-10 w-10 rounded-full bg-[#03a9f4] hover:bg-[#0288d1] text-white flex items-center justify-center transition-all shadow-lg active:scale-90"
           >
             <i className="fa-solid fa-plus" />
           </button>
