@@ -16,7 +16,7 @@
 //     console.log("[API] placeOrder called with data:", JSON.stringify(data, null, 2));
 
 //     const res = await axios.post(
-//       "https://brands-system-production-c110.up.railway.app/api/Orders",
+//       "https://graduationprojectclean-production.up.railway.app/api/Orders",
 //       data,
 //       {
 //         headers: {
@@ -51,7 +51,7 @@
 
 //   try {
 //     const { data } = await axios.get(
-//       "https://brands-system-production-c110.up.railway.app/api/Orders/my-orders",
+//       "https://graduationprojectclean-production.up.railway.app/api/Orders/my-orders",
 //       {
 //         headers: {
 //           Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@
 
 //   try {
 //     const { data } = await axios.put(
-//       `https://brands-system-production-c110.up.railway.app/api/Orders/${orderId}/cancel`,
+//       `https://graduationprojectclean-production.up.railway.app/api/Orders/${orderId}/cancel`,
 //       {},
 //       {
 //         headers: {

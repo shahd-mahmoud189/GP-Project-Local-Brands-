@@ -24,7 +24,7 @@ export async function refreshTokens(): Promise<string | null> {
 
 export async function getAllCategory() {
   const res = await fetch(
-    "https://brands-system-production-c110.up.railway.app/api/Categories",
+    "https://graduationprojectclean-production.up.railway.app/api/Categories",
     { cache: "no-store" }
   );
 
@@ -40,7 +40,7 @@ export async function getContract() {
 
   const fetchWithToken = async (t: string) =>
     fetch(
-      "https://brands-system-production-c110.up.railway.app/api/Contract",
+      "https://graduationprojectclean-production.up.railway.app/api/Contract",
       {
         headers: { Authorization: `Bearer ${t}` },
         cache: "no-store",
@@ -68,7 +68,7 @@ export async function getContractStatus() {
 
   const fetchWithToken = async (t: string) =>
     fetch(
-      "https://brands-system-production-c110.up.railway.app/api/Contract/status",
+      "https://graduationprojectclean-production.up.railway.app/api/Contract/status",
       {
         headers: { Authorization: `Bearer ${t}` },
         cache: "no-store",
@@ -94,7 +94,7 @@ export async function getProductById(id: string) {
 
   const fetchWithToken = async (t: string) =>
     fetch(
-      `https://brands-system-production-c110.up.railway.app/api/Products/${id}`,
+      `https://graduationprojectclean-production.up.railway.app/api/Products/${id}`,
       { headers: { Authorization: `Bearer ${t}` }, cache: "no-store" }
     );
 
@@ -118,7 +118,7 @@ export async function getPendingProduct() {
 
   const fetchWithToken = async (t: string) =>
     fetch(
-      "https://brands-system-production-c110.up.railway.app/api/Products/pending",
+      "https://graduationprojectclean-production.up.railway.app/api/Products/pending",
       {
         headers: { Authorization: `Bearer ${t}` },
         cache: "no-store",
@@ -144,7 +144,7 @@ export async function getProfile() {
   if (!token) return null;
 
   const fetchWithToken = (t: string) =>
-    fetch("https://brands-system-production-c110.up.railway.app/api/Profile", {
+    fetch("https://graduationprojectclean-production.up.railway.app/api/Profile", {
       headers: { Authorization: `Bearer ${t}` },
       cache: "no-store",
     });
@@ -167,7 +167,7 @@ export async function getProfile() {
 //   if (!token) return null;
 
 //   const fetchWithToken = (t: string) =>
-//     fetch("https://brands-system-production-c110.up.railway.app/api/Profile", {
+//     fetch("https://graduationprojectclean-production.up.railway.app/api/Profile", {
 //       headers: { Authorization: `Bearer ${t}` },
 //       cache: "no-store",
 //       method:'PUT',
@@ -192,7 +192,7 @@ export async function getMyBrands() {
   if (!token) return null;
 
   const fetchWithToken = (t: string) =>
-    fetch("https://brands-system-production-c110.up.railway.app/api/Brands/my-brands", {
+    fetch("https://graduationprojectclean-production.up.railway.app/api/Brands/my-brands", {
       headers: { Authorization: `Bearer ${t}` },
       cache: "no-store",
     });
@@ -215,7 +215,7 @@ export async function getMyProducts(brandId: number): Promise<ProductList> {
   if (!token) return [];
 
   const fetchWithToken = (t: string) =>
-    fetch(`https://brands-system-production-c110.up.railway.app/api/Products/brand/${brandId}`, {
+    fetch(`https://graduationprojectclean-production.up.railway.app/api/Products/brand/${brandId}`, {
       headers: { Authorization: `Bearer ${t}` },
       cache: "no-store",
     });
@@ -234,7 +234,7 @@ export async function getMyProducts(brandId: number): Promise<ProductList> {
 
 export async function getBrandById(brandId: number): Promise<BrandDetailsResponse> {
   const response = await fetch(
-    `https://brands-system-production-c110.up.railway.app/api/Brands/${brandId}`,
+    `https://graduationprojectclean-production.up.railway.app/api/Brands/${brandId}`,
     { cache: "no-store" }
   );
   if (!response.ok) throw new Error("Failed to fetch brand");

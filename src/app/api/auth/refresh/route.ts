@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   }
 
   const res = await fetch(
-    "https://brands-system-production-c110.up.railway.app/api/Auth/refresh-token",
+    "https://graduationprojectclean-production.up.railway.app/api/Auth/refresh-token",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },

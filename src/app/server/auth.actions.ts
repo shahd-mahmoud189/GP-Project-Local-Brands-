@@ -93,7 +93,7 @@ export async function getMyRequestData() {
 
   try {
     // بنستخدم fetch العادي هنا عشان نهرب من مشاكل Axios في السيرفر
-    const response = await fetch('https://brands-system-production-c110.up.railway.app/api/BrandOwnerRequest/my-requests', {
+    const response = await fetch('https://graduationprojectclean-production.up.railway.app/api/BrandOwnerRequest/my-requests', {
       headers: {
         'Authorization': `Bearer ${token}`,
       },

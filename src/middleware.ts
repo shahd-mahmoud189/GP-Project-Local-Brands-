@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   // لو في refreshToken بس مفيش token — اعمل refresh
   if (!token && refreshToken) {
     const res = await fetch(
-      "https://brands-system-production-c110.up.railway.app/api/Auth/refresh-token",
+      "https://graduationprojectclean-production.up.railway.app/api/Auth/refresh-token",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
