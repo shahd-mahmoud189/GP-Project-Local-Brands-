@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 const api = axios.create({
-  baseURL: "https://brands-system-production-c110.up.railway.app",
+  baseURL: "https://graduationprojectclean-production.up.railway.app",
 });
 
 let isRefreshing = false;

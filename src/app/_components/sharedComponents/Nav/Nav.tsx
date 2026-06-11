@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { searchProducts } from "@/app/api/search.api";
 import { SearchResponse } from "@/app/types/search.type";
+import { getOrCreateSession, trackEvent } from "@/app/api/userBehavior.api"; // ✅ أضفنا trackEvent
 
 export default function Nav() {
   // --- Redux Selectors ---
@@ -86,10 +87,24 @@ export default function Nav() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSearch = (e: React.FormEvent, searchVal?: string) => {
+  // ✅ دالة مساعدة لتتبع البحث
+  const sendSearchEvent = async (searchQuery: string) => {
+    const sessionId = await getOrCreateSession();
+    if (!sessionId || !searchQuery.trim()) return;
+    await trackEvent({
+      sessionId,
+      actionType: "search",
+      searchQuery: searchQuery.trim(),
+      sourcePage: "nav",
+    });
+  };
+
+  // ✅ تعديل handleSearch لتصبح async وتستدعي sendSearchEvent
+  const handleSearch = async (e: React.FormEvent, searchVal?: string) => {
     e.preventDefault();
     const val = searchVal !== undefined ? searchVal : searchTerm;
     if (val.trim()) {
+      await sendSearchEvent(val);      // إرسال حدث البحث
       router.push(`/search?query=${encodeURIComponent(val)}`);
       setSearchTerm("");
       setShowDropdown(false);
@@ -176,7 +191,6 @@ export default function Nav() {
     removeUserInfo();
     removeBrandRequest();
     dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
-    // toast.success("Logged out successfully");
   }
 
   return (

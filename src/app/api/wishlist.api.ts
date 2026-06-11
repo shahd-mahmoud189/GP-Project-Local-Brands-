@@ -1,4 +1,4 @@
-import api from "@/lib/service"; // تأكدي من المسار الصحيح لملف الأكسيوس
+import api from "@/lib/service"; 
 import {
   AddToWishlistRequest,
   AddToWishlistResponse,

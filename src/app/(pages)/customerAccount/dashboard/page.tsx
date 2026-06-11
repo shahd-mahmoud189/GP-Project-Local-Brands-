@@ -4,7 +4,7 @@ import React from "react";
 import { getUserOrders } from "@/app/api/order.api";
 import { Order } from "@/app/types/order.type";
 
-const BASE_URL = "https://brands-system-production-c110.up.railway.app";
+const BASE_URL = "https://graduationprojectclean-production.up.railway.app"; // Adjust this to your actual base URL if needed
 const getImageUrl = (path: string) => {
   if (!path) return "/unnamed.png";
   if (path.startsWith("http")) return path;

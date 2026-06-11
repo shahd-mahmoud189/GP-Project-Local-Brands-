@@ -5,7 +5,7 @@ import { ContactSellerButton } from "@/app/_components/ContactSellerButton/Conta
 import Image from "next/image";
 import Link from "next/link";
 import { getSingleProduct } from "@/app/api/product.api";
-
+import ProductViewTracker from "@/app/_components/ProductViewTracker/ProductViewTracker";
 export default async function page({
   params,
 }: {
@@ -21,6 +21,11 @@ export default async function page({
 
   return (
     <div className="container mx-auto px-12 py-10">
+      <ProductViewTracker
+         productId={product.productId} 
+      categoryId={product.categoryId} 
+      brandId={product.brandId}
+      />
       <div className="lg:flex lg:justify-center lg:gap-10 space-y-4 mb-12">
         <div className="lg:w-2/6">
           <div className="relative aspect-4/5 rounded-4xl overflow-hidden bg-stone-100">

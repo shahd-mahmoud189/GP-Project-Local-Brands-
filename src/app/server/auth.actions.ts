@@ -86,13 +86,11 @@ export async function getMyRequestData() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  // لو مفيش توكن، نرجع قيم فاضية فوراً وممنوع نبعت طلب للسيرفر
   if (!token) {
     return { requestStatusText: "", requestDate: "" };
   }
 
   try {
-    // بنستخدم fetch العادي هنا عشان نهرب من مشاكل Axios في السيرفر
     const response = await fetch('https://graduationprojectclean-production.up.railway.app/api/BrandOwnerRequest/my-requests', {
       headers: {
         'Authorization': `Bearer ${token}`,

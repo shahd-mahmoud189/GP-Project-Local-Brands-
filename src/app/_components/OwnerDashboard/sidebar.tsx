@@ -1,4 +1,6 @@
 "use client"
+import { getOrCreateSession, createSession } from "@/app/api/userBehavior.api";
+import Cookies from "js-cookie";
 import { removeBrandRequest, removeTokens, removeUserInfo } from "@/app/server/auth.actions";
 import { setAuthInfo } from "@/app/store/slices/auth.slice";
 import { LayoutDashboard,User, Package, PlusSquare, ShoppingBag, LogOut, Store , MessageCircle} from "lucide-react"
@@ -29,12 +31,13 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const dispatch = useDispatch();
 
   function logOut() {
+
     removeTokens();
     removeUserInfo();
     removeBrandRequest();
     dispatch(setAuthInfo({ isAuthinticated: false, userInfo: null }));
-    //toast.success("Logged out successfully");
-  }
+
+}
   return (
     <aside className="fixed inset-y-0 left-0 z-40 w-18 flex flex-col items-center py-6 gap-2 bg-[#F7F2EA] border-r border-[#864227]">
       {/* Brand mark */}

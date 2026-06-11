@@ -4,9 +4,8 @@ import { cookies } from "next/headers";
 import { AddToCartRequest, CartResponse } from "../types/cart.type";
 import { refreshTokens } from "./serverFunction/serverFunctions.api";
 
-const BASE = "https://brands-system-production-c110.up.railway.app";
+const BASE = "https://graduationprojectclean-production.up.railway.app";
 
-// دالة موحدة للتعامل مع الـ Fetch وإعادة المحاولة في حال انتهى التوكن
 async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
   let token = cookieStore.get("token")?.value || null;
@@ -25,19 +24,16 @@ async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Re
     cache: "no-store" 
   });
 
-  // إذا كان التوكن منتهي (401)، نحاول تجديده مرة واحدة
   if (response.status === 401) {
     const newToken = await refreshTokens();
 
     if (!newToken) {
-      // لو معرفش يجدد التوكن، بنعمل Logout ونمسح الكوكيز
       const cookieStore = await cookies();
       cookieStore.delete("token");
       cookieStore.delete("refreshToken");
       return new Response(null, { status: 401 });
     }
 
-    // إعادة المحاولة بالتوكن الجديد
     const retryHeaders = {
       ...options.headers,
       "Authorization": `Bearer ${newToken}`,
@@ -49,7 +45,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Re
   return response;
 }
 
-// 1. جلب بيانات السلة
+
 export async function getLoggedUserCart(): Promise<CartResponse | null> {
   try {
     const response = await fetchWithAuth(`${BASE}/api/Cart`);
@@ -57,7 +53,7 @@ export async function getLoggedUserCart(): Promise<CartResponse | null> {
     if (response.status === 401) return null;
 
     if (!response.ok) {
-       // لو السلة فاضية أو مش موجودة (404/400) بنرجع سلة صفرية بدل ما نضرب Error
+ 
       if (response.status === 400 || response.status === 404) {
         return { items: [], totalItems: 0, subTotal: 0, customizationTotal: 0, total: 0 };
       }
@@ -71,7 +67,6 @@ export async function getLoggedUserCart(): Promise<CartResponse | null> {
   }
 }
 
-// 2. إضافة منتج للسلة
 export async function addProductToCart(body: AddToCartRequest): Promise<CartResponse> {
   const response = await fetchWithAuth(`${BASE}/api/Cart`, {
     method: "POST",
@@ -86,7 +81,6 @@ export async function addProductToCart(body: AddToCartRequest): Promise<CartResp
   return response.json();
 }
 
-// 3. حذف منتج من السلة
 export async function removeProductFromCart(cartItemId: number): Promise<CartResponse> {
   const response = await fetchWithAuth(`${BASE}/api/Cart/${cartItemId}`, {
     method: "DELETE",
@@ -97,7 +91,6 @@ export async function removeProductFromCart(cartItemId: number): Promise<CartRes
   return response.json();
 }
 
-// 4. مسح السلة بالكامل
 export async function clearCartApi(): Promise<void> {
   const response = await fetchWithAuth(`${BASE}/api/Cart`, {
     method: "DELETE",
@@ -106,7 +99,6 @@ export async function clearCartApi(): Promise<void> {
   if (!response.ok) throw new Error("Failed to clear cart");
 }
 
-// 5. تحديث الكمية
 export async function updateProductQuantity({
   cartItemId,
   quantity,

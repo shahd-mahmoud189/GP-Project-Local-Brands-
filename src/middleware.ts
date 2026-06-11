@@ -4,7 +4,7 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
-  // لو مفيش توكن خالص
+
   if (!token && !refreshToken) {
     const isProtected = request.nextUrl.pathname.startsWith("/ownerAccount") ||
       request.nextUrl.pathname.startsWith("/adminAccount") ||

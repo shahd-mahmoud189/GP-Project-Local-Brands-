@@ -4,5 +4,5 @@ export function getImageUrl(url: string | string[]): string {
   if (!raw) return "/placeholder.png";
   if (raw.startsWith("http")) return raw;
   
-  return `https://brands-system-production-c110.up.railway.app${raw}`;
+  return `https://graduationprojectclean-production.up.railway.app${raw}`;
 }
