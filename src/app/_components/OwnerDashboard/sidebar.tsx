@@ -39,10 +39,10 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
 }
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 w-18 flex flex-col items-center py-6 gap-2 bg-[#F7F2EA] border-r border-[#864227]">
+    <aside className="fixed inset-y-0 left-0 z-40 w-18 flex flex-col items-center py-6 gap-2 bg-[#E4F5FD] border-r border-[#0288D1]">
       {/* Brand mark */}
       <div className="mb-6 flex flex-col items-center gap-1">
-        <div className="w-10 h-10 rounded-xl bg-[#864227] flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-[#0288D1] flex items-center justify-center">
           <Store className="w-5 h-5 text-white" />
         </div>
       </div>
@@ -57,8 +57,8 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             className={`
               w-full flex flex-col items-center gap-1 py-3 px-1 rounded-lg transition-all duration-150 group
               ${activeTab === id
-                ? "bg-[#864227] text-white"
-                : "text-black-400 hover:bg-[#864227] hover:text-white"
+                ? "bg-[#0288D1] text-white"
+                : "text-black-400 hover:bg-[#0288D1] hover:text-white"
               }
             `}
           >
@@ -75,7 +75,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         href={'/login'}
         title="Sign Out"
         aria-label="Sign out"
-        className="mt-auto flex flex-col items-center gap-1 py-3 px-1 rounded-lg text-black-400 hover:bg-[#864227] hover:text-white transition-all duration-150 w-full mx-2"
+        className="mt-auto flex flex-col items-center gap-1 py-3 px-1 rounded-lg text-black-400 hover:bg-[#0288D1] hover:text-white transition-all duration-150 w-full mx-2"
       >
         <LogOut className="w-5 h-5" />
         <span className="text-[9px] font-medium tracking-wide">Logout</span>

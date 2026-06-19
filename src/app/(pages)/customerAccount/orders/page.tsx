@@ -27,7 +27,7 @@ export default async function OrdersPage() {
       {sortedOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-16 bg-white rounded-[2rem] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-center mt-10">
           <div className="size-28 bg-[#F8EEEB] rounded-[2rem] flex items-center justify-center mb-6 rotate-3 hover:rotate-0 transition-all duration-300">
-            <i className="fa-solid fa-box-open text-5xl text-[#864227]"></i>
+            <i className="fa-solid fa-box-open text-5xl text-[#0288D1]"></i>
           </div>
           <p className="text-2xl font-black text-slate-800">No orders yet</p>
           <p className="text-gray-500 mt-3 max-w-md text-sm leading-relaxed">
@@ -68,7 +68,7 @@ export default async function OrdersPage() {
 
                     <div className="space-y-5">
                       <div className="flex items-center gap-4 text-sm group">
-                        <div className="size-12 bg-gray-50 group-hover:bg-[#F8EEEB] transition-colors flex items-center justify-center rounded-2xl text-gray-400 group-hover:text-[#864227]">
+                        <div className="size-12 bg-gray-50 group-hover:bg-[#F8EEEB] transition-colors flex items-center justify-center rounded-2xl text-gray-400 group-hover:text-[#0288D1]">
                           <i className="fa-regular fa-calendar-days text-lg"></i>
                         </div>
                         <div>
@@ -78,7 +78,7 @@ export default async function OrdersPage() {
                       </div>
 
                       <div className="flex items-center gap-4 text-sm group">
-                        <div className="size-12 bg-gray-50 group-hover:bg-[#F8EEEB] transition-colors flex items-center justify-center rounded-2xl text-gray-400 group-hover:text-[#864227]">
+                        <div className="size-12 bg-gray-50 group-hover:bg-[#F8EEEB] transition-colors flex items-center justify-center rounded-2xl text-gray-400 group-hover:text-[#0288D1]">
                           <i className="fa-solid fa-wallet text-lg"></i>
                         </div>
                         <div>
@@ -88,7 +88,7 @@ export default async function OrdersPage() {
                       </div>
 
                       <div className="flex items-center gap-4 text-sm group">
-                        <div className="size-12 bg-gray-50 group-hover:bg-[#F8EEEB] transition-colors flex items-center justify-center rounded-2xl text-gray-400 group-hover:text-[#864227]">
+                        <div className="size-12 bg-gray-50 group-hover:bg-[#F8EEEB] transition-colors flex items-center justify-center rounded-2xl text-gray-400 group-hover:text-[#0288D1]">
                           <i className="fa-solid fa-paper-plane text-lg"></i>
                         </div>
                         <div className="flex-1 min-w-0 pr-4">
@@ -102,7 +102,7 @@ export default async function OrdersPage() {
                   <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
                     <div>
                       <p className="text-xs text-black-400 font-bold uppercase tracking-wider mb-1">Total Paid</p>
-                      <p className="text-xl text-[#864227] leading-none mb-0">
+                      <p className="text-xl text-[#0288D1] leading-none mb-0">
                         {order.finalTotal} <span className="text-lg font-bold text-black-400 ml-1">EGP</span>
                       </p>
                     </div>

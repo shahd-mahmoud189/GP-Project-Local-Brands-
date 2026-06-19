@@ -50,7 +50,7 @@ export default async function DashboardPage() {
           <p className=" text-[#6B5B54] tracking-wider text-sm font-bold">
             Orders
           </p>
-          <h5 className="text-[#864227] text-2xl font-bold mt-2">{orders.length}</h5>
+          <h5 className="text-[#0288D1] text-2xl font-bold mt-2">{orders.length}</h5>
           <p className="text-[#4B5946] text-xs mt-2">
             Everything you've bought
           </p>
@@ -59,7 +59,7 @@ export default async function DashboardPage() {
           <p className=" text-[#6B5B54] tracking-wider text-sm font-bold">
             Saved Items
           </p>
-          <h5 className="text-[#864227] text-2xl font-bold mt-2">8</h5>
+          <h5 className="text-[#0288D1] text-2xl font-bold mt-2">8</h5>
           <p className="text-[#4B5946] text-xs mt-2">
             Don't let them get away!
           </p>
@@ -71,7 +71,7 @@ export default async function DashboardPage() {
           <h4 className="text-xl font-bold">Latest Order Activity</h4>
           <Link
             href={"/customerAccount/orders"}
-            className="tracking-widest text-xs font-bold text-[#864227] uppercase hover:underline"
+            className="tracking-widest text-xs font-bold text-[#0288D1] uppercase hover:underline"
           >
             All History
           </Link>
@@ -106,7 +106,7 @@ export default async function DashboardPage() {
                     </span>
                   </p>
                 </div>
-                <div className="text-xl text-[#864227] font-bold">
+                <div className="text-xl text-[#0288D1] font-bold">
                   {activeOrder.finalTotal} EGP
                 </div>
               </div>

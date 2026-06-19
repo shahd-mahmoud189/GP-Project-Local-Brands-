@@ -38,7 +38,7 @@ export function MessagesTab() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-6 h-6 text-[#864227] animate-spin" />
+        <Loader2 className="w-6 h-6 text-[#0288D1] animate-spin" />
       </div>
     );
   }
@@ -47,8 +47,8 @@ export function MessagesTab() {
     <div className="container mx-auto px-6 py-8 max-w-2xl">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-[#864227]/10 rounded-xl">
-          <MessageCircle className="w-5 h-5 text-[#864227]" />
+        <div className="p-2 bg-[#0288D1]/10 rounded-xl">
+          <MessageCircle className="w-5 h-5 text-[#0288D1]" />
         </div>
         <div>
           <h2 className="font-bold text-[#2D2D2D] text-lg">Messages</h2>
@@ -74,11 +74,11 @@ export function MessagesTab() {
             <button
               key={conv.conversationId}
               onClick={() => router.push(`/chat/${conv.conversationId}`)}
-              className="w-full bg-white border border-stone-200 rounded-2xl p-4 flex items-center gap-4 hover:border-[#864227]/30 hover:shadow-sm transition-all text-left"
+              className="w-full bg-white border border-stone-200 rounded-2xl p-4 flex items-center gap-4 hover:border-[#0288D1]/30 hover:shadow-sm transition-all text-left"
             >
               {/* Avatar */}
               <div className="relative shrink-0">
-                <div className="w-11 h-11 rounded-full bg-[#864227] flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-11 h-11 rounded-full bg-[#0288D1] flex items-center justify-center text-white font-bold text-sm">
                   {conv.otherUserName?.[0]?.toUpperCase() || "?"}
                 </div>
                 {conv.unreadCount > 0 && (
@@ -117,7 +117,7 @@ export function MessagesTab() {
 
               {/* Unread dot */}
               {conv.unreadCount > 0 && (
-                <div className="w-2 h-2 rounded-full bg-[#864227] shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#0288D1] shrink-0" />
               )}
             </button>
           ))}

@@ -45,17 +45,17 @@ export default function PaymentMethod({
         onClick={selectCash}
         onKeyDown={(e) => e.key === "Enter" && selectCash()}
         className={`border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 ${selected === 1
-            ? "border-[#864227] bg-white shadow-md"
+            ? "border-[#0288D1] bg-white shadow-md"
             : "border-transparent bg-[#F6F3EE]"
           }`}
       >
         <div className="flex items-start gap-4">
           <div
-            className={`size-5 mt-1 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${selected === 1 ? "border-[#864227]" : "border-gray-400"
+            className={`size-5 mt-1 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${selected === 1 ? "border-[#0288D1]" : "border-gray-400"
               }`}
           >
             {selected === 1 && (
-              <div className="size-2.5 rounded-full bg-[#864227]" />
+              <div className="size-2.5 rounded-full bg-[#0288D1]" />
             )}
           </div>
           <div className="flex-1 flex justify-between items-center">
@@ -63,7 +63,7 @@ export default function PaymentMethod({
               <p className="font-bold text-slate-900">Cash on Delivery</p>
               <p className="text-xs text-gray-500">Pay when your goods arrive.</p>
             </div>
-            <i className="fa-solid fa-money-bill text-xl text-[#864227]" />
+            <i className="fa-solid fa-money-bill text-xl text-[#0288D1]" />
           </div>
         </div>
       </div>
@@ -75,17 +75,17 @@ export default function PaymentMethod({
         onClick={selectOnline}
         onKeyDown={(e) => e.key === "Enter" && selectOnline()}
         className={`border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 ${selected === 2
-            ? "border-[#864227] bg-white shadow-md"
+            ? "border-[#0288D1] bg-white shadow-md"
             : "border-transparent bg-[#F6F3EE]"
           }`}
       >
         <div className="flex items-start gap-4">
           <div
-            className={`size-5 mt-1 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${selected === 2 ? "border-[#864227]" : "border-gray-400"
+            className={`size-5 mt-1 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${selected === 2 ? "border-[#0288D1]" : "border-gray-400"
               }`}
           >
             {selected === 2 && (
-              <div className="size-2.5 rounded-full bg-[#864227]" />
+              <div className="size-2.5 rounded-full bg-[#0288D1]" />
             )}
           </div>
 
@@ -97,7 +97,7 @@ export default function PaymentMethod({
                   Credit Card, Apple Pay, or PayPal
                 </p>
               </div>
-              <i className="fa-solid fa-credit-card text-xl text-[#864227]" />
+              <i className="fa-solid fa-credit-card text-xl text-[#0288D1]" />
             </div>
 
             {/* Credit card fields */}
@@ -113,7 +113,7 @@ export default function PaymentMethod({
                   maxLength={16}
                   disabled={selected !== 2}
                   {...register("creditCard.cardNumber")}
-                  className="w-full rounded-xl bg-white border border-gray-200 p-3 focus:ring-2 focus:ring-[#864227] outline-none"
+                  className="w-full rounded-xl bg-white border border-gray-200 p-3 focus:ring-2 focus:ring-[#0288D1] outline-none"
                 />
                 {selected === 2 && errors.creditCard?.cardNumber && (
                   <p className="text-red-500 text-sm mt-1">
@@ -130,7 +130,7 @@ export default function PaymentMethod({
                     maxLength={5}
                     disabled={selected !== 2}
                     {...register("creditCard.expiryDate")}
-                    className="w-full rounded-xl border border-gray-200 p-3 outline-none focus:ring-2 focus:ring-[#864227]"
+                    className="w-full rounded-xl border border-gray-200 p-3 outline-none focus:ring-2 focus:ring-[#0288D1]"
                   />
                   {selected === 2 && errors.creditCard?.expiryDate && (
                     <p className="text-red-500 text-sm mt-1">
@@ -145,7 +145,7 @@ export default function PaymentMethod({
                     maxLength={4}
                     disabled={selected !== 2}
                     {...register("creditCard.cvc")}
-                    className="w-full rounded-xl border border-gray-200 p-3 outline-none focus:ring-2 focus:ring-[#864227]"
+                    className="w-full rounded-xl border border-gray-200 p-3 outline-none focus:ring-2 focus:ring-[#0288D1]"
                   />
                   {selected === 2 && errors.creditCard?.cvc && (
                     <p className="text-red-500 text-sm mt-1">
@@ -161,7 +161,7 @@ export default function PaymentMethod({
                   placeholder="Card Holder Name"
                   disabled={selected !== 2}
                   {...register("creditCard.cardHolderName")}
-                  className="w-full rounded-xl border border-gray-200 p-3 outline-none focus:ring-2 focus:ring-[#864227]"
+                  className="w-full rounded-xl border border-gray-200 p-3 outline-none focus:ring-2 focus:ring-[#0288D1]"
                 />
                 {selected === 2 && errors.creditCard?.cardHolderName && (
                   <p className="text-red-500 text-sm mt-1">

@@ -67,7 +67,7 @@ export default function CompareDrawer() {
                     <div className="p-6 flex items-center justify-between bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-10">
                         <div>
                             <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                                <LayoutPanelLeft className="text-[#864227]" size={24} />
+                                <LayoutPanelLeft className="text-[#0288D1]" size={24} />
                                 Compare List
                             </h2>
                             <p className="text-[11px] text-gray-500 font-medium uppercase tracking-tighter mt-1">
@@ -114,7 +114,7 @@ export default function CompareDrawer() {
                                         </div>
                                         
                                         <div className="p-4 flex flex-col items-center text-center">
-                                            <span className="text-[9px] uppercase tracking-[0.2em] text-[#864227] font-black mb-1">
+                                            <span className="text-[9px] uppercase tracking-[0.2em] text-[#0288D1] font-black mb-1">
                                                 {product.brandName}
                                             </span>
                                             <h3 className="text-xs font-bold text-slate-800 line-clamp-1 mb-2">
@@ -152,12 +152,12 @@ export default function CompareDrawer() {
             {!isOpen && items.length > 0 && (
                 <button
                     onClick={() => dispatch(toggleDrawer(true))}
-                    className="fixed right-0 top-1/2 -translate-y-1/2 bg-[#864227] text-white py-6 px-3 rounded-l-[2rem] z-[90]  group transition-all duration-500 "
+                    className="fixed right-0 top-1/2 -translate-y-1/2 bg-[#0288D1] text-white py-6 px-3 rounded-l-[2rem] z-[90]  group transition-all duration-500 "
                 >
                     <div className="flex flex-col items-center gap-4">
                         <div className="relative">
                             <ArrowRightLeft size={22} className="group-hover:rotate-180 transition-transform duration-700" />
-                            <span className="absolute -top-4 -right-4 bg-white text-[#864227] text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-[#864227] shadow-lg">
+                            <span className="absolute -top-4 -right-4 bg-white text-[#0288D1] text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-[#0288D1] shadow-lg">
                                 {items.length}
                             </span>
                         </div>

@@ -42,7 +42,7 @@ export default async function page({
           <div>
             <Link
               href={`/brands/${product.brandId}`}
-              className="text-sm font-light text-[#0288d1] block mb-2 hover:underline"
+              className="text-sm font-light text-[#F0F9FF] block mb-2 hover:underline"
             >
               {product.brandName}
             </Link>

@@ -35,7 +35,7 @@ export function VariantsSection({
         <div className="flex items-center gap-3">
           <div
             className={`p-2 rounded-lg ${
-              variantsEnabled ? "bg-[#864227] text-white" : "bg-gray-100 text-gray-400"
+              variantsEnabled ? "bg-[#0288D1] text-white" : "bg-gray-100 text-gray-400"
             }`}
           >
             <Layers className="w-5 h-5" />
@@ -51,7 +51,7 @@ export function VariantsSection({
           type="button"
           onClick={() => toggleVariants(!variantsEnabled)}
           className={`w-12 h-6 rounded-full transition-colors flex items-center px-1 ${
-            variantsEnabled ? "bg-[#864227]" : "bg-gray-200"
+            variantsEnabled ? "bg-[#0288D1]" : "bg-gray-200"
           }`}
         >
           <div
@@ -139,7 +139,7 @@ export function VariantsSection({
             onClick={() =>
               append({ size: "M", color: "Black", price: 0, stockQuantity: 0 })
             }
-            className="mt-4 px-4 py-2 border border-dashed border-[#864227] rounded-xl text-[11px] font-bold text-[#864227] flex items-center gap-2"
+            className="mt-4 px-4 py-2 border border-dashed border-[#0288D1] rounded-xl text-[11px] font-bold text-[#0288D1] flex items-center gap-2"
           >
             <Plus className="w-3.5 h-3.5" /> Add New Option
           </button>

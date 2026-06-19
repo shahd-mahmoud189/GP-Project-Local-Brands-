@@ -75,13 +75,13 @@ export default function InventoryTap() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setView("grid")}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${view === "grid" ? "bg-[#864227] text-white" : "bg-white border border-[#E8E4E0] text-gray-500"}`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${view === "grid" ? "bg-[#0288D1] text-white" : "bg-white border border-[#E8E4E0] text-gray-500"}`}
           >
             Grid
           </button>
           <button
             onClick={() => setView("table")}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${view === "table" ? "bg-[#864227] text-white" : "bg-white border border-[#E8E4E0] text-gray-500"}`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${view === "table" ? "bg-[#0288D1] text-white" : "bg-white border border-[#E8E4E0] text-gray-500"}`}
           >
             Table
           </button>
@@ -93,7 +93,7 @@ export default function InventoryTap() {
           <button
             key={tab.key}
             onClick={() => setStatusFilter(tab.key)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition border ${statusFilter === tab.key ? "bg-[#864227] text-white border-[#864227]" : "bg-white text-gray-500 border-[#E8E4E0] hover:border-[#864227]"}`}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition border ${statusFilter === tab.key ? "bg-[#0288D1] text-white border-[#0288D1]" : "bg-white text-gray-500 border-[#E8E4E0] hover:border-[#0288D1]"}`}
           >
             {tab.label}
           </button>

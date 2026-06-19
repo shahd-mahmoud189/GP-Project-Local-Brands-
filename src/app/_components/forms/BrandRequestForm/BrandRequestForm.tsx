@@ -173,7 +173,7 @@ export default function BrandRequestForm() {
         <Field orientation="horizontal">
           <Button
             type="submit"
-            className="bg-[#864227] hover:bg-[#6d351f] font-semibold py-3 shadow-md hover:shadow-lg transition-all duration-200 text-white w-full"
+            className="bg-[#0288D1] hover:bg-[#6d351f] font-semibold py-3 shadow-md hover:shadow-lg transition-all duration-200 text-white w-full"
           >
             Request
           </Button>

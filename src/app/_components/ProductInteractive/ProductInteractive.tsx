@@ -152,8 +152,8 @@ export default function ProductInteractive({
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${selectedSize === size
-                  ? "border-[#864227] bg-[#864227] text-white"
-                  : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
+                  ? "border-[#0288D1] bg-[#0288D1] text-white"
+                  : "border-stone-300 text-stone-600 hover:border-[#0288D1] hover:text-[#0288D1]"
                   }`}
               >
                 {size}
@@ -168,7 +168,7 @@ export default function ProductInteractive({
         <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-3">
           <h3 className="font-semibold text-stone-900 text-sm uppercase tracking-wider">
             Color —{" "}
-            <span className="font-normal normal-case text-[#864227]">
+            <span className="font-normal normal-case text-[#0288D1]">
               {selectedColor}
             </span>
           </h3>
@@ -179,8 +179,8 @@ export default function ProductInteractive({
                 onClick={() => setSelectedColor(color)}
                 title={color}
                 className={`flex items-center gap-2 px-3 py-2 rounded-full border-2 transition-all ${selectedColor === color
-                  ? "border-[#864227]"
-                  : "border-stone-300 hover:border-[#864227]"
+                  ? "border-[#0288D1]"
+                  : "border-stone-300 hover:border-[#0288D1]"
                   }`}
               >
                 <span
@@ -188,7 +188,7 @@ export default function ProductInteractive({
                   style={{ background: colorMap[color] || "#ccc" }}
                 />
                 <span
-                  className={`text-sm font-medium ${selectedColor === color ? "text-[#864227]" : "text-stone-600"}`}
+                  className={`text-sm font-medium ${selectedColor === color ? "text-[#0288D1]" : "text-stone-600"}`}
                 >
                   {color}
                 </span>
@@ -209,7 +209,7 @@ export default function ProductInteractive({
           {customizationOptions.allowsText && (
             <div>
               <label className="text-sm font-medium text-stone-700 mb-2 flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#864227] rounded flex items-center justify-center text-white text-xs">
+                <span className="w-5 h-5 bg-[#0288D1] rounded flex items-center justify-center text-white text-xs">
                   T
                 </span>
                 Custom Text
@@ -220,7 +220,7 @@ export default function ProductInteractive({
                 onChange={(e) => setCustomText(e.target.value)}
                 placeholder="Enter your custom text..."
                 maxLength={50}
-                className="w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#864227] focus:border-transparent text-sm"
+                className="w-full px-4 py-2 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0288D1] focus:border-transparent text-sm"
               />
               <p className="text-xs text-stone-400 mt-1">
                 {customText.length}/50
@@ -232,7 +232,7 @@ export default function ProductInteractive({
           {customizationOptions.allowsPrinting && (
             <div>
               <label className="text-sm font-medium text-stone-700 mb-2 flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#864227] rounded flex items-center justify-center text-white text-xs">
+                <span className="w-5 h-5 bg-[#0288D1] rounded flex items-center justify-center text-white text-xs">
                   <i
                     className="fa-regular fa-image"
                     style={{ fontSize: "10px" }}
@@ -240,7 +240,7 @@ export default function ProductInteractive({
                 </span>
                 Custom Photo
               </label>
-              <label className="block border-2 border-dashed border-stone-300 rounded-xl p-5 text-center cursor-pointer hover:border-[#864227] hover:bg-[#86422710] transition-all">
+              <label className="block border-2 border-dashed border-stone-300 rounded-xl p-5 text-center cursor-pointer hover:border-[#0288D1] hover:bg-[#0288D110] transition-all">
                 <input
                   type="file"
                   accept="image/*"
@@ -248,7 +248,7 @@ export default function ProductInteractive({
                   onChange={(e) => setCustomPhoto(e.target.files?.[0] || null)}
                 />
                 {customPhoto ? (
-                  <p className="text-sm text-[#864227] font-medium">
+                  <p className="text-sm text-[#0288D1] font-medium">
                     {customPhoto.name}
                   </p>
                 ) : (
@@ -277,8 +277,8 @@ export default function ProductInteractive({
                     key={zone}
                     onClick={() => toggleZone(zone)}
                     className={`px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${selectedZones.includes(zone)
-                      ? "border-[#864227] bg-[#864227] text-white"
-                      : "border-stone-300 text-stone-600 hover:border-[#864227] hover:text-[#864227]"
+                      ? "border-[#0288D1] bg-[#0288D1] text-white"
+                      : "border-stone-300 text-stone-600 hover:border-[#0288D1] hover:text-[#0288D1]"
                       }`}
                   >
                     {zone}

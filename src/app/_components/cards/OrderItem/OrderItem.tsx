@@ -28,9 +28,9 @@ export default function OrderItem({ item, status }: { item?: CartItem, status?: 
           {item.size || item.color ? `${item.size || ''} ${item.color || ''}` : item.brandName}
         </p>
         {item.hasCustomization && (
-          <p className="text-[10px] text-[#864227] italic font-medium">Customized</p>
+          <p className="text-[10px] text-[#0288D1] italic font-medium">Customized</p>
         )}
-        <p className="text-[#864227] font-medium text-sm mt-1">{item.unitPrice} EGP x {item.quantity}</p>
+        <p className="text-[#0288D1] font-medium text-sm mt-1">{item.unitPrice} EGP x {item.quantity}</p>
       </div>
       {status && (
         <div className="rounded-2xl py-1 px-3 bg-[#F8EEEB] text-[10px] uppercase text-[#BC5439] font-bold">

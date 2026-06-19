@@ -89,7 +89,7 @@ export default function CheckoutPage() {
 
           {/* SHIPPING */}
           <div className="flex items-center gap-2 mb-8">
-            <div className="size-8 rounded-full bg-[#FFDBCF] flex items-center justify-center text-[#864227]">
+            <div className="size-8 rounded-full bg-[#FFDBCF] flex items-center justify-center text-[#0288D1]">
               1
             </div>
             <p className="text-3xl font-bold">Shipping Details</p>
@@ -99,7 +99,7 @@ export default function CheckoutPage() {
 
           {/* PAYMENT */}
           <div className="flex items-center gap-2 mb-8 mt-10">
-            <div className="size-8 rounded-full bg-[#FFDBCF] flex items-center justify-center text-[#864227]">
+            <div className="size-8 rounded-full bg-[#FFDBCF] flex items-center justify-center text-[#0288D1]">
               2
             </div>
             <p className="text-3xl font-bold">Payment Method</p>
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-6 bg-[#864227] text-white py-3 rounded-xl hover:bg-[#6d351f] disabled:opacity-60 transition-all"
+            className="w-full mt-6 bg-[#0288D1] text-white py-3 rounded-xl hover:bg-[#6d351f] disabled:opacity-60 transition-all"
           >
             {isSubmitting ? (
               <>

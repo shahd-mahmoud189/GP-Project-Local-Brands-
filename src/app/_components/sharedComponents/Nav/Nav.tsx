@@ -168,7 +168,7 @@ export default function Nav() {
                   </div>
                 )}
                 <div className="px-4 pt-2 pb-1 border-t border-gray-50">
-                  <button type="button" onClick={(e) => handleSearch(e, searchTerm)} className="w-full text-center text-sm text-[#864227] font-medium hover:underline">
+                  <button type="button" onClick={(e) => handleSearch(e, searchTerm)} className="w-full text-center text-sm text-[#0288D1] font-medium hover:underline">
                     See all results for "{searchTerm}"
                   </button>
                 </div>

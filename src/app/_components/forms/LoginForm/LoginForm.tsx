@@ -42,7 +42,11 @@ export default function LoginForm() {
       setTimeout(() => {
         if (data.userType === "BrandOwner") {
           router.push("/ownerAccount");
-        } else {
+        }
+        else if (data.userType === "Admin") {
+          router.push("/adminAccount");
+        }
+         else {
           router.push("/");
         }
       }, 2000);

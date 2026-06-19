@@ -26,7 +26,7 @@ export function CustomizationSection({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
-            className={`p-2 rounded-lg ${customEnabled ? "bg-[#864227] text-white" : "bg-gray-100 text-gray-400"}`}
+            className={`p-2 rounded-lg ${customEnabled ? "bg-[#0288D1] text-white" : "bg-gray-100 text-gray-400"}`}
           >
             <Settings2 className="w-5 h-5" />
           </div>
@@ -41,7 +41,7 @@ export function CustomizationSection({
           type="button"
           onClick={() => toggleCustomization(!customEnabled)}
           className={`w-12 h-6 rounded-full transition-colors flex items-center px-1 ${
-            customEnabled ? "bg-[#864227]" : "bg-gray-200"
+            customEnabled ? "bg-[#0288D1]" : "bg-gray-200"
           }`}
         >
           <div
@@ -63,13 +63,13 @@ export function CustomizationSection({
                 <label
                   className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${
                     field.value
-                      ? "border-[#864227] bg-[#864227]/5"
+                      ? "border-[#0288D1] bg-[#0288D1]/5"
                       : "border-gray-100 hover:bg-gray-50"
                   }`}
                 >
                   <div
                     className={`p-2 rounded-lg ${
-                      field.value ? "bg-[#864227] text-white" : "bg-gray-100 text-gray-400"
+                      field.value ? "bg-[#0288D1] text-white" : "bg-gray-100 text-gray-400"
                     }`}
                   >
                     <Type className="w-4 h-4" />
@@ -79,7 +79,7 @@ export function CustomizationSection({
                     type="checkbox"
                     checked={!!field.value}
                     onChange={(e) => field.onChange(e.target.checked)}
-                    className="accent-[#864227]"
+                    className="accent-[#0288D1]"
                   />
                 </label>
               )}
@@ -92,13 +92,13 @@ export function CustomizationSection({
                 <label
                   className={`flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all ${
                     field.value
-                      ? "border-[#864227] bg-[#864227]/5"
+                      ? "border-[#0288D1] bg-[#0288D1]/5"
                       : "border-gray-100 hover:bg-gray-50"
                   }`}
                 >
                   <div
                     className={`p-2 rounded-lg ${
-                      field.value ? "bg-[#864227] text-white" : "bg-gray-100 text-gray-400"
+                      field.value ? "bg-[#0288D1] text-white" : "bg-gray-100 text-gray-400"
                     }`}
                   >
                     <ImageIcon className="w-4 h-4" />
@@ -108,7 +108,7 @@ export function CustomizationSection({
                     type="checkbox"
                     checked={!!field.value}
                     onChange={(e) => field.onChange(e.target.checked)}
-                    className="accent-[#864227]"
+                    className="accent-[#0288D1]"
                   />
                 </label>
               )}
@@ -123,7 +123,7 @@ export function CustomizationSection({
               const selected: number[] = field.value || [];
               return (
                 <div className="p-4 bg-[#FAF8F6] rounded-xl border border-[#E8E4E0] space-y-3">
-                  <p className="text-[10px] font-bold text-[#864227] uppercase flex items-center gap-2">
+                  <p className="text-[10px] font-bold text-[#0288D1] uppercase flex items-center gap-2">
                     <Target className="w-3 h-3" /> Select Print Zones:
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -142,7 +142,7 @@ export function CustomizationSection({
                               field.onChange(selected.filter((z) => z !== zone.id));
                             }
                           }}
-                          className="w-4 h-4 rounded border-gray-300 accent-[#864227]"
+                          className="w-4 h-4 rounded border-gray-300 accent-[#0288D1]"
                         />
                         <span
                           className={`text-xs font-medium ${

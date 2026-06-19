@@ -91,12 +91,12 @@ export default function WishlistCard({ item }: WishlistCardProps) {
 
       {/* INFO */}
       <div className="pt-4 pb-1 px-1 flex flex-col flex-1">
-        <Link href={"/brandDetails"} className="text-sm font-semibold text-[#864227] block mb-2">
+        <Link href={"/brandDetails"} className="text-sm font-semibold text-[#0288D1] block mb-2">
           {item.brandName}
         </Link>
 
         <Link href={`/products/${item.productId}`}>
-          <h3 className="text-lg text-slate-800 font-medium line-clamp-1 group-hover:text-[#864227] transition-colors leading-tight">
+          <h3 className="text-lg text-slate-800 font-medium line-clamp-1 group-hover:text-[#0288D1] transition-colors leading-tight">
             {item.productName}
           </h3>
         </Link>
@@ -121,7 +121,7 @@ export default function WishlistCard({ item }: WishlistCardProps) {
             <button
               onClick={handleAddToCart}
               title="Add to cart"
-              className="h-10 w-10 rounded-full bg-[#864227] text-white flex items-center justify-center hover:bg-[#6d351f] transition-all shadow-lg active:scale-90"
+              className="h-10 w-10 rounded-full bg-[#0288D1] text-white flex items-center justify-center hover:bg-[#6d351f] transition-all shadow-lg active:scale-90"
             >
               <i className="fa-solid fa-plus" />
             </button>

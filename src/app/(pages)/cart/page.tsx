@@ -18,12 +18,12 @@ export default function Page() {
       text: "You will remove all items from your cart!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#864227',
+      confirmButtonColor: '#0288D1',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, clear it!',
       customClass: {
         popup: "rounded-3xl shadow-2xl",
-        confirmButton: "bg-[#864227] hover:bg-[#6d351f] text-white font-semibold py-3 px-6 rounded-xl transition-all",
+        confirmButton: "bg-[#0288D1] hover:bg-[#6d351f] text-white font-semibold py-3 px-6 rounded-xl transition-all",
         cancelButton: "bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-xl transition-all"
       },
       buttonsStyling: false
@@ -64,7 +64,7 @@ export default function Page() {
         </div>
         <Link
           href="/products"
-          className="bg-[#864227] text-white px-8 py-3 rounded-2xl font-semibold hover:bg-[#6d351f] transition-colors"
+          className="bg-[#0288D1] text-white px-8 py-3 rounded-2xl font-semibold hover:bg-[#6d351f] transition-colors"
         >
           Start Shopping
         </Link>

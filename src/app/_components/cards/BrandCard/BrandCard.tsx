@@ -23,11 +23,11 @@ const BrandCard = ({ brand }: BrandCardProps) => {
         </div>
 
         <div className="space-y-1.5 mt-2">
-          <h3 className="text-xl font-bold text-gray-950 tracking-tight group-hover:text-[#864227] transition-colors leading-tight line-clamp-1">
+          <h3 className="text-xl font-bold text-gray-950 tracking-tight group-hover:text-[#F0F9FF] transition-colors leading-tight line-clamp-1">
             {brand.brandName}
           </h3>
 
-          <span className="inline-block text-[9px] font-black tracking-[0.2em] text-[#864227] bg-[#864227]/15 px-3 py-1 rounded-full uppercase">
+          <span className="inline-block text-[9px] font-black tracking-[0.2em] text-[#F0F9FF] bg-[#F0F9FF]/15 px-3 py-1 rounded-full uppercase">
             {brand.ownerName}
           </span>
         </div>
@@ -40,7 +40,7 @@ const BrandCard = ({ brand }: BrandCardProps) => {
       <div className="w-full mt-8">
         <Link
           href={`/brands/${brand.brandId}`}
-          className="group/btn relative flex items-center justify-center gap-2 w-full overflow-hidden rounded-full border border-1.5 border-[#864227] py-3.5 text-[11px] font-bold uppercase tracking-widest text-[#864227] transition-all duration-300 hover:bg-[#864227] hover:text-white hover:border-[#864227] active:scale-[0.96]"
+          className="group/btn relative flex items-center justify-center gap-2 w-full overflow-hidden rounded-full border border-1.5 border-[#F0F9FF] py-3.5 text-[11px] font-bold uppercase tracking-widest text-[#F0F9FF] transition-all duration-300 hover:bg-[#F0F9FF] hover:text-white hover:border-[#F0F9FF] active:scale-[0.96]"
         >
           View Brand
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />

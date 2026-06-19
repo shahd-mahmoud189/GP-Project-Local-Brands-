@@ -25,7 +25,7 @@ export default function BrandListClient({ brands }: { brands: Brand[] }) {
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className="h-12 w-12 rounded-full border border-gray-200 flex items-center justify-center text-[#864227] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#864227] hover:text-white hover:border-[#864227] shadow-sm"
+            className="h-12 w-12 rounded-full border border-gray-200 flex items-center justify-center text-[#0288D1] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0288D1] hover:text-white hover:border-[#0288D1] shadow-sm"
           >
             <ArrowRight className="w-5 h-5 rotate-180" />
           </button>
@@ -48,7 +48,7 @@ export default function BrandListClient({ brands }: { brands: Brand[] }) {
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className="h-12 w-12 rounded-full border border-gray-200 flex items-center justify-center text-[#864227] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#864227] hover:text-white hover:border-[#864227] shadow-sm"
+            className="h-12 w-12 rounded-full border border-gray-200 flex items-center justify-center text-[#0288D1] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0288D1] hover:text-white hover:border-[#0288D1] shadow-sm"
           >
             <ArrowRight className="w-5 h-5" />
           </button>

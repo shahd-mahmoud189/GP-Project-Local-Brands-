@@ -77,7 +77,7 @@ export default function SearchPage() {
   if (loading) {
     return (
       <div className="container mx-auto p-20 text-center">
-        <div className="animate-spin size-10 border-4 border-[#864227] border-t-transparent rounded-full mx-auto mb-4"></div>
+        <div className="animate-spin size-10 border-4 border-[#0288D1] border-t-transparent rounded-full mx-auto mb-4"></div>
         <p className="text-gray-600">Searching for items...</p>
       </div>
     );
@@ -97,7 +97,7 @@ export default function SearchPage() {
   return (
     <div className="container mx-auto px-6 lg:px-12 py-10 min-h-screen">
       <h1 className="text-2xl font-bold mb-8 text-slate-800">
-        Search Results for: <span className="text-[#864227]">"{query}"</span>
+        Search Results for: <span className="text-[#0288D1]">"{query}"</span>
       </h1>
 
       {isEmpty ? (
@@ -112,7 +112,7 @@ export default function SearchPage() {
             <section>
               <div className="flex items-center gap-3 mb-6">
                 <h2 className="text-xl font-bold text-slate-800">Products</h2>
-                <span className="bg-[#864227]/10 text-[#864227] px-2 py-0.5 rounded text-sm">
+                <span className="bg-[#0288D1]/10 text-[#0288D1] px-2 py-0.5 rounded text-sm">
                   {results.products.length}
                 </span>
               </div>

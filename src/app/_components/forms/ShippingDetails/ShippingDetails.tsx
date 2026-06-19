@@ -24,7 +24,7 @@ export default function ShippingDetails({ register, errors }: Props) {
             type="text"
             placeholder="Mary"
             {...register("firstName")}
-            className="w-full rounded-xl bg-white border border-gray-200 p-4 focus:ring-2 focus:ring-[#864227]/150 outline-none transition-all"
+            className="w-full rounded-xl bg-white border border-gray-200 p-4 focus:ring-2 focus:ring-[#0288D1]/150 outline-none transition-all"
           />
 
           {errors.firstName && (
@@ -44,7 +44,7 @@ export default function ShippingDetails({ register, errors }: Props) {
             type="text"
             placeholder="John"
             {...register("lastName")}
-            className="w-full rounded-xl bg-white border border-gray-200 p-4 focus:ring-2 focus:ring-[#864227]/150 outline-none transition-all"
+            className="w-full rounded-xl bg-white border border-gray-200 p-4 focus:ring-2 focus:ring-[#0288D1]/150 outline-none transition-all"
           />
 
           {errors.lastName && (
@@ -65,7 +65,7 @@ export default function ShippingDetails({ register, errors }: Props) {
           type="text"
           placeholder="123 Main St, Building, Apt"
           {...register("shippingAddress")}
-          className="w-full rounded-xl bg-white border border-gray-200 p-4 focus:ring-2 focus:ring-[#864227]/150 outline-none transition-all"
+          className="w-full rounded-xl bg-white border border-gray-200 p-4 focus:ring-2 focus:ring-[#0288D1]/150 outline-none transition-all"
         />
 
         {errors.shippingAddress && (

@@ -159,7 +159,7 @@ export default function RequestsTable() {
               </div>
               <button
                 onClick={() => setSelectedRequest(null)}
-                className="w-full mt-6 bg-[#864227] hover:bg-[#6d351f] text-white py-3 rounded-xl font-semibold transition-all duration-200"
+                className="w-full mt-6 bg-[#0288D1] hover:bg-[#6d351f] text-white py-3 rounded-xl font-semibold transition-all duration-200"
               >
                 Close
               </button>

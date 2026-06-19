@@ -27,7 +27,7 @@ export default function JoinBrandyCard() {
             </li>
           </ul>
 
-          <Link href={'/request-brand'} className="mt-4 bg-[#864227] text-white px-4 py-2 rounded-xl hover:bg-orange-800">
+          <Link href={'/request-brand'} className="mt-4 bg-[#0288D1] text-white px-4 py-2 rounded-xl hover:bg-orange-800">
             Apply as a Brand
           </Link>
         </div>

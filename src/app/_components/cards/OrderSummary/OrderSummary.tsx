@@ -41,21 +41,21 @@ export default function OrderSummary({
         </div>
       </div>
 
-      <div className="bg-white/50 p-4 rounded-2xl border border-[#864227]/10 mb-8">
+      <div className="bg-white/50 p-4 rounded-2xl border border-[#0288D1]/10 mb-8">
         <div className="flex justify-between items-center">
           <p className="text-lg ">Total</p>
           <div className="text-right">
-            <span className="block text-lg text-[#864227]">{total.toFixed(2)} EGP</span>
+            <span className="block text-lg text-[#0288D1]">{total.toFixed(2)} EGP</span>
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        <Link href={'/checkout'} className="w-full inline-block bg-[#864227] hover:bg-[#6d351f] text-white rounded-xl border-2 border-[#864227] font-semibold py-3   transition-all duration-200 active:scale-95 text-center">
+        <Link href={'/checkout'} className="w-full inline-block bg-[#0288D1] hover:bg-[#6d351f] text-white rounded-xl border-2 border-[#0288D1] font-semibold py-3   transition-all duration-200 active:scale-95 text-center">
           {showItems ? 'Complete Purchase' : 'Proceed to Checkout'}
         </Link>
 
-        <Link href={'/products'} className="w-full inline-block bg-white hover:bg-[#FAF8F5] rounded-xl text-[#864227] border-2 border-[#864227] font-semibold py-3 px-2 transition-all duration-200 active:scale-95 text-center">
+        <Link href={'/products'} className="w-full inline-block bg-white hover:bg-[#FAF8F5] rounded-xl text-[#0288D1] border-2 border-[#0288D1] font-semibold py-3 px-2 transition-all duration-200 active:scale-95 text-center">
           Continue Shopping
         </Link>
 

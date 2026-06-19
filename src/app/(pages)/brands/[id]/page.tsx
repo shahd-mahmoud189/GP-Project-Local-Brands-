@@ -17,26 +17,26 @@ export default async function BrandsDetails({ params }: any) {
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[2px] text-gray-400 mb-10">
-          <Link href="/" className="hover:text-[#864227] transition-colors">
+          <Link href="/" className="hover:text-[#0288D1] transition-colors">
             Home
           </Link>
           <span className="text-gray-300">/</span>
           <Link
             href="/brands"
-            className="hover:text-[#864227] transition-colors"
+            className="hover:text-[#0288D1] transition-colors"
           >
             Brands
           </Link>
           <span className="text-gray-300">/</span>
-          <span className="text-[#864227] font-bold">{response.brandName}</span>
+          <span className="text-[#0288D1] font-bold">{response.brandName}</span>
         </nav>
 
         {/* Brand Header Section */}
         <div className="relative mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-gray-200 pb-12">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <span className="h-0.5 w-12 bg-[#864227]"></span>
-              <span className="text-sm font-bold tracking-[3px] text-[#864227] uppercase">
+              <span className="h-0.5 w-12 bg-[#0288D1]"></span>
+              <span className="text-sm font-bold tracking-[3px] text-[#0288D1] uppercase">
                 Official Brand
               </span>
             </div>
@@ -72,7 +72,7 @@ export default async function BrandsDetails({ params }: any) {
 
           {/* Background Decorative Text */}
           <div className="hidden md:block opacity-5 select-none pointer-events-none translate-y-4">
-            <h2 className="text-[140px] font-bold text-[#864227] leading-none uppercase">
+            <h2 className="text-[140px] font-bold text-[#0288D1] leading-none uppercase">
               {response.brandName.split(' ')[0]}
             </h2>
           </div>
@@ -80,7 +80,7 @@ export default async function BrandsDetails({ params }: any) {
 
         {/* Section Title */}
         <div className="flex items-center justify-between mb-10">
-          <h2 className="text-2xl font-medium text-slate-800 underline underline-offset-12 decoration-[#864227]/20">
+          <h2 className="text-2xl font-medium text-slate-800 underline underline-offset-12 decoration-[#0288D1]/20">
             Collection
           </h2>
           {hasProducts && (
@@ -111,7 +111,7 @@ export default async function BrandsDetails({ params }: any) {
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 animate-pulse">
               <Sparkles className="w-10 h-10 text-[#D1C7BD]" />
             </div>
-            <h3 className="text-[#864227] text-3xl font-serif mb-3">
+            <h3 className="text-[#0288D1] text-3xl font-serif mb-3">
               Curating New Pieces
             </h3>
             <p className="text-[#796C63] font-light max-w-md mx-auto leading-relaxed px-4">
@@ -119,7 +119,7 @@ export default async function BrandsDetails({ params }: any) {
             </p>
             <Link 
               href="/brands"
-              className="mt-8 px-8 py-3 bg-[#864227] text-white text-sm tracking-widest uppercase hover:bg-[#6d351f] transition-all rounded-full"
+              className="mt-8 px-8 py-3 bg-[#0288D1] text-white text-sm tracking-widest uppercase hover:bg-[#6d351f] transition-all rounded-full"
             >
               Explore Other Brands
             </Link>
